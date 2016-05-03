@@ -1,0 +1,28 @@
+\section{Conclusions and Discussions}
+\label{sec:conclusion}
+
+In this paper, we formally describe the uncertainty problem in validating
+wireless protocols using sniffers. We propose to systematically augment the
+protocol state machine to explicitly encode the inherent uncertainty of sniffer
+traces. We characterize the NP-completeness of the problem and propose practical
+heuristics to restrict the search to only traces with high likelihood.  We
+implement and evaluate our framework using both \ns{} simulator and real world
+traces, and show that our framework can tolerance sniffer trace uncertainties
+and report true violations. Finally, we discuss a few challenges and future
+directions.
+
+\textbf{Verification Coverage.} Given a single sniffer trace, it is possible
+that not all the states in the state machine are visited during the verification
+process. For instance, a rate control state machine based on certain consecutive
+packet losses patterns can not be verified if no such consecutive losses appear
+in the sniffer trace. In general, given a protocol state machine, how to extract
+the packet patterns for each state to be reached and how to alter the testing
+such that such patterns can be observed?
+
+\textbf{State Machine Generation.} We manually translated the protocols studied
+in this paper into checker state machines based on the source code, comments and
+documentation. The process is time-consuming and error-prone. A more scalable
+approach would be taking the protocol specification written in certain formal
+language, and automatically translate such specification into state machines
+that can be used for verification process.
+

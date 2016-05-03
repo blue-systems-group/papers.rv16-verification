@@ -1,0 +1,61 @@
+\input{./include/start.tex}
+
+\def\theconference{RV'16}
+\def\thetitle{Wireless Protocol Validation Under Uncertainty}
+\def\theauthors{}
+\def\thepapernumber{0}
+\setlength{\textfloatsep}{3mm}
+%\def\isdraft{}
+%\def\isblue{}
+
+\ifdefined\isdraft
+  \usepackage{fancyhdr}
+  \pagestyle{fancy}
+  \renewcommand{\headrulewidth}{0pt}
+  \lhead{}
+  \chead{Under Submission to \theconference{}. Do not distribute.}
+  \rhead{}
+\else
+\fi
+
+\begin{document}
+
+\title{%
+\thetitle\\
+}
+
+%\numberofauthors{1}
+
+\author{%
+}
+
+\hypersetup{%
+  pdfinfo={%
+    Title={\thetitle},
+    Author={\theauthors},
+  }
+}
+
+
+\maketitle
+
+\input{abstract.tex}
+\input{introduction.tex}
+\input{model.tex}
+\input{framework.tex}
+\input{implementation.tex}
+\input{case.tex}
+\input{related.tex}
+\input{conclusion.tex}
+
+%\input{fusion.tex}
+
+
+% \newpage
+{\footnotesize
+  % \balance
+  \bibliographystyle{abbrv}
+  \bibliography{references}
+}
+
+\end{document}

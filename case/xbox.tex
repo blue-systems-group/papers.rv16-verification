@@ -1,0 +1,55 @@
+\subsection{Gaming Wireless Controller Protocol}
+\label{subsec:xbox}
+
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    \textbf{Protocol Aspects} & \textbf{Traces} & \textbf{Violations (\%)}\\
+    \midrule
+    Sequence Number & 3049 & 1539 (50.48\%) \\
+    Station Scheduling & 3046 & 2045 (67.14\%) \\
+    Uplink Modulation & 3127 & 8 (0.26\%) \\
+    Downlink Modulation & 3127 & 24 (0.77\%) \\
+    \bottomrule
+  \end{tabular}
+  \caption{\textbf{Validation Results on Traces from the Gaming Wireless Protocol}}
+  \label{tab:xbox}
+\end{table}
+
+We contacted a major manufacturer of gaming consoles, which uses 
+%%The Xbox One controller~\cite{xbox} uses
+a proprietary protocol to communicate between the gaming controllers
+and the console.  The protocol is designed to achieve low-latency for
+the gaming packets, and to consume low-power for longer battery life.
+
+We obtained 75 sniffer traces from the testing team for a new version
+of the protocol that is under development and testing. This team has
+been testing the implementation for a few weeks.  Each trace contained
+around 6 million packets that were captured during 1 hour and 40
+minutes of protocol operation.
+
+We split the traces into \num{100000} packet segments, and applied our
+framework to validate the DUT implementation. We found that the latest
+implementation of the protocol under development had violations of the
+protocol specification. Some of the implementation bugs we found
+related to the sequence number management, station scheduling, and the
+changing of modulation rates adaptation. Table~\ref{tab:xbox}
+summarizes the validation result. Note that if we disable the
+augmented transitions, each trace will be flagged as violation because
+of the missing packets, thereby reducing the usability of the tool.
+
+The bugs related to packet sequence number and station scheduler were
+detected in about half the traces, and the bug related to the rate
+control algorithm was detected in only a few traces. This is because
+the previous two aspects are essential in all protocol operations,
+while the bugs related to rate control only manifest themselves under
+certain link conditions.
+
+After communicating with the testing team, we confirmed that the
+sequence number bug was already known, as it is relatively easy to
+detect even by manually examining the traces. The bug related to
+station scheduling was also noticed before, yet no quantitative
+results about how frequent this bug appears were obtained because of
+the lack of automatized validating tools. Finally, the bug related to
+rate control has been filed as a bug report.

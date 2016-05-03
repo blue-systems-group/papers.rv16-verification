@@ -1,0 +1,14 @@
+# use this if you have latexmk installed.
+OUTDIR=out
+MODE=nonstopmode
+MAIN=paper.tex
+
+all:
+	latexmk -shell-escape -xelatex -bibtex -pvc -interaction=$(MODE) -outdir=$(OUTDIR) -auxdir=$(OUTDIR) -f $(MAIN)
+
+pdf:
+	latexmk -shell-escape -xelatex -bibtex -outdir=$(OUTDIR) -auxdir=$(OUTDIR) -f $(MAIN)
+
+
+clean:
+	latexmk -outdir=$(OUTDIR) -C

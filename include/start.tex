@@ -1,0 +1,81 @@
+\documentclass{llncs}
+%\usepackage{times,datetime,url,hyperref,graphicx,multirow,color,calc,ulem,threeparttable,tabularx,booktabs,enumitem,comment,balance,subcaption,morefloats,mathrsfs}
+
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{comment}
+\usepackage{mathrsfs}
+\usepackage{balance}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{algpseudocode}
+\usepackage[group-separator={,}]{siunitx}
+\usepackage{caption}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+
+\emergencystretch=10pt
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algnewcommand{\LineComment}[1]{\State{\(\triangleright\) #1}}
+\newcommand*\Let[2]{\State #1 := #2}
+
+\usepackage{bm}
+
+\hypersetup{%
+  bookmarks=true,
+  unicode=true,
+  pdftoolbar=true,
+  pdfmenubar=true,
+  pdffitwindow=true,
+  pdfstartview={FitV},
+  pdfnewwindow=true,
+  colorlinks=false,
+  pdfdisplaydoctitle=true,
+  pdfborder={0 0 0}
+}
+\usepackage[all]{hypcap}
+
+\usepackage[absolute]{textpos}
+\setlength{\TPHorizModule}{1in}
+\setlength{\TPVertModule}{1in}
+\textblockorigin{0.75in}{0.875in}
+
+\setlist[itemize]{leftmargin=*,partopsep=5pt}
+\setlist[enumerate]{leftmargin=*,partopsep=5pt}
+
+% \newcommand*{\refname}{References}
+\paperheight 11in
+\paperwidth 8.5in
+
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+
+\newcommand\nil{\textit{nil}}
+
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+      \node[shape=circle,draw,inner sep=0pt] (char) {#1};}}
+
+% \newdef{definition}{Definition}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{problem}{Problem}
+%\newtheorem{lemma}{Lemma}
+
+%\numberwithin{theorem}{section}
+%\numberwithin{corollary}{section}
+%\numberwithin{problem}{section}
+%\numberwithin{lemma}{section}
+
+\makeatletter
+\newcommand*{\rome}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\input{common.tex}
+

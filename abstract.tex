@@ -1,0 +1,41 @@
+\begin{abstract}
+	%
+	Validating wireless protocol implementations cannot always employ direct
+	instrumentation of the device under test (DUT).
+	%
+  The DUT may not implement the required instrumentation, or the instrumentation
+  may alter the DUT's behavior when enabled.
+	%
+	Wireless sniffers can monitor devices that direct instrumentation cannot,
+	but they introduce new validation challenges.
+	%
+	Losses caused by wireless propagation mean that even multiple sniffers
+	cannot perfectly reconstruct the actual DUT packet trace.
+	%
+	As a result, accurate validation using wireless sniffers requires
+	distinguishing between specification deviations that represent
+	implementation errors from those caused by sniffer uncertainty.
+
+	We present a new approach that enables sniffer-based validation of wireless protocol
+	implementation.
+	%
+  Beginning with the original protocol state machine, we automatically encode
+  uncertainty introduced due to the sniffer by selectively adding
+  non-deterministic transitions.
+	%
+	Processing the sniffer packet trace using this validation state machine
+	produces a set of mutated packet traces, each of which could have been
+	actually observed by the DUT.
+	%
+  We characterize the NP-completeness of the resulting problem and provide an
+  exhaustive search algorithm for locating all mutated traces, as well as a more
+  practical protocol-oblivious heuristics for locating likely mutated traces
+  guided by the sniffer's packet loss characteristics.
+	%
+	The resulting set of mutated traces can be used to determine whether the
+	protocol implementation violates the specification.
+	%
+	We have implemented our framework and show that it can accurately identify
+	implementation errors.
+	%
+\end{abstract}

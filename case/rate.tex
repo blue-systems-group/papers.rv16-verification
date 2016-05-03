@@ -1,0 +1,68 @@
+\subsection{Rate Control}
+
+Rate control plays an important role in wireless performance. In this section,
+we first briefly describe Minstrel---one of the most widely used rate control
+algorithm. Then we show how we can apply the verification techniques on
+Minstrel.
+
+\subsubsection{Minstrel Rate Control Algorithm}
+
+\sloppy{%
+  Minstrel is the default rate control algorithm in Linux \texttt{mac80211}
+  framework. The core of the algorithm is the multi-rate retry chain denoted as
+  $\mathcal{C}=\langle r_1, c_1\rangle, \langle r_2, c_2\rangle,\ldots, \langle
+  r_n, c_n\rangle$. The retry chain instruct the hardware to first try to
+  transmit a packet for at most $c_1$ times on rate $r_1$, then at most $r_2$
+  times on rate $r_2$ and so forth, until the packet is acknowledged. The
+  hardware will abort transmitting the packet if it has been attempted for
+  $\sum_{i=1}^{n}c_i$ times and no acknowledged is received.
+}
+
+In the Minstrel implementation of \texttt{mac80211}, the retry chain size $n$ is
+4, and the rates in each retry stage are determined in Table~\ref{tab:retry}.
+Note that once the rates are decided, the retry count $c_i$ is configured so
+that the each retry stage does not exceed 26~ms to accommodate upper layer TCP
+congestion control.
+
+
+\begin{table}[h]
+  \centering
+  \caption{\textbf{Multi-Rate Retry Chain in Minstrel.} $\text{TP}_{r}$ is the
+    estimated throughput of rate $r$.}
+  \label{tab:retry}
+  \begin{tabular}{cccc}
+    \toprule
+    \multirow{2}{*}{\textbf{Try}} & \multicolumn{2}{c}{\textbf{Probing Packet}} & \multirow{2}{*}{\textbf{Normal Packets}}\\ &
+    $\text{TP}_{r_{\text{rnd}}} < \text{TP}_{r_{\text{tp}}}$
+    & $\text{TP}_{r_{\text{rnd}}} > \text{TP}_{r_{\text{tp}}}$ & \\
+    \midrule
+    1 & $r_{\text{tp}}$ & $r_{\text{rnd}}$ & $r_{\text{tp}}$\\
+    2 & $r_{\text{rnd}}$ & $r_{\text{tp}}$ & $r_{\text{tp2}}$\\
+    3 & $r_{\text{prob}}$ & $r_{\text{prob}}$ & $r_{\text{prob}}$\\
+    4 & $r_{\text{base}}$ & $r_{\text{base}}$ & $r_{\text{base}}$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+For 90\% packets (normal), the rate with best estimated throughput
+($r_{\text{tp}}$) is used first, followed by the rate with 2nd best estimated
+throughput ($r_{\text{tp2}}$), then the rate with best success probability
+($r_{\text{prob}}$), and finally the lowest base rate ($r_{\text{base}}$). For
+the rest 10\% packets (probing), Minstrel randomly probes other rates, and the
+retry chain for probing packets are determined so that the rate with higher
+throughput will be used first.
+
+Minstrel collects the success statistics of packets transmitted during last
+interval, and updates the estimated throughput for each rate as follows:
+\begin{align}
+  \text{TP}_{r} &= r \times \text{Prob}_r\\
+  \text{Prob}_{r} &= (1-\alpha)\times\text{Prob}^*_{r} + \alpha\times\text{Prob}_r\\
+  \text{Prob}^*_r &= \frac{\text{Success Packets \#}}{\text{Total Packets \#}}
+\end{align}
+
+Where $\text{Prob}^*_{r}$ is the packet success probability during last
+interval, and $\text{Prob}_{r}$ is the Exponential Weighted Moving Average
+(EWMA) of $\text{Prob}^*_{r}$. The default value of the EWMA weight $\alpha$ is
+0.75.
+
+\subsection{Testing Minstrel Implementation}
