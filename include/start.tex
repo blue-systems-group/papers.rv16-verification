@@ -1,6 +1,4 @@
 \documentclass{llncs}
-%\usepackage{times,datetime,url,hyperref,graphicx,multirow,color,calc,ulem,threeparttable,tabularx,booktabs,enumitem,comment,balance,subcaption,morefloats,mathrsfs}
-
 \usepackage{booktabs}
 \usepackage{subcaption}
 \usepackage{comment}
@@ -8,7 +6,7 @@
 \usepackage{balance}
 \usepackage{enumitem}
 \usepackage{hyperref}
-\usepackage{algpseudocode}
+\usepackage[noend]{algpseudocode}
 \usepackage[group-separator={,}]{siunitx}
 \usepackage{caption}
 \usepackage{mathtools}
@@ -17,15 +15,19 @@
 \usepackage{listings}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
+\usepackage{bm}
+\usepackage[all]{hypcap}
+\usepackage[absolute]{textpos}
+\usepackage{wrapfig}
+\usepackage[title]{appendix}
 
-\emergencystretch=10pt
+%\emergencystretch=10pt
 
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \algnewcommand{\LineComment}[1]{\State{\(\triangleright\) #1}}
 \newcommand*\Let[2]{\State #1 := #2}
 
-\usepackage{bm}
 
 \hypersetup{%
   bookmarks=true,
@@ -39,9 +41,7 @@
   pdfdisplaydoctitle=true,
   pdfborder={0 0 0}
 }
-\usepackage[all]{hypcap}
 
-\usepackage[absolute]{textpos}
 \setlength{\TPHorizModule}{1in}
 \setlength{\TPVertModule}{1in}
 \textblockorigin{0.75in}{0.875in}

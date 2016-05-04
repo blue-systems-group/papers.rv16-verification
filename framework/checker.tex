@@ -15,7 +15,7 @@ the expected behaviors of the DUT with correct protocol implementation.
 A timed automata is a finite state machine with timing constraints on the
 transitions: each transition can optionally start one or more timers, which can
 later be used to assert certain events should be seen before or after the time
-out event(s).
+out event.
 %
 We use the term \textit{timed automata} and \textit{state machine}
 interchangeably hereafter.
@@ -38,7 +38,7 @@ sequence of packets.
     [(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]
   \end{align*}%
   where $t_i \in \mathbb{Z}^+$ is the \textit{discrete} timestamp and $p_i$ is the packet
-  observed by the DUT at time $t_i$. The timestamps are strictly monotonically increasing,
+  observed at time $t_i$. The timestamps are strictly monotonically increasing,
   $t_i < t_{i+1}$ for $1 \le i < n$.
 \end{definition}%
 
@@ -82,7 +82,7 @@ states reachable after consuming the prefix have no valid transitions for the
 next $(t, p)$ input.
 %
 Note that the input to the state machine, time and packet, are all
-observable events in the medium.
+observable events in the communication medium.
 %
 Validating the internal events of the DUT is beyond the
 scope of this paper.
@@ -102,17 +102,8 @@ receiver.
 %
 The sequence number is within the range of $[0, N)$.
 
-\begin{figure}[t!]
-  \centering
-  \includegraphics[width=0.45\textwidth]{./figures/dot11_tx_ta.pdf}
-  \caption{\textbf{Transmitter Monitor State Machine for 802.11 Packet Transmission
-  Protocol.}}
-  \label{fig:dot11_tx_ta}
-\end{figure}
 
-
-
-The monitor state machine is illustrated in Figure~\ref{fig:dot11_tx_ta}, and
+The monitor state machine is illustrated in Fig.~\ref{fig:dot11_tx_ta}, and
 the main components are:
 
 \begin{itemize}
@@ -128,6 +119,16 @@ the main components are:
     liveness of the DUT.
 \end{itemize}
 
+\begin{wrapfigure}{r}{0.45\textwidth}
+  \vspace*{-14mm}
+  \centering
+  \includegraphics[width=0.45\textwidth]{./figures/dot11_tx_ta.pdf}
+  \caption{\textbf{Monitor State Machine for 802.11 Packet Transmitter.}}
+  \label{fig:dot11_tx_ta}
+  \vspace*{-8mm}
+\end{wrapfigure}
+
+
 To succinctly present the state machine, we use an internal variable $i$ to keep
 track of the next sequence number.
 %
@@ -135,6 +136,8 @@ One can easily eliminate this variable and
 use only different states for different sequence numbers.
 %
 Therefore, this state machine is consistent with Definition~\ref{def:sm}.
+
+
 
 The sequence number $i$ is initialized to 0 when the state machine is
 initialized.

@@ -19,6 +19,17 @@ non-trivial to encode such timing information in Hidden Markov Model. Finally,
 domain knowledge can be exploited in our approach to efficiently prune out
 unlikely branches during the exhaustive search.
 
+\textbf{Network Protocol Validation.} Lee \textit{et al}~\cite{lee1997passive}
+studied the problem of passive network testing of network management. The system
+input/output behavior is only partially observable. However, the uncertainty
+only lies in missing events in the observation, while in the context of wireless
+protocol verification, the uncertainty could also be caused by extra events not
+observed by the tested system. Software model checking
+techniques~\cite{musuvathi2002cmc,godefroid1997model} have also been used to
+verify network protocols. Our problem is unique because of the observation
+uncertainty caused by sniffers.
+
+\begin{comment}
 \textbf{Sniffer Trace Analysis.} Wireless sniffers has been widely used to
 analyze MAC layer behaviors of enterprise wireless
 networks~\cite{sheng:wicom2008,tan:tmc2014,yeo-wise04,yeo:witmemo2005}.
@@ -33,15 +44,6 @@ correctness of the protocol implementation in order to infer missing packets,
 while we systematically encode the uncertainty of sniffer traces for
 verification purpose.
 
-\textbf{Network Protocol Validation.} Lee \textit{et al}~\cite{lee1997passive}
-studied the problem of passive network testing of network management. The system
-input/output behavior is only partially observable. However, the uncertainty
-only lies in missing events in the observation, while in the context of wireless
-protocol verification, the uncertainty could also be caused by extra events not
-observed by the tested system. Software model checking
-techniques~\cite{musuvathi2002cmc, godefroid1997model} have also been used to
-verify network protocols. Our problem is unique because of the observation
-uncertainty caused by sniffers.
 
 \textbf{ Testing Under Uncertainty}. The position paper by Rosemblum \textit{et
 al}~\cite{Elbaum:2014:KUT:2635868.2666608} contains excellent motivation for the
@@ -55,3 +57,4 @@ the specification logically to precisely define the problem complexity, and use
 probabilities to guide the search for likely mutations.  Other works have used
 sampling to find data-race bugs~\cite{marino2009literace}, and ensure that the
 sampling does not lead to spurious alarms.
+\end{comment}

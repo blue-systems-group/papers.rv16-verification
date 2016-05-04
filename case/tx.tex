@@ -14,30 +14,10 @@ framework.
 Second, we study how the packet loss ratios affect the quality of the
 verification.
 %
-Finally, we demonstrate the ability of our framework to detect true violations by manually introducing bugs in the \ns{} implementation and by showing the
+Finally, we demonstrate the ability of our framework to detect true violations
+by manually introducing bugs in the \ns{} implementation and by showing the
 precision and recall of violation detection.
 
-\begin{figure*}[t!]
-  \centering
-  \begin{subfigure}{0.33\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_10.pdf}
-    \caption{$Pr_{ed} \in [0.05, 0.10, 0.15]$}
-  \end{subfigure}\hspace*{0.01\textwidth}
-  \begin{subfigure}{0.33\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_30.pdf}
-    \caption{$Pr_{ed} \in [0.20, 0.25, 0.30, 0.35]$}
-  \end{subfigure}\hspace*{0.01\textwidth}
-  \begin{subfigure}{0.33\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_50.pdf}
-    \caption{$Pr_{ed} \in [0.40, 0.45, 0.50]$}
-  \end{subfigure}\hspace*{0.01\textwidth}
-  \caption{\textbf{Jaccard Distance Between Mutation and DUT Traces.} For each
-  data point, the mean of the 5 runs is used.}
-  \label{fig:mutation_dut}
-\end{figure*}
 
 \begin{comment}
 \begin{figure*}[t!]
@@ -202,6 +182,29 @@ $r$ represents the round
 of sequence numbers as it wraps after 4096.
 %
 And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
+
+\begin{figure*}[t!]
+  \centering
+  \begin{subfigure}{0.33\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_10.pdf}
+    \caption{$Pr_{ed} \in [0.05, 0.1, 0.15]$}
+  \end{subfigure}\hspace*{0.01\textwidth}
+  \begin{subfigure}{0.33\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_30.pdf}
+    \caption{$Pr_{ed} \in [0.2, 0.25, 0.3, 0.35]$}
+  \end{subfigure}\hspace*{0.01\textwidth}
+  \begin{subfigure}{0.33\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_50.pdf}
+    \caption{$Pr_{ed} \in [0.4, 0.45, 0.5]$}
+  \end{subfigure}\hspace*{0.01\textwidth}
+  \caption{\textbf{Jaccard Distance Between Mutation and DUT Traces.} For each
+  data point, the mean of the 5 runs is used.}
+  \label{fig:mutation_dut}
+\end{figure*}
+
 
 Figure~\ref{fig:mutation_dut} shows the Jaccard Distance between mutation and
 its corresponding DUT trace.

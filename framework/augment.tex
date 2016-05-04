@@ -6,20 +6,22 @@ systematically augment the original checker state machine with non-deterministic
 transitions to account for the difference between the sniffer and DUT traces.
 
 
-\begin{figure}[t!]
+\begin{wrapfigure}{r}{0.45\textwidth}
+  \vspace*{-5mm}
   \centering
   \includegraphics[width=0.48\textwidth]{./figures/dot11_tx_checker.pdf}
   \caption{\textbf{Augmented Checker State Machine.} Augmented transitions are
   highlighted in bold face. $\overline{Pkt}$ means either $\epsilon$ or $Pkt$.}
   \label{fig:augment}
-\end{figure}
+  \vspace*{-8mm}
+\end{wrapfigure}
 
 
 Before formally defining the augmented state machine, we first use an example to
 illustrate the basic idea.
 %
-Figure~\ref{fig:augment} shows the augmented state machine
-for 802.11 transmitter state machine shown in Figure~\ref{fig:dot11_tx_ta}.
+Fig.~\ref{fig:augment} shows the augmented state machine
+for 802.11 transmitter state machine shown in Fig.~\ref{fig:dot11_tx_ta}.
 %
 For each existing transition (e.g., $s_0\rightarrow s_1$), we add an \textit{empty
 transition} with same clock guards and resetting
@@ -51,8 +53,8 @@ Second, no augmented transition are added for the packets that are sent to DUT y
 are missed by both the DUT and the sniffer, since such packets do not cause
 difference between the DUT and sniffer traces.
 
-The augmented state machine in Figure~\ref{fig:augment} will accept the sniffer
-packet traces $Tr_1$ and $Tr_2$ shown in Figure~\ref{fig:sniffer_in_middle}.
+The augmented state machine in Fig.~\ref{fig:augment} will accept the sniffer
+packet traces $Tr_1$ and $Tr_2$ shown in Fig.~\ref{fig:sniffer_in_middle}.
 %
 For instance, one accepting transition sequence on sniffer trace $Tr_1$ is
 $s_0\rightarrow s_1 \rightarrow_s s_1\rightarrow s_2 \rightarrow s_0$, and the
@@ -77,6 +79,7 @@ We now formally define the augmented state machine.
   \end{itemize}
 \end{definition}
 
+\begin{comment}
 Algorithm~\ref{alg:augment} describes the process of transforming $E$ into
 $E^+$.
 %
@@ -104,6 +107,7 @@ and Type-2 transitions to $E^+$ respectively.
   \caption{Obtain Augmented Transitions $E^+$ from $E$}
   \label{alg:augment}
 \end{algorithm}
+\end{comment}
 
 With augmented state machine $S^+$, we can use Type-1 transitions to
 non-deterministically infer packets missed by the sniffer, and use Type-2
@@ -160,57 +164,10 @@ $Tr$.
 \begin{theorem}
   There exists a mutation trace $Tr' \in \mathcal{M}(Tr)$ that satisfies $S$ if
   and only if $Tr$ satisfies $S^+$.
- \label{lem:equivalent}
+ \label{the:equivalent}
 \end{theorem}
-\begin{proof}
-  Assume $Tr$ satisfies $S^+$, and $P$ is a sequence of accepting transitions,
-  we construct a mutation trace $Tr'$ using $P$ and show that $Tr'$ satisfies
-  $S$.
 
-  Initially, let $Tr'=Tr$, then for each \textit{augmented} transition $\langle s_i,
-  s_j, \sigma, g, C'\rangle \in P$:
-  \begin{itemize}
-    \item If this is a Type-1 transition, add $(t, p)$ to $Tr'$, where $t$ is a
-      timestamp that satisfies $g$ and $p$ is the missing packet.
-    \item If this is a Type-2 transition, remove corresponding $(t, p)$ from
-      $Tr'$.
-  \end{itemize}
-  It is obvious that $Tr'$ is a mutation trace of $Tr$, since only receiving
-  packets are removed in the process.
-  %
-  Now we show that there exists a accepting
-  transition sequence $P'$ of $S^+$ on input $Tr'$ that does not contain
-  augmented transitions.
-  %
-  In particular, $P'$ can be obtained by substituting all
-  Type-1 transitions with corresponding original transitions, and removing all
-  Type-2 transition.
-  %
-  Since $P'$ does not contain augmented transitions, it is also an accepting
-  transition sequence of $S$ on input $Tr'$, hence $Tr'$ satisfies $S$.
-
-  On the other hand, assume $Tr' \in \mathcal{M}(Tr)$ and $Tr'$ satisfies $S$.
-  Suppose $P'$ is the accepting transition sequences of $S$ on input $Tr'$.
-  %
-  We first note that $P'$ is also the accepting transitions of $S^+$ on input
-  $Tr'$, since $E \subset E^+$.
-
-  We construct a accepting transition sequence $P$ of $S^+$ on input $Tr$ as
-  follows.
-  \begin{itemize}
-    \item For each packet $p \in Tr' \setminus Tr$, substitute the transition
-      $\langle s_i, s_j, p, g, C'\rangle$ with the corresponding Type-1
-      transition $\langle s_i, s_j, \epsilon, g, C'\rangle$.
-    \item For each transition $\langle s_i, s_j, \sigma, g, C'\rangle$
-      followed by packet $p \in Tr\setminus Tr'$, add a Type-2 self
-      transition $\langle s_j, s_j, p, g, \emptyset\rangle$. This is
-      possible since $Tr'$ is a mutation trace of $Tr$, thus  for all $p \in Tr'
-      \setminus Tr$, $p.src \ne DUT$.
-  \end{itemize}
-  Therefore, $Tr$ satisfies $S^+$.
-\end{proof}
-
-Theorem~\ref{lem:equivalent} shows that in order to determine if the DUT
+Theorem~\ref{the:equivalent} shows that in order to determine if the DUT
 \textit{could have} behaved as specified ($Tr_{DUT}$ satisfies $S$), we only
 need to determine if the sniffer trace $Tr$ satisfies the augmented state
 machine $S^+$.
@@ -219,7 +176,7 @@ The inherent uncertainty of the sniffer traces are explicitly represented by the
 augmented transitions, and can be systematically explored using the well
 established state machine theory.
 
-One immediate observation can be drawn from Theorem~\ref{lem:equivalent} by
+One immediate observation can be drawn from Theorem~\ref{the:equivalent} by
 contradiction.
 
 \begin{corollary}

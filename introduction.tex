@@ -14,7 +14,7 @@ in Android Lollipop~\cite{lollipop} and Microsoft Surface 3~\cite{surface}).
 
 
 But validating the protocol implementation on such devices is challenging
-because collecting traces from the device under test (DUT) are often
+because collecting traces from the device under test (DUT) is often
 infeasible.
 %
 The resource limitations of embedded or battery-powered devices may cause them
@@ -44,9 +44,8 @@ The sniffer may miss packets that the DUT received, or receive packets that
 the DUT missed.
 %
 This is true even when using multiple
-sniffers~\cite{Cheng:2006:JSP:1159913.1159920,
-Mahajan:2006:AMB:1159913.1159923,bahl2006enhancing}, sniffer with multiple
-antennas~\cite{omnipeek}, or in isolated wireless environments.
+sniffers~\cite{cheng2006jigsaw,mahajan2006analyzing,bahl2006enhancing}, sniffer
+with multiple antennas~\cite{omnipeek}, or in isolated wireless environments.
 %
 (Isolated environments are also inappropriate for testing in the common case
 when the DUT must cope with interference encountered in uncontrolled wireless
@@ -76,7 +75,7 @@ systematic transformation that adds nondeterministic transitions to
 incorporate uncertainty introduced by the sniffer.
 %
 This augmented validation state machine processes the sniffer trace into a set
-of mutated traces, each satisfying the original state machine with some
+of mutated traces, each satisfying the original state machine with certain
 probability.
 %
 If the set is empty, the implementation definitely violates the protocol.
@@ -104,12 +103,11 @@ Our paper makes the following contributions:
       present protocol-oblivious heuristics to prune the search
       space and make validation possible in practice.
 		%
-	\item We implement the validation framework and evaluate it using both
-		\ns{} simulations and real-world traces.
+	\item We implement the validation framework and evaluate it using
+    \ns{} network simulator~\cite{riley2010ns}.
 		%
-		Our framework accurately identifies violations introduced in existing
-		implementations of well-known wireless protocols and previously-unknown
-		violations in new implementations of custom protocols.
+    Our framework accurately identifies both introduced as well as previously
+    unknown violations in \ns{}'s implementations of the 802.11 protocol.
 		%
 \end{itemize}
 
@@ -123,6 +121,6 @@ hardness analysis (\S~\ref{subsec:hard}) and search algorithms
 (\S~\ref{subsec:search}).
 %
 We continue by briefly describe our implementation in Section~\ref{sec:impl} and
-evaluate our framework through three case studies in Section~\ref{sec:case}.
+evaluate our framework through two case studies in Section~\ref{sec:case}.
 Finally, we present related works in Section~\ref{sec:related} and concludes in
 Section~\ref{sec:conclusion}.

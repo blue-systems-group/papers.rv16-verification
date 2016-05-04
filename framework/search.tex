@@ -17,13 +17,11 @@ makes the algorithm meaningful in practice.
   \begin{algorithmic}[1]
     \Function{search}{S, Tr}
       \Let{$S^+$}{\Call{augment}{S}}
-      \State\Return{\Call{extend}{[], Tr, $S.s_0$}}
+      \State\Return{\Call{extend}{[], Tr, $S^+.s_0$}}
     \EndFunction
-    \item[]
-
     \Function{extend}{prefix, p::suffix, $s$}
-      \LineComment{This check should be ignored in exhaustive alg.}
-      \If{not \Call{likely}{prefix}}
+      %\LineComment{This check should be ignored in exhaustive alg.}
+      \If{not \Call{likely}{prefix}}\Comment{This check should be ignored in exhaustive alg.}
         \label{alg:search:stop}
         \State{\Return{\nil}}
       \EndIf
@@ -37,8 +35,6 @@ makes the algorithm meaningful in practice.
       \EndFor
       \State\Return{\nil}
     \EndFunction
-    \item[]
-
     \Function{extend-0}{prefix, p::suffix, $s$}
       \For{$\langle s, s', p\rangle \in E$}
         \If{suffix = \nil}
@@ -53,11 +49,9 @@ makes the algorithm meaningful in practice.
       \EndFor
       \State{\Return{\nil}}
     \EndFunction
-    \item[]
-
     \Function{extend-1}{prefix, p::suffix, $s$}
       \ForAll{$\langle s, s', q\rangle \in E^+_1$}
-        \If{q.time > p.time}
+        \If{q.time $>$ p.time}
           \label{alg:search:type_1_limit}
           \State{\textbf{continue}}
         \EndIf
@@ -69,8 +63,6 @@ makes the algorithm meaningful in practice.
       \EndFor
       \State{\Return{\nil}}
     \EndFunction
-    \item[]
-
     \Function{extend-2}{prefix, p::suffix, $s$}
       \ForAll{$\langle s, s, p \rangle \in E^+_2$}
         \If{suffix = \nil}
@@ -83,7 +75,7 @@ makes the algorithm meaningful in practice.
           \State{\Return{mutation}}
         \EndIf
       \EndFor
-      \State{\Return{mutation}}
+      \State{\Return{\nil}}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
