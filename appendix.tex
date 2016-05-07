@@ -78,7 +78,7 @@ problems.
 %
 Consider an instance of SAT problem of a propositional formula $F$ with $n$
 variables $x_0,x_1,\ldots, x_{n-1}$, we construct a corresponding protocol and
-its checker state machine as follows.
+its monitor state machine as follows.
 
 The protocol involves two devices: the DUT (transmitter) and the endpoint
 (receiver).
@@ -100,13 +100,13 @@ any witness of $F$ can be evaluated in polynomial time.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.7\textwidth]{./figures/sat_sm.pdf}
-  \caption{\textbf{Checker State Machine for SAT Problem.}}
+  \caption{\textbf{Monitor State Machine for SAT Problem.}}
   \label{fig:sat}
 \end{figure}
 
 
 
-The protocol checker state machine $S$ is shown in Fig.~\ref{fig:sat}.
+The protocol monitor state machine $S$ is shown in Fig.~\ref{fig:sat}.
 %
 Initially, all $x_i$ is set to \texttt{false}.
 %
@@ -176,7 +176,7 @@ failures or if the first packet sent after rate increase (commonly referred as
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{./figures/arf_sm.pdf}
-  \caption{\textbf{Checker State Machine for ARF Rate Control Algorithm.} Timing
+  \caption{\textbf{Monitor State Machine for ARF Rate Control Algorithm.} Timing
   constraints are omitted for succinctness.}
   \label{fig:arf_sm}
 \end{figure}

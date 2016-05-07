@@ -5,7 +5,6 @@ To deal with the inherent uncertainty of sniffer traces, we propose to
 systematically augment the original monitor state machine with non-deterministic
 transitions to account for the difference between the sniffer and DUT traces.
 
-
 Before formally defining the augmented state machine, we first use an example to
 illustrate the basic idea.
 
@@ -50,7 +49,7 @@ respectively.
 We now formally define the augmented state machine.
 
 \begin{definition}
-  An augmented state machine $S^+$ for a checker state machine $S$ is a 6-tuple
+  An augmented state machine $S^+$ for a monitor state machine $S$ is a 6-tuple
   $\{\boldsymbol{\Sigma^+}, \mathbb{S}, s_0, C, \boldsymbol{E^+}, G\}$, where $\mathbb{S},
   s_0, C, G$ are the same with $S$. $\Sigma^+=\{\epsilon\} \cup \Sigma$ is
   the augmented input alphabet with the empty symbol, and $E^+ \supset E$ is the

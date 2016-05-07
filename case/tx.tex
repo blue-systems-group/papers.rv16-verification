@@ -137,25 +137,28 @@ And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
 \end{comment}
 
 \begin{figure*}[h!]
+  \vspace*{\beforecaptionskip}
   \centering
   \begin{subfigure}{0.33\textwidth}
     \centering
     \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_10.pdf}
-    \caption{$Pr_{ed} \in [0.05, 0.1, 0.15]$}
+    % \caption{$Pr_{ed} \in [0.05, 0.1, 0.15]$}
+    \caption{$0.05 \le Pr_{ed} \le 0.15$}
   \end{subfigure}\hspace*{0.01\textwidth}
   \begin{subfigure}{0.33\textwidth}
     \centering
     \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_30.pdf}
-    \caption{$Pr_{ed} \in [0.2, 0.25, 0.3, 0.35]$}
+    \caption{$0.2 \le Pr_{ed} \le 0.35$}
   \end{subfigure}\hspace*{0.01\textwidth}
   \begin{subfigure}{0.33\textwidth}
     \centering
     \includegraphics[width=\textwidth]{./figures/scripts/MutationDUTJaccard3DFigure_0_50.pdf}
-    \caption{$Pr_{ed} \in [0.4, 0.45, 0.5]$}
+    \caption{$0.4 \le Pr_{ed} \le 0.5$}
   \end{subfigure}\hspace*{0.01\textwidth}
   \caption{\textbf{Jaccard Distance Between Mutation and DUT Traces.} For each
   data point, the mean of the 5 runs is used.}
   \label{fig:mutation_dut}
+  \vspace*{\aftercaptionskip}
 \end{figure*}
 
 
@@ -238,6 +241,7 @@ while the recall metric measures how \textit{complete} the validation results
 are.
 
 \begin{figure}[h!]
+  \vspace*{\beforecaptionskip}
   \centering
   \begin{subfigure}{0.48\textwidth}
   \includegraphics[width=\textwidth]{./figures/scripts/PrecisionFigure.pdf}
@@ -247,6 +251,7 @@ are.
 \end{subfigure}
   \caption{\textbf{Precision and Recall of Validation Results.}}
   \label{fig:precision}
+  \vspace*{\aftercaptionskip}
 \end{figure}
 
 
