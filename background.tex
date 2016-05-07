@@ -1,2 +1,151 @@
-\section{Background}
+\section{Background and Problem Statement}
 \label{sec:background}
+
+\subsection{Packet, Trace and Monitor}
+\label{subsec:basic}
+
+The alphabet of the monitor state machine is the finite set of all valid packets
+defined by the protocol, denoted as $\mathbb{P}$.  A packet is a binary string
+of finite number of bits, encoding interesting protocol attributes such as
+\texttt{src}, \texttt{dest}, \texttt{type}, \texttt{flags}, and physical layer
+information, such as \texttt{channel}, \texttt{modulation}, etc.
+
+The input of the state machine then corresponds to a time-ordered sequence of
+packets.
+
+\begin{definition}
+  A \textit{packet trace} is a finite sequence of $(timestamp, packet)$ tuple:
+  \begin{align*}
+    [(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]
+  \end{align*}%
+  where $t_i \in \mathbb{Z}^+$ is the \textit{discrete} timestamp and $p_i$ is the packet
+  observed at time $t_i$. The timestamps are strictly monotonically increasing,
+  i.e., $t_i < t_{i+1}$ for $1 \le i < n$.
+\end{definition}%
+
+In addition to timestamp monotonicity, we also require that adjacent packets do
+not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i
+< n$, where \texttt{airtime()} calculates the time taken to transmit a packet.
+
+We use \textit{timed automata}~\cite{alur1994theory} to model the expected
+behaviors of the DUT.  A timed automata is a finite state machine with timing
+constraints on the transitions: each transition can optionally start one or more
+timers, which can later be used to assert certain events should be seen before
+or after the time out event. We refer the readers to~\cite{alur1994theory} for
+more details about timed automata.
+
+
+\begin{definition}
+  A protocol monitor state machine $S$ is an 6-tuple $\{\Sigma, \mathbb{S}, s_0,
+  C, E, G\}$, where:
+  \begin{itemize}
+    \item $\Sigma = \mathbb{P}$ is the finite input alphabet.
+    \item $\mathbb{S}$ is a non-empty, finite set of states. $s_0 \in
+      \mathbb{S}$ is the initial state.
+    \item $C$ is the set of clock variables. A \textit{clock variable} can be
+      reset along any state transitions. At any instant, reading a clock
+      variable returns the time elapsed since last time it was reset.
+    \item $G$ is the set of clock constraints defined inductively by
+      \begin{align*}
+        g := true\ |\ c \le T\ |\ c \ge T\ |\ \neg g\ |\ g_1 \land g_2
+      \end{align*}%
+      where $c \in C$ is a clock variable and $T$ is a constant. Note that an
+      transition can choose not to use clock guard by setting $g$ to be $true$.
+    \item $E \subseteq \mathbb{S} \times \mathbb{S} \times \Sigma \times  G \times \mathscr{P}(C)$
+      gives the set of transitions. $\langle s_i, s_j, p, g, C'\rangle \in E$
+      represents that if the monitor is in state $s_i$, given the input tuple
+      $(t, p)$ such that the clock variables satisfies the guard $g$, the
+      monitor transits to state $s_j$ and reset the clocks in $C'$ to 0.
+  \end{itemize}
+  \label{def:sm}
+\end{definition}
+
+A tuple $(t_i, p_i)$ in the packet trace means the packet $p_i$ is presented to
+the state machine at time $t_i$. The monitor rejects a trace $Tr$ if there
+exists a prefix of $Tr$ such that all states reachable after consuming the
+prefix have no valid transitions for the next $(t, p)$ input.
+
+As an example, the monitor state machine illustrated in
+Fig.~\ref{fig:dot11_tx_ta} can be formally defined as follows:
+
+\begin{itemize}
+  \item $\Sigma = \{DATA_i, DATA'_i, Ack\ |\ 0 \le i < N\}$.
+  \item Clock variables $C = \{c\}$. The only clock variable $c$ is
+    used for acknowledgment time out.
+  \item Guard constraints $G = \{ c \le T_o, c > T_o, T_o < c \le T_m\}$.
+    $T_o$ is the acknowledgment time out value, and $T_m >
+    T_o$ is the maximum delay allowed before the retransmission packet gets
+    sent. $T_o$ can be arbitrary large but not infinity in order to check the
+    liveness of the DUT.
+\end{itemize}
+
+
+To succinctly present the state machine, we use an internal variable $i$ to keep
+track of the next sequence number.
+One can easily eliminate this variable and
+use only different states for different sequence numbers.
+Therefore, this state machine is consistent with Definition~\ref{def:sm}.
+
+The monitor state machine defines a \textit{timed language} $L$ which consists
+all valid packet traces that can be observed by the DUT.  We now give the
+definition of protocol \textit{compliance} and \textit{violation}.
+
+\begin{definition}
+  Suppose $\mathbb{T}$ is the set of all possible packet traces collected from
+  DUT, and $S$ is the state machine specified by the protocol. The DUT
+  \textit{violates} the protocol specification if there exists an
+  packet trace $Tr \in \mathbb{T}$ such that $S$ rejects $Tr$.
+  Otherwise, the DUT is \textit{compliant} with the specification.
+\end{definition}
+
+The focus of this paper is to determine whether a \textit{given} $Tr$ is
+evidence of a violation.
+%
+We acknowledge that determining \textit{compliance} is a more challenging
+problem, as it requires enumerating every possible trace in $\mathbb{T}$, which
+is probably infinite.
+
+
+\subsection{Mutation Trace}
+\label{subsec:mutation}
+
+As shown in the motivation example in Fig.~\ref{fig:sniffer_in_middle}, a
+sniffer trace may either miss packets that are present in DUT trace, or contain
+extra packets that are missing in DUT trace. Note that in the later case, those
+extra packets must be all sent \textit{to} the DUT. In other words, it is
+impossible for the sniffer to overhear packets sent from the DUT that were not
+actually sent by the DUT.
+
+We formally capture this relationship with the definition of mutation trace.
+
+\begin{definition}
+  \label{def:mutation}
+  A packet trace $Tr'$ is a mutation of sniffer trace $Tr$ w.r.t a DUT if for
+  all $(t, p) \in Tr\setminus Tr'$, $p.dest = DUT$.
+\end{definition}
+
+A mutation trace $Tr'$ represents a \textit{guess} of the corresponding DUT
+packet trace given given sniffer trace $Tr$.  In fact, the DUT packet trace must
+be one of the mutation traces of the sniffer trace $Tr$.
+
+\begin{lemma}
+  Let $Tr_{DUT}$ and $Tr$ be the DUT and sniffer packet trace captured during
+  the same protocol operation session, and $\mathcal{M}(Tr)$ be the set of
+  mutation traces of $Tr$ with respect to DUT, then $Tr_{DUT} \in \mathcal{M}(Tr)$.
+  \label{lem:mutation}
+\end{lemma}
+
+
+\subsection{Problem Statement}
+\label{subsec:problem}
+
+Lemma~\ref{lem:mutation} shows that $\mathcal{M}(Tr)$ is a \textit{complete} set
+of guesses of the DUT packet trace. Therefore, the problem of validating DUT
+implementation given a sniffer trace can be formally defined as follows:
+
+\begin{problem}
+  \label{prob:validation}
+  VALIDATION\\
+  \textbf{instance} A protocol monitor state machine $S$ and a sniffer trace $Tr$\\
+  \textbf{question} Does it exists a mutation trace $Tr'$ of $Tr$ that satisfies $S$?
+\end{problem}

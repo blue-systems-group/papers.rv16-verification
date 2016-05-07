@@ -1,117 +1,78 @@
-\subsection{Mutation Constraints}
+\subsection{Pruning Heuristics}
 \label{subsec:heuristic}
 
 Fundamentally, augmented transitions are introduced to compensate the
-imperfection of sniffers.
-%
-Whenever the original state machine $S$ gets stuck on
+imperfection of sniffers: whenever the original state machine $S$ gets stuck on
 sniffer trace $Tr$, Algorithm~\ref{alg:search} tries to continue with augmented
-transitions.
-%
-In other words, in the face of uncertainty between a possible
+transitions. In other words, in the face of uncertainty between a possible
 protocol violation and sniffer imperfection, augmented transitions provide the
-ability to blame the later.
-%
-In fact, the exhaustive nature of Algorithm~\ref{alg:search} means that it
-always tries to blame sniffer imperfection whenever possible, making it too
-conservative to report true violations.
+ability to blame the later. In fact, the exhaustive nature of
+Algorithm~\ref{alg:search} means that it always tries to blame sniffer
+imperfection whenever possible, making it too conservative to report true
+violations.
 
 Therefore, extra constraints on the mutation trace need to be enforced to
 restrict the search only to mutation traces with high likelihood.
-%
 The modified
 \texttt{EXTEND} function checks certain likelihood constraints on the prefix of
 the mutation trace before continue (line~\ref{alg:search:stop}), and stops the
 current search branch immediately if the prefix seems \textit{unlikely}.
-%
 Because of the recursive nature of the algorithm, other branches which may have
 a higher likelihood can then be explored.
 
+The strictness of the likelihood constraint represents a trade-off between
+precision and recall of validation: the more strict the constraints are, the
+more false positive violations will potentially be reported, hence the lower the
+precision yet higher recall.  On the contrary, the more tractable the
+constraints are, the more tolerant the search is to sniffer imperfection, hence
+the more likely that it will report true violations, thus higher precision but
+lower recall.
+
 The exact forms of the constraints may depend on many factors, such as the
-nature of the protocol, properties of the sniffer, or domain knowledge.
-%
-Note that the strictness of the likelihood constraint represents a trade-off
-between precision and recall of violation detection: the more strict the
-constraints are, the more false positive violations will potentially be reported,
-hence the lower the precision yet higher recall.
-%
-In the most extreme case when
-the constraint does not allow any augmented transitions at all, each missed or
-extra packets in the sniffer trace can result in a violation report.
-%
-On the contrary, the more tractable the constraints are, the more tolerant the
-search is to sniffer imperfection, hence the more likely that it will report
-true violations, thus higher precision but lower recall.
+nature of the protocol, properties of the sniffer, or domain knowledge.  Next,
+we propose two \textit{protocol oblivious} heuristics based on the sniffer loss
+probabilities and general protocol operations. Both heuristic contains
+parameters that can be fine tuned in practice.
 
-Next, we propose two \textit{protocol oblivious} heuristics based on the sniffer
-loss probabilities and general protocol operations.
-%
-The first heuristic is $NumMissing(d, l, k)$, which states that the number
-of missing packets from device $d$ in any sub-mutation traces of length $l$
-shall not exceed $k$ ($k \le l$).
-%
-The sliding window of $l$ serves two purposes.
-%
-First, $l$ should be large enough for the calculated packet loss ratio to be
-statistically meaningful.
-%
-Second, it ensures that the packet losses are evenly distributed among the
-entire packet trace.
+\subsubsection{$NumMissing(d, l, k)$}
 
+This heuristic states that the number of missing packets from device $d$ in any
+sub mutation traces of length $l$ shall not exceed $k$ ($k \le l$).  The sliding
+window of size $l$ serves two purposes. First, $l$ should be large enough for
+the calculated packet loss ratio to be statistically meaningful.  Second, it
+ensures that the packet losses are evenly distributed among the entire packet
+trace.
 
-The intuition behind the $NumMissing$ heuristic is that sniffers can often be
-configured such that the packet loss probabilities are very low.
-%
-For instance,
-multiple sniffers can be deployed around the DUT and the endpoint separately and
-the traces can be fused to provide a unified and potentially more complete view.
-%
-Or the raw radio signals can be collected using SDRs and the packets can be
-reconstructed offline to improve capturing quality.
-%
-In such cases, the
-likelihood that the sniffer misses too many packets is quite low.
-%
-In other words, if a mutation trace contains too many Type-1 augmented
-transitions, then the likelihood that it is the observation of the DUT is very
-low, thus is not worth exploring during the search.
+The intuition behind this heuristic is that the sniffer's empirical packet loss
+probability can usually be measured before validation. Therefore, the likelihood
+that the sniffer misses more packets that prior measured loss ratio is quite
+low. The value of $l$ and $k$ can then be configured such that $k/l$ is marginally
+larger than the measured ratio.
 
-
+\begin{comment}
 In addition, we note that for a fixed $l$, a single threshold $k$ may not work
 for traces collected by sniffers with different packet loss probabilities.
-%
-Intuitively, sniffers with high loss probabilities require a larger threshold,
-while sniffers with low loss probabilities may do with small thresholds.
-%
-Therefore, instead of using a single constant $k$, we perform a
-\textit{stratified} search with an increasing sequence of thresholds $\{k_1,
-k_2,\ldots, k_n\}$ ($k_i < k_{i+1}$ for $1 \le i < n$).
-%
-At round $i$, the
-search is restricted by constraint $NumMissing(d, l, k_i)$.
-%
-If a mutation trace is found, the search is completed.
-%
-Otherwise, we increase the round
-number and repeat the search process.
-%
-In this way, the constraint is
-automatically adaptive to the underlying sniffer packet loss probabilities.
-%
-And a violation is declared when no mutation trace can be found with
-$NumMissing(d, l, k_n)$.
+Intuitively, sniffers with high loss probabilities require a larger threshold.
+Therefore, we perform a \textit{stratified} search with an increasing sequence
+of thresholds $\{k_1, k_2,\ldots, k_n\}$ ($k_i < k_{i+1}$ for $1 \le i < n$).
+At round $i$, the search is restricted by constraint $NumMissing(d, l, k_i)$.
+If a mutation trace is found, the search is completed.  Otherwise, we increase
+the round number and repeat the search process.  In this way, this heuristic can
+automatically adapt to the underlying sniffer packet loss probabilities. And a
+violation is declared when no mutation trace can be found with $NumMissing(d, l,
+k_n)$.
+\end{comment}
 
-The second heuristic is $GoBack(k)$, which states that the search should only
+\subsubsection{$GoBack(k)$}
+
+This heuristic states that the search should only
 back track at most $k$ steps when gets stuck.
-%
 The motivation is that many protocols operate in a sequence of independent
 transactions, and the uncertainty of previous transactions often do not affect
 the next transaction.
-%
 For instance, in 802.11 packet transmission protocol, each packet exchange,
 include the original, retransmission and acknowledgment packets, constitute a
 transaction.
-%
 And the retransmission status of previous packets has no effect on the packets
 with next sequence number, hence need not be explored when resolving the
 uncertainty of the packets with new sequence numbers.
@@ -141,8 +102,7 @@ Figure~\ref{fig:prob}.
   {\parallel \{(t,p) \in Tr' \cup Tr \land p.src = DUT\}\parallel}\\
   &Pr_{es} = \frac{\parallel \{(t,p) \in Tr'\setminus Tr \land p.src = EP\}\parallel}
   {\parallel \{(t,p) \in Tr' \cup Tr \land p.src = EP\}\parallel}
-\end{align}%
-where $Tr'\setminus Tr$ is the set of inferred packets that were missed by the
+\end{align}where $Tr'\setminus Tr$ is the set of inferred packets that were missed by the
 sniffer (Type-1 transitions in $S^+$).
 
 Note that we can not directly calculate the packet loss ratio from Endpoint to
@@ -155,8 +115,7 @@ probability.
   &(1-Pr_{es})\times Pr_{ed} =\\
   &\frac{\parallel \{(t,p) \in Tr\setminus Tr' \land p.src = EP \land p.dest = DUT\}\parallel}
   {\parallel \{(t,p) \in Tr \cup Tr' \land p.src = EP \land p.dest = DUT\}\parallel}
-\end{align}%
-The LHS is the probability that a packet sent from the Endpoint to the DUT was
+\end{align}The LHS is the probability that a packet sent from the Endpoint to the DUT was
 missed by the DUT yet captured by the sniffer. And the RHS is the ratio of
 such packets in the mutation trace.
 
@@ -201,8 +160,7 @@ Since $0 \le 1-Pr(Tr'_j) \le 1$ for all $j$, we have:
   \nonumber
   Confidence(Tr) &\ge 1-(1-Pr(Tr'_j)\\
      &= Pr(Tr'_j)
-\end{align}%
-for all $j$.
+\end{align}for all $j$.
 
 This means if we can find a mutation trace $Tr'$ that satisfies $S$, then the
 overall confidence of the correctness is no less than $Pr(Tr')$.

@@ -1,15 +1,11 @@
 \subsection{Searching Strategies}
 \label{subsec:search}
 
-In this section, we present an \textit{exhaustive} search algorithm of the accepting
-transition sequence of $S^+$ on sniffer trace $Tr$.
-%
-It guarantees to yield a
-solution if exists, thus is exhaustive.
-%
-Due to the NP-completeness of the problem, we also propose several heuristics in
-next section to limit the search to only mutations with high likelihood, which
-makes the algorithm meaningful in practice.
+In this section, we present an \textit{exhaustive} search algorithm of the
+accepting transition sequence of $S^+$ on sniffer trace $Tr$.  It guarantees to
+yield a solution if exists, thus is exhaustive.  Due to the NP-completeness of
+the problem, we also propose several heuristics in next section to prune out
+unlikely branches, which makes the algorithm meaningful in practice.
 
 \begin{algorithm}[t!]
   \caption{Exhaustive search algorithm of $S^+$ on $Tr$.}
@@ -20,7 +16,7 @@ makes the algorithm meaningful in practice.
       \State\Return{\Call{extend}{[], Tr, $S^+.s_0$}}
     \EndFunction
     \Function{extend}{prefix, p::suffix, $s$}
-      %\LineComment{This check should be ignored in exhaustive alg.}
+      \LineComment{This check should be ignored in exhaustive alg.}
       \If{not \Call{likely}{prefix}}\Comment{This check should be ignored in exhaustive alg.}
         \label{alg:search:stop}
         \State{\Return{\nil}}
@@ -83,36 +79,28 @@ makes the algorithm meaningful in practice.
 
 
 The main routines of the algorithm is shown in Algorithm~\ref{alg:search}.
-%
 In the top level \texttt{SEARCH} routine, we first obtain the augmented state
 machine $S^+$, then we call the recursive \texttt{EXTEND} function with an empty
-prefix, the sniffer trace, and the state machine's initial state.
+prefix, the sniffer trace, and the $S^+$'s initial state.
 
 In the \texttt{EXTEND} function, we try to consume the first packet in the
 remaining trace using either Type-0, Type-1 or Type-2 transition.
-%
-Note that we
-always try to use Type-0 transitions before other two augmented transitions
-(line~\ref{alg:search:order}).
-%
+Note that we always try to use Type-0 transitions before other two augmented
+transitions (line~\ref{alg:search:order}).
 This ensures the first found mutation trace will have the most number of Type-0
 transitions among all possible mutation traces.
-%
 Intuitively, this means the search algorithm tries utilize the sniffer's
 observation as much as possible before being forced to make assumptions.
 
 
 Each of the extend function either returns the mutation trace $Tr'$, or
 \textit{\nil} if the search fails.
-%
 In both \texttt{EXTEND-0} and
 \texttt{EXTEND-2} function, if there is a valid transition, we try to consume
 the next packet either by appending it to the prefix
 (line~\ref{alg:search:append}) or dropping it (line~\ref{alg:search:drop}).
-%
 While in \texttt{EXTEND-1}, we guess a missing packet without consuming the next
 real packet (line~\ref{alg:search:guess}).
-%
 Note that since only Type-0 and Type-2 consume packets, the recursion terminates
 if there is a valid Type-0 or Type-2 transition for the last packet
 (line~\ref{alg:search:terminate_0} and line~\ref{alg:search:terminate_2}).
@@ -123,9 +111,3 @@ It is easy to see that Algorithm~\ref{alg:search} terminates on any sniffer
 traces: each node in the transition tree only has finite number of possible next
 steps, and the depth of Type-1 transitions are limited by the time available
 before the next packet (line~\ref{alg:search:type_1_limit}).
-%
-Note that Type-1
-transitions do not consume packets, but take certain amount of time to perform.
-%
-The time taken depends on the duration of the inferred packets or the time
-constraints of the transition's clock guard.

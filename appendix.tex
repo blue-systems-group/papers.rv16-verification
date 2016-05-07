@@ -1,6 +1,16 @@
 \section*{Appendices}
 \appendix
 
+\section{Proof of Lemma~\ref{lem:mutation}}
+Let $\Delta = Tr \setminus Tr_{DUT}$ be the set of packets that are in $Tr$
+but not in $Tr_{DUT}$. Recall that it is not possible for the sniffer to
+observe sending packets from the DUT that the DUT did not send. Therefore,
+all packets in $\Delta$ are receiving packets with respect to DUT. That is, for
+all $(t, p) \in \Delta,\ p.dest = DUT$. By Definition~\ref{def:mutation},
+$Tr_{DUT} \in \mathcal{M}(Tr)$.
+
+
+
 \section{Proof of Theorem~\ref{the:equivalent}}
 Assume $Tr$ satisfies $S^+$, and $P$ is a sequence of accepting transitions,
 we construct a mutation trace $Tr'$ using $P$ and show that $Tr'$ satisfies
@@ -49,12 +59,11 @@ follows.
 Therefore, $Tr$ satisfies $S^+$.
 
 \section{Proof of Lemma 2}
-To prove this lemma, we use a slightly extended monitor model where
-boolean variables are allowed but can only be set to \texttt{true} or
-\texttt{false} along state transitions. This extension makes the representation
-of the state machine more succinct yet does not change the complexity of the
-model, since the boolean variable assignments do not reply on the packet
-payload.
+To prove this lemma, we use a slightly extended monitor model where boolean
+variables are allowed and can be checked in guard conditions. This extension
+makes the representation of the state machine more succinct yet does not change
+the complexity of the model, since the boolean variable assignments do not reply
+on the packet payload.
 
 First, note that the length of mutation trace $Tr'$ is polynomial to the
 length of $Tr$ because of the discrete time stamp and non-overlapping packets
@@ -88,14 +97,12 @@ sends a special packet, $pkt_{true}$, if $F$ is \texttt{true}.
 One round of the protocol operation can be completed in polynomial time since
 any witness of $F$ can be evaluated in polynomial time.
 
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace*{-5mm}
+\begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./figures/sat_sm.pdf}
+  \includegraphics[width=0.7\textwidth]{./figures/sat_sm.pdf}
   \caption{\textbf{Checker State Machine for SAT Problem.}}
   \label{fig:sat}
-  \vspace*{-8mm}
-\end{wrapfigure}
+\end{figure}
 
 
 
@@ -166,15 +173,13 @@ failures or if the first packet sent after rate increase (commonly referred as
   shown in Algorithm~\ref{alg:pkt_succ}.
 }
 
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace*{-5mm}
+\begin{figure}[h!]
   \centering
-  \includegraphics[width=0.45\textwidth]{./figures/arf_sm.pdf}
+  \includegraphics[width=0.8\textwidth]{./figures/arf_sm.pdf}
   \caption{\textbf{Checker State Machine for ARF Rate Control Algorithm.} Timing
   constraints are omitted for succinctness.}
   \label{fig:arf_sm}
-  \vspace*{-8mm}
-\end{wrapfigure}
+\end{figure}
 
 
 The \texttt{succ} variable is used to track the number of consecutive packet

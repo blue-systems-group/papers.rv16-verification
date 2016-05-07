@@ -1,36 +1,23 @@
 \subsection{Problem Hardness}
 \label{subsec:hard}
 
-In this section, we show that the problem of determining whether $S^+$ accepts
-sniffer trace $Tr$ is NP-complete.
-%
-In fact, the problem is still NP-complete
-even with only one type of augmented transitions.
+In this section, we show that Problem~\ref{prob:validation} is NP-complete.  In
+fact, the problem is still NP-complete even with only one type of augmented
+transitions.
 
 Recall that Type-1 transitions are added because the sniffer may miss packets.
-%
-Suppose there is a special sniffer that is able to capture every packet
-transmitted in the communication medium.
-%
-In this case, there is no need to add Type-1 transitions.
-%
-However, Type-2 transitions are still needed since the sniffer may overhear
-packets sent to the DUT.
-%
-Similarly, suppose another special sniffer that would not overhear any packets
-sent to the DUT. That is, when this sniffer observes receiving packets, the DUT
-must also have received the packet.
-%
-Therefore, Type-2 transitions are no longer
-needed.
+Suppose there exists a special sniffer that is able to capture \textit{every}
+packet ever transmitted, then only Type-2 transitions are needed since the
+sniffer may still overhear packets sent to the DUT.
 
+Similarly, suppose another special sniffer that would not overhear any packets
+sent to the DUT. In this case, only Type-1 transitions are needed to infer
+missing packets.
 
 We refer the augmented state machine that only have Type-0 and Type-1
 transitions as $S^+_1$, and the augmented state machine only have Type-0 and
-Type-2 transitions as $S^+_2$.
-%
-Now we show that each subproblem of determining trace satisfiability is
-NP-complete.
+Type-2 transitions as $S^+_2$. And we show that each subproblem of determining
+trace satisfiability is NP-complete.
 
 \begin{problem}
   VALIDATION-1\\
@@ -46,7 +33,6 @@ NP-complete.
   \textbf{question} Does $S^+_2$ accept $Tr$?
 \end{problem}
 
-
 \begin{lemma}
   Both VALIDATION-1 and VALIDATION-2 are NP-complete.
 \end{lemma}
@@ -54,18 +40,6 @@ NP-complete.
 We now turn to the general validation problem with normal sniffers that could
 either miss or overhear packets.
 
-\begin{problem}
-  VALIDATION\\
-  \textbf{instance} Checker state machine $S$ and sniffer trace $Tr$.\\
-  \textbf{question} Does $S^+$ accept $Tr$?
-\end{problem}
-
 \begin{theorem}
   VALIDATION is NP-complete.
 \end{theorem}
-\begin{proof}
-  Based on the same reasoning that VALIDATION-1 and VALIDATION-2 are
-  in NP, VALIDATION is also in NP. Furthermore, it is easy to see that both
-  VALIDATION-1 and VALIDATION-2 are special instances of
-  VALIDATION. Therefore, VALIDATION is NP-complete.
-\end{proof}
