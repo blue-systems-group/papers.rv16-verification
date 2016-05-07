@@ -1,64 +1,66 @@
-\section{Uncertainty of Sniffer Trace}
+\section{Motivating Example}
 \label{sec:model}
 
-There are two fundamental properties in wireless communication: non-zero packet
-loss probability and physical diversity.
-%
-Suppose the DUT communicates with an endpoint using certain protocol, the
-non-zero packet loss property means the sniffer could miss packets from the DUT
-or the
-endpoint.
-%
-Physical diversity property means each device's packet reception probability is
-independent with each other.
-%
-Therefore, a sniffer could either miss packets seen by the DUT, or capture
-extra packets that are missed by the DUT. It is precisely such incompleteness of
-sniffer packet traces that brings uncertainty to the validation problem.
-
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace*{-5mm}
+\begin{figure}[h!]
+  \vspace*{\beforecaptionskip}
   \centering
-  \includegraphics[width=0.45\textwidth]{./figures/false_pos.pdf}
-  \caption{\textbf{Uncertainty Caused by Sniffer Observations.} $Tr_{OTA}$ is
-    the chronological sequence of packets sent by the DUT and the endpoint.
-    $Tr_{DUT}$ is the trace of the DUT. $Tr_1$ and $Tr_2$ are two possible traces
+  \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
+  \caption{\textbf{State Machine for 802.11 Transmitter.}}
+  \label{fig:dot11_tx_ta}
+  \vspace*{\aftercaptionskip}
+\end{figure}
+
+Consider the IEEE 802.11 (as known as \wifi{}) transmitter (DUT) state machine
+shown in Fig.~\ref{fig:dot11_tx_ta}. After the DUT sends $DATA_i$---a data
+packet with sequence number $i$ ($s_0\rightarrow s_1)$, it starts a timer and
+wait for the acknowledgment packet---$Ack$. Either it receives $Ack$ within time
+$T_o$ ($s_1\rightarrow s_0$), or it sends $DATA'_i$---retransmission of $DATA_i$
+($s_1\rightarrow s_2$). Finally, if it still does not receive the $Ack$ packet,
+it moves on to next packet\footnote{We assume in this example that the DUT
+will retry at most once to succinctly present the state machine.  In practice,
+multiple retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
+
+Obviously, given the DUT's internal log of packet transmission and reception
+events, it is trivial to feed such log into the state machine in
+Fig.~\ref{fig:dot11_tx_ta} and validate the correctness of DUT's protocol
+implementation. In this paper, however, we assume the DUT implementation is a
+black box and its internal events are not available. And we seek to validate the
+DUT implementation using sniffers.
+
+Two fundamental properties in wireless communication bring uncertainty
+to sniffer's observation: packet loss and physical diversity. The sniffer could
+either missing packets from the DUT (packet loss), or overhear packets that are
+sent to but missed by the DUT (physical diversity).
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./figures/false_pos.pdf}
+  \caption{\textbf{Uncertainty of Sniffer Observations.} $Tr_{OTA}$ is
+    the chronological sequence of packets sent by the DUT and the receiver.
+    $Tr_{DUT}$ is DUT's internal events. $Tr_1$ and $Tr_2$ are two possible observations
   of the sniffer.}
   \label{fig:sniffer_in_middle}
-  \vspace*{-8mm}
-\end{wrapfigure}
+\end{figure}
 
-Consider the 802.11 data transmission protocol and a few example traces observed by
-sniffers shown in Fig.~\ref{fig:sniffer_in_middle}.
-%
-The transmitter (DUT) sends a packet $DATA_0$.
-%
-Even though the receiver (endpoint) receives $DATA_0$ and sends out an $Ack$
-packet, the DUT does not receive the $Ack$ packet.
-%
-Eventually the acknowledgment timer fires and the DUT retransmits $DATA_0$
-(denoted as $DATA'_0$) and receives the acknowledgment.
-%
-It is obvious that the DUT obeys the protocol with respect to its own
-observation $Tr_{DUT}$.
+Consider a correct packet exchange sequence and a few sniffer observations
+shown in Fig.~\ref{fig:sniffer_in_middle}. The DUT first sends
+$DATA_0$.  Suppose the receiver receives $DATA_0$ and sends the $Ack$ which the
+DUT does not receive. Eventually the DUT's timer fires and it sends $DATA'_0$.
+This time the $DATA'_0$ reaches receiver and the DUT also receives the $Ack$.
 
-In first possible sniffer trace $Tr_1$ where the sniffer \textit{overhears} the
+In first possible sniffer observation $Tr_1$ where the sniffer \textit{overhears} the
 first $Ack$ packet, a validation \textit{uncertainty} arises when the sniffer
-sees the retransmission packet $DATA'_0$: was the previous $Ack$ missed by the
+sees the $DATA'_0$: was the previous $Ack$ missed by the
 DUT or is there a bug in DUT which causes it to retransmit even after receiving
 the $Ack$?
-%
-Similarly, consider another possible sniffer trace
+Similarly, consider another possible sniffer observation
 $Tr_2$ where both the $DATA'_0$ and $Ack$ packets were missed by the sniffer.
-%
-During this period of time, it appears the DUT neither receives acknowledgment
-for $DATA_0$ nor retransmits $DATA'_0$.
-%
+During this period of time, it appears the DUT neither receives $Ack$
+for $DATA_0$ nor sends $DATA'_0$.
 Again, without any additional information it is impossible to disambiguate between the
 sniffer missing certain packets and a bug in DUT's retransmission logic.
 
-Assume that the endpoint implementation is correct, \textbf{given the expected
-behavior of the DUT and the sniffer's observation with inherent uncertainty, can
-we validate that the DUT behaves as specified by the protocol?}
-%
-This is the question we set out to answer in this paper.
+Informally, the question we set out to answer in this paper is: given the
+protocol monitor state machine in Fig.~\ref{fig:dot11_tx_ta} and the sniffer's
+observation with inherent uncertainty, how to validate that the DUT behaves as
+specified?
