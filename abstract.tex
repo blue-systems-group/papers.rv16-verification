@@ -1,6 +1,6 @@
 \begin{abstract}
 	%
-	Validating wireless protocol implementations cannot always employ direct
+	Runtime validation of wireless protocol implementations cannot always employ direct
 	instrumentation of the device under test (DUT).
 	%
   The DUT may not implement the required instrumentation, or the instrumentation
@@ -27,15 +27,12 @@
 	produces a set of mutated packet traces, each of which could have been
 	actually observed by the DUT.
 	%
-  We characterize the NP-completeness of the resulting problem and provide an
-  exhaustive search algorithm for locating all mutated traces, as well as a more
-  practical protocol-oblivious heuristics for locating likely mutated traces
+  We characterize the NP-completeness of the resulting decision problem and provide an
+  exhaustive search algorithm for searching over all mutated traces, as well as  more
+  practical protocol-oblivious heuristics for searching over the most likely mutated traces, 
   guided by the sniffer's packet loss characteristics.
 	%
-	The resulting set of mutated traces can be used to determine whether the
-	protocol implementation violates the specification.
-	%
-	We have implemented our framework and show that it can accurately identify
-	implementation errors.
+	We have implemented our framework and show that it can accurately distinguish
+	most implementation errors.
 	%
 \end{abstract}

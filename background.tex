@@ -61,7 +61,7 @@ more details about timed automata.
 \end{definition}
 
 A tuple $(t_i, p_i)$ in the packet trace means the packet $p_i$ is presented to
-the state machine at time $t_i$. The monitor rejects a trace $Tr$ if there
+the state machine at time $t_i$. The monitor {\it rejects a trace} $Tr$ if there
 exists a prefix of $Tr$ such that all states reachable after consuming the
 prefix have no valid transitions for the next $(t, p)$ input.
 
@@ -101,9 +101,9 @@ definition of protocol \textit{compliance} and \textit{violation}.
 The focus of this paper is to determine whether a \textit{given} $Tr$ is
 evidence of a violation.
 %
-We acknowledge that determining \textit{compliance} is a more challenging
-problem, as it requires enumerating every possible trace in $\mathbb{T}$, which
-is probably infinite.
+%We acknowledge that determining \textit{compliance} is a more challenging
+%problem, as it requires enumerating every possible trace in $\mathbb{T}$, which
+%is probably infinite.
 
 
 \subsection{Mutation Trace}
@@ -147,5 +147,5 @@ implementation given a sniffer trace can be formally defined as follows:
   \label{prob:validation}
   VALIDATION\\
   \textbf{instance} A protocol monitor state machine $S$ and a sniffer trace $Tr$\\
-  \textbf{question} Does it exists a mutation trace $Tr'$ of $Tr$ that satisfies $S$?
+  \textbf{question} Does there exist a mutation trace $Tr'$ of $Tr$ that satisfies $S$?
 \end{problem}
