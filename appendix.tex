@@ -18,8 +18,10 @@ Assume $Tr$ satisfies $S^+$, and $P$ is a sequence of accepting transitions,
 we construct a mutation trace $Tr'$ using $P$ and show that $Tr'$ satisfies
 $S$.
 
-Initially, let $Tr'=Tr$, then for each \textit{augmented} transition $\langle s_i,
-s_j, \sigma, g, C'\rangle \in P$:
+\sloppy{%
+  Initially, let $Tr'=Tr$, then for each \textit{augmented} transition $\langle s_i,
+  v_i, s_j, v_j, \sigma, g, C'\rangle \in P$:
+}
 \begin{itemize}
   \item If this is a Type-1 transition, add $(t, p)$ to $Tr'$, where $t$ is a
     timestamp that satisfies $g$ and $p$ is the missing packet.
@@ -28,21 +30,16 @@ s_j, \sigma, g, C'\rangle \in P$:
 \end{itemize}
 It is obvious that $Tr'$ is a mutation trace of $Tr$, since only receiving
 packets are removed in the process.
-%
-Now we show that there exists a accepting
-transition sequence $P'$ of $S^+$ on input $Tr'$ that does not contain
-augmented transitions.
-%
-In particular, $P'$ can be obtained by substituting all
-Type-1 transitions with corresponding original transitions, and removing all
-Type-2 transition.
-%
-Since $P'$ does not contain augmented transitions, it is also an accepting
-transition sequence of $S$ on input $Tr'$, hence $Tr'$ satisfies $S$.
+
+Now we show that there exists a accepting transition sequence $P'$ of $S^+$ on
+input $Tr'$ that does not contain augmented transitions.  In particular, $P'$
+can be obtained by substituting all Type-1 transitions with corresponding
+original transitions, and removing all Type-2 transition.  Since $P'$ does not
+contain augmented transitions, it is also an accepting transition sequence of
+$S$ on input $Tr'$, hence $Tr'$ satisfies $S$.
 
 On the other hand, assume $Tr' \in \mathcal{M}(Tr)$ and $Tr'$ satisfies $S$.
 Suppose $P'$ is the accepting transition sequences of $S$ on input $Tr'$.
-%
 We first note that $P'$ is also the accepting transitions of $S^+$ on input
 $Tr'$, since $E \subset E^+$.
 
@@ -50,11 +47,11 @@ We construct a accepting transition sequence $P$ of $S^+$ on input $Tr$ as
 follows.
 \begin{itemize}
   \item For each packet $p \in Tr' \setminus Tr$, substitute the transition
-    $\langle s_i, s_j, p, g, C'\rangle$ with the corresponding Type-1
-    transition $\langle s_i, s_j, \epsilon, g, C'\rangle$.
-  \item For each transition $\langle s_i, s_j, \sigma, g, C'\rangle$
+    $\langle s_i, v_i, s_j, v_j, p, g, C'\rangle$ with the corresponding Type-1
+    transition $\langle s_i, v_i, s_j, v_j, \epsilon, g, C'\rangle$.
+  \item For each transition $\langle s_i, v_i, s_j, v_j, \sigma, g, C'\rangle$
     followed by packet $p \in Tr\setminus Tr'$, add a Type-2 self
-    transition $\langle s_j, s_j, p, g, \emptyset\rangle$. This is
+    transition $\langle s_j, v_j, s_j, v_j, p, g, \emptyset\rangle$. This is
     possible since $Tr'$ is a mutation trace of $Tr$, thus  for all $p \in Tr'
     \setminus Tr$, $p.src \ne DUT$.
 \end{itemize}
@@ -63,41 +60,28 @@ Therefore, $Tr$ satisfies $S^+$.
 \section{Proof of Lemma 2}
 \label{app:lemma2}
 
-To prove this lemma, we use a slightly extended monitor model where boolean
-variables are allowed and can be checked in guard conditions. This extension
-makes the representation of the state machine more succinct yet does not change
-the complexity of the model, since the boolean variable assignments do not reply
-on the packet payload.
-
 First, note that the length of mutation trace $Tr'$ is polynomial to the
 length of $Tr$ because of the discrete time stamp and non-overlapping packets
 assumption.
-%
 Therefore, given a state transition sequence as witness, it can be verified in
 polynomial time whether or not it is an accepting transition sequence, hence
 both VALIDATION-1 and VALIDATION-2 are in NP.
 
 Next, we show how the SAT problem can be reduced to either one of the two
 problems.
-%
 Consider an instance of SAT problem of a propositional formula $F$ with $n$
 variables $x_0,x_1,\ldots, x_{n-1}$, we construct a corresponding protocol and
 its monitor state machine as follows.
 
 The protocol involves two devices: the DUT (transmitter) and the endpoint
 (receiver).
-%
 The DUT shall send a series of packets, $pkt_0, pkt_1,\ldots, pkt_{n-1}$.
-%
 For each $pkt_i$, if the DUT receives the
 acknowledgment packet $ack_i$ from the endpoint, it sets boolean variable
 $x_i$ to be \texttt{true}.
-%
 Otherwise $x_i$ remains to be \texttt{false}.
-%
 After $n$ rounds, the DUT evaluate the formula $F$ using the assignments and
 sends a special packet, $pkt_{true}$, if $F$ is \texttt{true}.
-%
 One round of the protocol operation can be completed in polynomial time since
 any witness of $F$ can be evaluated in polynomial time.
 
@@ -111,38 +95,29 @@ any witness of $F$ can be evaluated in polynomial time.
 
 
 The protocol monitor state machine $S$ is shown in Fig.~\ref{fig:sat}.
-%
 Initially, all $x_i$ is set to \texttt{false}.
-%
 At state $s_0$, the DUT shall transmit $pkt_i$ within a unit time, transit to
 $s_1$ and reset the clock along the transition.
 At state $s_1$, either the DUT receives the $ack_i$ packet and
 set $x_i$ to be \texttt{true} ($s_1 \rightarrow s_0$), or the DUT continues to
 transmit the next packet $pkt_{i+1}$.
-%
 After $n$ rounds, the state machine is $s_0$ or $s_1$ depending on whether
 $ack_{n-1}$ is received by the DUT.
-%
 In either case, the DUT shall evaluate $F$ and transmit $pkt_{true}$ if $F$ is
 \texttt{true}.  
 
 Consider a sniffer trace $Tr_1=\{(0, pkt_0), (2, pkt_1),\\ (4,
 pkt_2),\ldots, (2(n-1), pkt_{n-1}), (2n, pkt_{true})\}$.
-%
 That is, the sniffer only captures all $pkt_i$ plus the final $pkt_{true}$, but none of
 $ack_i$.
-%
 It is easy to see that $F$ is satisfiable if $S_1^+$ accepts
 $Tr_1$.
-%
 In particular, a successful run of $S_1^+$ on $Tr_1$ would have to
 guess, for each $pkt_i$, whether the Type-1 empty transitions should be used
 to infer the missing $ack_i$ packet, such that $F$ is \textit{true} at the
 end.
-%
 Note that for $Tr_1$, no Type-2 self transitions can be used since all
 packets in $Tr_1$ are sent from the DUT.
-%
 Therefore, the SAT problem of $F$ can be reduced to the VALIDATION-1 problem
 of $S^+_1$ on sniffer trace $Tr_1$.
 
@@ -170,7 +145,7 @@ failures or if the first packet sent after rate increase (commonly referred as
 \textit{probing} packet) fails.
 
 \sloppy{%
-  Figure~\ref{fig:arf_sm} shows the state machine $S$ for the packet trace
+  Fig.~\ref{fig:arf_sm} shows the state machine $S$ for the packet trace
   collected at sender (DUT), where $DATA_i^r$ denotes a data packet
   with sequence number $i$ and bit rate $r$, $DATA_i^{r\prime}$ is a retransmission packet
   and $Ack$ is the acknowledgment packet. The \texttt{pkg\_succ} function is
