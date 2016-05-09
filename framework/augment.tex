@@ -29,7 +29,7 @@ trigger packet and clock guards, but empty set of resetting clocks. This is to
 allow the state machine make progress when the sniffer missed such packets.
 
 We make two notes. First, self transitions are added only for
-packets send \textit{to} the DUT, since the sniffer will not overhear packets
+packets sent \textit{to} the DUT, since the sniffer will not overhear packets
 \textit{from} the DUT if they were not sent by the DUT. Second, no augmented
 transition are added for the packets that are sent to DUT yet are missed by both
 the DUT and the sniffer, since such packets do not cause difference between the
@@ -48,8 +48,8 @@ We now formally define the augmented state machine.
 
 \begin{definition}
   An augmented state machine $S^+$ for a monitor state machine $S$ is a 7-tuple
-  $\{\boldsymbol{\Sigma^+}, \mathbb{S}, \mathbb{V}, s_0, C, \boldsymbol{E^+},
-  G\}$, where $\mathbb{S}, \mathbb{V}, s_0, C, G$ are the same with $S$.
+  $\{\boldsymbol{\Sigma^+}, \mathbb{S}, \mathbb{X}, s_0, C, \boldsymbol{E^+},
+  G\}$, where $\mathbb{S}, \mathbb{X}, s_0, C, G$ are the same with $S$.
   $\Sigma^+=\{\epsilon\} \cup \Sigma$ is the augmented input alphabet with the
   empty symbol, and $E^+ \supset E$ is the set of transitions, which includes:
   \begin{itemize}
@@ -90,8 +90,8 @@ $E^+$.  In particular, Line~\ref{alg:augment:type0} adds existing transitions in
 $E$ to $E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add
 Type-1 and Type-2 transitions to $E^+$ respectively. Note that in Type-2
 transitions, both the state and the variables stay the same after the
-transition.
-
+transition. We have highlighted the elements of the tuple that differ from the 
+underlying Type-0 transition.
 
 With augmented state machine $S^+$, we can use Type-1 transitions to
 non-deterministically infer packets missed by the sniffer, and use Type-2
@@ -126,8 +126,7 @@ contradiction.
   \label{cor:false_pos}
 \end{corollary}
 In the context of validation where we raise a violation alarm when $S^+$
-rejects $Tr$, Corollary~\ref{cor:false_pos} guarantees that no false alarms will be
-raised.
+rejects $Tr$, Corollary~\ref{cor:false_pos} provides a {\it sufficient} condition for reporting incorrect traces. 
 However, when $S^+$ accepts $Tr$, $S$ could still reject $Tr_{DUT}$.
 In other words, the conclusion of the validation can either be \textit{definitely
 wrong} or \textit{possibly correct}, but not \textit{definitely correct}.

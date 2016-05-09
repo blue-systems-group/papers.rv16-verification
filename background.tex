@@ -35,16 +35,16 @@ more details about timed automata.
 
 \begin{definition}
   A protocol monitor state machine $S$ is an 7-tuple\\
-  $\{\Sigma, \mathbb{S}, \mathbb{V}, s_0, C, E, G\}$, where:
+  $\{\Sigma, \mathbb{S}, \mathbb{X}, s_0, C, E, G\}$, where:
   \begin{itemize}
     \item $\Sigma = \mathbb{P}$ is the finite input alphabet.
 
     \item $\mathbb{S}$ is a non-empty, finite set of states. $s_0 \in
       \mathbb{S}$ is the initial state.
 
-    \item $\mathbb{V}$ is the set of boolean variables. We use $v = \{x
-      \leftarrow true/false\ |\ x \in \mathbb{V}\}$ to denote an assignment of
-      the variables.
+    \item $\mathbb{X}$ is the set of boolean variables. We use $v = \{x
+      \leftarrow true/false\ |\ x \in \mathbb{X}\}$ to denote an assignment of
+      the variables. Let $\mathbb{V}$ be the set of such values $v$. 
 
     \item $C$ is the set of clock variables. A \textit{clock variable} can be
       reset along any state transitions. At any instant, reading a clock
@@ -52,18 +52,18 @@ more details about timed automata.
 
     \item $G$ is the set of guard conditions defined inductively by
       \begin{align*}
-        g := true\ |\ c \le T\ |\ c \ge T\ |\ v\ |\ \neg g\ |\ g_1 \land g_2
+        g := true\ |\ c \le T\ |\ c \ge T\ |\ x\ |\ \neg g\ |\ g_1 \land g_2
       \end{align*}%
-      where $c \in C$ is a clock variable, $T$ is a constant, and $v$ is an
-      assertion on the variables in $\mathbb{V}$. Note that an
+      where $c \in C$ is a clock variable, $T$ is a constant, and $x$ is a variable in $\mathbb{X}$. 
+      Note that an
       transition can choose not to use guard conditions by setting $g$ to be $true$.
 
     \item $E \subseteq \mathbb{S} \times \mathbb{V} \times \mathbb{S} \times
       \mathbb{V} \times \Sigma \times  G \times \mathscr{P}(C)$ gives the set of
       transitions.\\ $\langle s_i, v_i, s_j, v_j, p, g, C'\rangle \in E$
-      represents that if the monitor is in state $s_i$ and variable assignments
+      represents that if the monitor is in state $s_i$ with variable assignments
       $v_i$, given the input tuple $(t, p)$ such that the guard $g$ is
-      satisfied, the monitor transits to state $s_j$ with variable assignments
+      satisfied, the monitor can transition to a state $s_j$ with variable assignments
       $v_j$, and reset the clocks in $C'$ to 0.
   \end{itemize}
   \label{def:sm}
@@ -81,6 +81,7 @@ Fig.~\ref{fig:dot11_tx_ta} can be formally defined as follows:
   \item $\Sigma = \{DATA_i, DATA'_i, Ack\ |\ 0 \le i < N\}$.
   \item Clock variables $C = \{c\}$. The only clock variable $c$ is
     used for acknowledgment time out.
+  \item $\mathbb{X} = \{i\}$, as a variable with ${\mathit log}(N) + 1$ bits to count from $0$ to $N$.  
   \item Guard constraints $G = \{ c \le T_o, c > T_o, T_o < c \le T_m\}$.
     $T_o$ is the acknowledgment time out value, and $T_m >
     T_o$ is the maximum delay allowed before the retransmission packet gets
@@ -150,6 +151,6 @@ implementation given a sniffer trace can be formally defined as follows:
 \begin{problem}
   \label{prob:validation}
   VALIDATION\\
-  \textbf{instance} A protocol monitor state machine $S$ and a sniffer trace $Tr$\\
+  \textbf{instance} A protocol monitor state machine $S$ and a sniffer trace $Tr$.\\
   \textbf{question} Does there exist a mutation trace $Tr'$ of $Tr$ that satisfies $S$?
 \end{problem}

@@ -3,9 +3,10 @@
 
 In this section, we present an \textit{exhaustive} search algorithm of the
 accepting transition sequence of $S^+$ on sniffer trace $Tr$.  It guarantees to
-yield a solution if exists, thus is exhaustive.  Due to the NP-completeness of
-the problem, we also propose several heuristics in next section to prune out
-unlikely branches, which makes the algorithm meaningful in practice.
+yield a solution if there exists, thus is exhaustive.  
+In the next sections, we present heuristics to limit the search to accepting sequences of $S^+$ that 
+require relatively few transitions from $S^+ \setminus S$.
+Due to the NP-completeness of the problem, this also makes the algorithm meaningful in practice.
 
 \begin{algorithm}[t!]
   \caption{Exhaustive search algorithm of $S^+$ on $Tr$.}
@@ -107,7 +108,7 @@ if there is a valid Type-0 or Type-2 transition for the last packet
 
 
 
-It is easy to see that Algorithm~\ref{alg:search} terminates on any sniffer
+It is not hard to see that Algorithm~\ref{alg:search} terminates on any sniffer
 traces: each node in the transition tree only has finite number of possible next
 steps, and the depth of Type-1 transitions are limited by the time available
 before the next packet (line~\ref{alg:search:type_1_limit}).

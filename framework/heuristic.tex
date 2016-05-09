@@ -6,7 +6,7 @@ imperfection of sniffers: whenever the original state machine $S$ gets stuck on
 sniffer trace $Tr$, Algorithm~\ref{alg:search} tries to continue with augmented
 transitions. In other words, in the face of uncertainty between a possible
 protocol violation and sniffer imperfection, augmented transitions provide the
-ability to blame the later. In fact, the exhaustive nature of
+ability to blame the latter. In fact, the exhaustive nature of
 Algorithm~\ref{alg:search} means that it always tries to blame sniffer
 imperfection whenever possible, making it too conservative to report true
 violations.
@@ -66,7 +66,7 @@ k_n)$.
 \subsubsection{$GoBack(k)$}
 
 This heuristic states that the search should only
-back track at most $k$ steps when gets stuck.
+backtrack at most $k$ steps when gets stuck.
 The motivation is that many protocols operate in a sequence of independent
 transactions, and the uncertainty of previous transactions often do not affect
 the next transaction.
@@ -76,6 +76,7 @@ transaction.
 And the retransmission status of previous packets has no effect on the packets
 with next sequence number, hence need not be explored when resolving the
 uncertainty of the packets with new sequence numbers.
+Note that we do not require the protocol to specify an exact transaction boundary, but only need $k$ to be sufficiently large to cover a transaction. 
 
 \begin{comment}
 \subsection{Confidence of Correctness}
