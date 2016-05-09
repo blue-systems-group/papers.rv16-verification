@@ -1,11 +1,10 @@
 \subsection{802.11 Data Transmission}
 \label{subsec:tx}
 
-We have two main goals in this section.  First, we show that our
+In this section, we first show that our
 verification framework can improve verification precision by inferring
 the missing or extra packets using the augmented transition
-framework.
-Second, we demonstrate the ability of our framework to detect true violations by
+framework. We then demonstrate the ability of our framework to detect true violations by
 manually introducing bugs in the \ns{} implementation and show the precision and
 recall of validation results.
 
@@ -111,11 +110,10 @@ nor the \textit{number} of retransmission packets.
 \end{comment}
 
 The different between two packet traces can be quantified by the Jaccard distance
-metric.
-
+metric.%
 \begin{align}
   Jaccard(Tr_1, Tr_2) = \frac{Tr_1 \ominus Tr_2}{Tr_1 \cup Tr_2}
-\end{align}
+\end{align}%
 where $\ominus$ is the symmetric difference operator.
 The distance is 0 if the
 two traces are identical, and is 1 when the two traces are completely different.
@@ -137,7 +135,7 @@ And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
 \end{comment}
 
 \begin{figure*}[h!]
-  \vspace*{\beforecaptionskip}
+  \vspace*{-5mm}
   \centering
   \begin{subfigure}{0.33\textwidth}
     \centering
@@ -158,7 +156,7 @@ And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
   \caption{\textbf{Jaccard Distance Between Mutation and DUT Traces.} For each
   data point, the mean of the 5 runs is used.}
   \label{fig:mutation_dut}
-  \vspace*{\aftercaptionskip}
+  \vspace*{-5mm}
 \end{figure*}
 
 
@@ -231,17 +229,17 @@ DUT and sniffer traces were collected.
 We use the DUT packet traces as ground truth of whether or not each experiment
 run contains bugs.
 For each $Pr_{ed}$ value, we calculate the precision and recall of violation
-detection using the sniffer traces.
+detection using the sniffer traces.%
 \begin{align}
   \text{Precision} = \frac{\{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}}{\{\text{Reported Bugs}\}}\\
   \text{Recall} = \frac{\{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}}{\{\text{True Bugs}\}}
-\end{align}
+\end{align}%
 The precision metric quantifies how \textit{useful} the validation results are ,
 while the recall metric measures how \textit{complete} the validation results
 are.
 
-\begin{figure}[h!]
-  \vspace*{\beforecaptionskip}
+\begin{figure}
+  \vspace*{-5mm}
   \centering
   \begin{subfigure}{0.48\textwidth}
   \includegraphics[width=\textwidth]{./figures/scripts/PrecisionFigure.pdf}
@@ -251,10 +249,8 @@ are.
 \end{subfigure}
   \caption{\textbf{Precision and Recall of Validation Results.}}
   \label{fig:precision}
-  \vspace*{\aftercaptionskip}
+  \vspace*{-5mm}
 \end{figure}
-
-
 
 Fig.~\ref{fig:precision} shows the validating precision and recall for various
 $k$ values.

@@ -8,10 +8,8 @@ The alphabet of the monitor state machine is the finite set of all valid packets
 defined by the protocol, denoted as $\mathbb{P}$.  A packet is a binary string
 of finite number of bits, encoding interesting protocol attributes such as
 \texttt{src}, \texttt{dest}, \texttt{type}, \texttt{flags}, and physical layer
-information, such as \texttt{channel}, \texttt{modulation}, etc.
-
-The input of the state machine then corresponds to a time-ordered sequence of
-packets.
+information, such as \texttt{channel}, \texttt{modulation}, etc. The input of
+the state machine then corresponds to a time-ordered sequence of packets.
 
 \begin{definition}
   A \textit{packet trace} is a finite sequence of $(timestamp, packet)$ tuple:

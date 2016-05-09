@@ -1,23 +1,22 @@
 \section{Related Works}
 \label{sec:related}
 
-\textbf{Hidden Markov Model (HMM) Approach.} Event
-sampling~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis}
-reduces the overhead of performing runtime verification, yet creates gaps in the
-observation. Stoller \textit{et al}~\cite{stoller2011runtime} studied how event
-sampling affects the results of runtime verification, and use HMM-based state
-estimation techniques to calculate the confidence that the temporal property is
-satisfied in the presence of gaps in observation. When considering the packets
-as events of the whole system under test, and sniffer as observer, it is
-possible to apply the model in~\cite{stoller2011runtime} to our problem.
-However, we note several advantages of our augmented transition based approach.
-First, we automatically augment the original state machine, which rigorously
-encodes the protocol specification and is intuitive to design and easy to verify
-correctness at the same time. Second, we use timed automata to monitor the
-timing constraints which are common in wireless protocols, while it is known
-non-trivial to encode such timing information in HMM. Finally,
-domain knowledge can be exploited in our approach to efficiently prune out
-unlikely branches during the exhaustive search.
+\textbf{Hidden Markov Model (HMM) Approach.} When considering the whole system
+under test (both DUT and endpoint), the sniffer only captures a subset of the
+all the packets (events).  This is similar to the event sampling problem in
+runtime
+verification~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis}.
+Stoller \textit{et al}~\cite{stoller2011runtime} used HMM-based state estimation
+techniques to calculate the confidence that the temporal property is satisfied
+in the presence of gaps in observation. While it may be possible to apply the
+methods in~\cite{stoller2011runtime} to our problem, we note several advantages
+of our augmented transition based approach.  First, we automatically augment the
+original state machine, which rigorously encodes the protocol specification and
+is intuitive to design and easy to verify correctness at the same time. Second,
+we use timed automata to monitor the timing constraints which are common in
+wireless protocols, while it is known non-trivial to encode such timing
+information in HMM. Finally, domain knowledge can be exploited in our approach
+to efficiently prune out unlikely branches during the exhaustive search.
 
 \textbf{Network Protocol Validation.} Lee \textit{et al}~\cite{lee1997passive}
 studied the problem of passive network testing of network management. The system

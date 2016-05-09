@@ -5,32 +5,30 @@ To deal with the inherent uncertainty of sniffer traces, we propose to
 systematically augment the original monitor state machine with non-deterministic
 transitions to account for the difference between the sniffer and DUT traces.
 
-Before formally defining the augmented state machine, we first use an example to
-illustrate the basic idea.
-
 \begin{figure}[h!]
-  \vspace*{\beforecaptionskip}
+  \vspace*{-5mm}
   \centering
   \includegraphics[width=0.7\textwidth]{./figures/dot11_tx_checker.pdf}
   \caption{\textbf{Augmented Monitor State Machine.} Augmented transitions are
   highlighted in bold face. $\overline{Pkt}$ means either $\epsilon$ or $Pkt$.}
   \label{fig:augment}
-  \vspace*{\aftercaptionskip}
+  \vspace*{-1mm}
 \end{figure}
 
 
-Fig.~\ref{fig:augment} shows the augmented state machine for 802.11 transmitter
-state machine shown in Fig.~\ref{fig:dot11_tx_ta}.  For each existing transition
-(e.g., $s_0\rightarrow s_1$), we add an \textit{empty transition} with same
-clock guards and resetting clocks.  This is to account for the possibility when
-such packet was observed by the DUT but missed by the sniffer.  Additionally,
-for each transition triggered by a \textit{receiving} packet (i.e., $p.dest =
-DUT$), such as $s_1\rightarrow s_0$ and $s_2\rightarrow s_0$, we add a
-\textit{self transition} with the same trigger packet and clock guards, but
-empty set of resetting clocks. This is to allow the state machine make progress
-when the sniffer missed such packets.
+Before formally defining the augmented state machine, we first use an example to
+illustrate the basic idea. Fig.~\ref{fig:augment} shows the augmented state
+machine for 802.11 transmitter state machine shown in
+Fig.~\ref{fig:dot11_tx_ta}.  For each existing transition (e.g., $s_0\rightarrow
+s_1$), we add an \textit{empty transition} with same clock guards and resetting
+clocks.  This is to account for the possibility when such packet was observed by
+the DUT but missed by the sniffer.  Additionally, for each transition triggered
+by a \textit{receiving} packet (i.e., $p.dest = DUT$), such as $s_1\rightarrow
+s_0$ and $s_2\rightarrow s_0$, we add a \textit{self transition} with the same
+trigger packet and clock guards, but empty set of resetting clocks. This is to
+allow the state machine make progress when the sniffer missed such packets.
 
-There are two points worth noticing. First, self transitions are added only for
+We make two notes. First, self transitions are added only for
 packets send \textit{to} the DUT, since the sniffer will not overhear packets
 \textit{from} the DUT if they were not sent by the DUT. Second, no augmented
 transition are added for the packets that are sent to DUT yet are missed by both
@@ -62,14 +60,10 @@ We now formally define the augmented state machine.
   \end{itemize}
 \end{definition}
 
-Algorithm~\ref{alg:augment} describes the process of transforming $E$ into
-$E^+$.  In particular, Line~\ref{alg:augment:type0} adds existing transitions in
-$E$ to $E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add
-Type-1 and Type-2 transitions to $E^+$ respectively. Note that in Type-2
-transitions, both the state and the variables stay the same after the
-transition.
-
+\setlength{\textfloatsep}{2mm}
 \begin{algorithm}[h!]
+  \caption{Obtain Augmented Transitions $E^+$ from $E$}
+  \label{alg:augment}
   \begin{algorithmic}[1]
     \Function{augment}{$E$}
     \Let{$E^+$}{$\emptyset$}
@@ -87,9 +81,15 @@ transition.
     \State \Return{$E^+$}
     \EndFunction
   \end{algorithmic}
-  \caption{Obtain Augmented Transitions $E^+$ from $E$}
-  \label{alg:augment}
 \end{algorithm}
+
+
+Algorithm~\ref{alg:augment} describes the process of transforming $E$ into
+$E^+$.  In particular, Line~\ref{alg:augment:type0} adds existing transitions in
+$E$ to $E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add
+Type-1 and Type-2 transitions to $E^+$ respectively. Note that in Type-2
+transitions, both the state and the variables stay the same after the
+transition.
 
 
 With augmented state machine $S^+$, we can use Type-1 transitions to

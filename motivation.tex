@@ -1,15 +1,6 @@
 \section{Motivating Example}
 \label{sec:motivation}
 
-\begin{figure}[h!]
-  \vspace*{\beforecaptionskip}
-  \centering
-  \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
-  \caption{\textbf{Monitor State Machine for 802.11 Transmitter.}}
-  \label{fig:dot11_tx_ta}
-  \vspace*{\aftercaptionskip}
-\end{figure}
-
 Consider the IEEE 802.11 (as known as \wifi{}) transmitter (DUT) state machine
 shown in Fig.~\ref{fig:dot11_tx_ta}. After the DUT sends $DATA_i$---a data
 packet with sequence number $i$ ($s_0\rightarrow s_1)$, it starts a timer and
@@ -19,6 +10,16 @@ $T_o$ ($s_1\rightarrow s_0$), or it sends $DATA'_i$---retransmission of $DATA_i$
 it moves on to next packet\footnote{We assume in this example that the DUT will
 retry at most once to succinctly present the state machine.  In practice,
 multiple retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
+
+\begin{figure}
+  \vspace*{-6mm}
+  \centering
+  \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
+  \caption{\textbf{Monitor State Machine for 802.11 Transmitter.}}
+  \label{fig:dot11_tx_ta}
+  \vspace*{-5mm}
+\end{figure}
+
 
 Obviously, given the DUT's internal log of packet transmission and reception
 events, it is trivial to feed such log into the state machine in
@@ -32,7 +33,8 @@ to sniffer's observation: packet loss and physical diversity. The sniffer could
 either missing packets from the DUT (packet loss), or overhear packets that are
 sent to but missed by the DUT (physical diversity).
 
-\begin{figure}[h!]
+\begin{figure}
+  \vspace*{-5mm}
   \centering
   \includegraphics[width=0.6\textwidth]{./figures/false_pos.pdf}
   \caption{\textbf{Uncertainty of Sniffer Observations.} $Tr_{OTA}$ is
@@ -40,6 +42,7 @@ sent to but missed by the DUT (physical diversity).
     $Tr_{DUT}$ is DUT's internal events. $Tr_1$ and $Tr_2$ are two possible observations
   of the sniffer.}
   \label{fig:sniffer_in_middle}
+  \vspace*{-5mm}
 \end{figure}
 
 Consider a correct packet exchange sequence and a few sniffer observations
@@ -61,7 +64,9 @@ sends $DATA'_0$.  Again, without any additional information it is impossible to
 disambiguate between the sniffer missing certain packets and a bug in DUT's
 retransmission logic.
 
+\begin{comment}
 Informally, the question we set out to answer in this paper is: given the
 protocol monitor state machine and the sniffer's
 observation with inherent uncertainty, how to validate that the DUT behaves as
 specified?
+\end{comment}
