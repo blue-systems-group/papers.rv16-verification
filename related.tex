@@ -1,7 +1,7 @@
 \section{Related Works}
 \label{sec:related}
 
-\textbf{HMM-Based Approach.} Event
+\textbf{Hidden Markov Model (HMM) Approach.} Event
 sampling~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis}
 reduces the overhead of performing runtime verification, yet creates gaps in the
 observation. Stoller \textit{et al}~\cite{stoller2011runtime} studied how event
@@ -15,7 +15,7 @@ First, we automatically augment the original state machine, which rigorously
 encodes the protocol specification and is intuitive to design and easy to verify
 correctness at the same time. Second, we use timed automata to monitor the
 timing constraints which are common in wireless protocols, while it is known
-non-trivial to encode such timing information in Hidden Markov Model. Finally,
+non-trivial to encode such timing information in HMM. Finally,
 domain knowledge can be exploited in our approach to efficiently prune out
 unlikely branches during the exhaustive search.
 

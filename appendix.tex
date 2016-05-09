@@ -2,6 +2,7 @@
 \appendix
 
 \section{Proof of Lemma~\ref{lem:mutation}}
+\label{app:lemma1}
 Let $\Delta = Tr \setminus Tr_{DUT}$ be the set of packets that are in $Tr$
 but not in $Tr_{DUT}$. Recall that it is not possible for the sniffer to
 observe sending packets from the DUT that the DUT did not send. Therefore,
@@ -12,6 +13,7 @@ $Tr_{DUT} \in \mathcal{M}(Tr)$.
 
 
 \section{Proof of Theorem~\ref{the:equivalent}}
+\label{app:theorem1}
 Assume $Tr$ satisfies $S^+$, and $P$ is a sequence of accepting transitions,
 we construct a mutation trace $Tr'$ using $P$ and show that $Tr'$ satisfies
 $S$.
@@ -59,6 +61,8 @@ follows.
 Therefore, $Tr$ satisfies $S^+$.
 
 \section{Proof of Lemma 2}
+\label{app:lemma2}
+
 To prove this lemma, we use a slightly extended monitor model where boolean
 variables are allowed and can be checked in guard conditions. This extension
 makes the representation of the state machine more succinct yet does not change

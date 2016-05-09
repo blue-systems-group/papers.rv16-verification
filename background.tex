@@ -36,26 +36,37 @@ more details about timed automata.
 
 
 \begin{definition}
-  A protocol monitor state machine $S$ is an 6-tuple $\{\Sigma, \mathbb{S}, s_0,
-  C, E, G\}$, where:
+  A protocol monitor state machine $S$ is an 7-tuple\\
+  $\{\Sigma, \mathbb{S}, \mathbb{V}, s_0, C, E, G\}$, where:
   \begin{itemize}
     \item $\Sigma = \mathbb{P}$ is the finite input alphabet.
+
     \item $\mathbb{S}$ is a non-empty, finite set of states. $s_0 \in
       \mathbb{S}$ is the initial state.
+
+    \item $\mathbb{V}$ is the set of boolean variables. We use $v = \{x
+      \leftarrow true/false\ |\ x \in \mathbb{V}\}$ to denote an assignment of
+      the variables.
+
     \item $C$ is the set of clock variables. A \textit{clock variable} can be
       reset along any state transitions. At any instant, reading a clock
       variable returns the time elapsed since last time it was reset.
-    \item $G$ is the set of clock constraints defined inductively by
+
+    \item $G$ is the set of guard conditions defined inductively by
       \begin{align*}
-        g := true\ |\ c \le T\ |\ c \ge T\ |\ \neg g\ |\ g_1 \land g_2
+        g := true\ |\ c \le T\ |\ c \ge T\ |\ v\ |\ \neg g\ |\ g_1 \land g_2
       \end{align*}%
-      where $c \in C$ is a clock variable and $T$ is a constant. Note that an
-      transition can choose not to use clock guard by setting $g$ to be $true$.
-    \item $E \subseteq \mathbb{S} \times \mathbb{S} \times \Sigma \times  G \times \mathscr{P}(C)$
-      gives the set of transitions. $\langle s_i, s_j, p, g, C'\rangle \in E$
-      represents that if the monitor is in state $s_i$, given the input tuple
-      $(t, p)$ such that the clock variables satisfies the guard $g$, the
-      monitor transits to state $s_j$ and reset the clocks in $C'$ to 0.
+      where $c \in C$ is a clock variable, $T$ is a constant, and $v$ is an
+      assertion on the variables in $\mathbb{V}$. Note that an
+      transition can choose not to use guard conditions by setting $g$ to be $true$.
+
+    \item $E \subseteq \mathbb{S} \times \mathbb{V} \times \mathbb{S} \times
+      \mathbb{V} \times \Sigma \times  G \times \mathscr{P}(C)$ gives the set of
+      transitions.\\ $\langle s_i, v_i, s_j, v_j, p, g, C'\rangle \in E$
+      represents that if the monitor is in state $s_i$ and variable assignments
+      $v_i$, given the input tuple $(t, p)$ such that the guard $g$ is
+      satisfied, the monitor transits to state $s_j$ with variable assignments
+      $v_j$, and reset the clocks in $C'$ to 0.
   \end{itemize}
   \label{def:sm}
 \end{definition}
@@ -79,12 +90,6 @@ Fig.~\ref{fig:dot11_tx_ta} can be formally defined as follows:
     liveness of the DUT.
 \end{itemize}
 
-
-To succinctly present the state machine, we use an internal variable $i$ to keep
-track of the next sequence number.
-One can easily eliminate this variable and
-use only different states for different sequence numbers.
-Therefore, this state machine is consistent with Definition~\ref{def:sm}.
 
 The monitor state machine defines a \textit{timed language} $L$ which consists
 all valid packet traces that can be observed by the DUT.  We now give the
@@ -133,7 +138,8 @@ be one of the mutation traces of the sniffer trace $Tr$.
   the same protocol operation session, and $\mathcal{M}(Tr)$ be the set of
   mutation traces of $Tr$ with respect to DUT, then $Tr_{DUT} \in \mathcal{M}(Tr)$.
   \label{lem:mutation}
-\end{lemma}
+\end{lemma}%
+(Proof in Appendix~\ref{app:lemma1})
 
 
 \subsection{Problem Statement}

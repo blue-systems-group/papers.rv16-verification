@@ -19,7 +19,6 @@ $T_o$ ($s_1\rightarrow s_0$), or it sends $DATA'_i$---retransmission of $DATA_i$
 it moves on to next packet\footnote{We assume in this example that the DUT will
 retry at most once to succinctly present the state machine.  In practice,
 multiple retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
-\shuvendu{If possible, define a macro for multi-letter words such as DATA, Ack and use mathit environment}
 
 Obviously, given the DUT's internal log of packet transmission and reception
 events, it is trivial to feed such log into the state machine in

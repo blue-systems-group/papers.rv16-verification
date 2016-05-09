@@ -49,11 +49,11 @@ respectively.
 We now formally define the augmented state machine.
 
 \begin{definition}
-  An augmented state machine $S^+$ for a monitor state machine $S$ is a 6-tuple
-  $\{\boldsymbol{\Sigma^+}, \mathbb{S}, s_0, C, \boldsymbol{E^+}, G\}$, where $\mathbb{S},
-  s_0, C, G$ are the same with $S$. $\Sigma^+=\{\epsilon\} \cup \Sigma$ is
-  the augmented input alphabet with the empty symbol, and $E^+ \supset E$ is the
-  set of transitions, which includes:
+  An augmented state machine $S^+$ for a monitor state machine $S$ is a 7-tuple
+  $\{\boldsymbol{\Sigma^+}, \mathbb{S}, \mathbb{V}, s_0, C, \boldsymbol{E^+},
+  G\}$, where $\mathbb{S}, \mathbb{V}, s_0, C, G$ are the same with $S$.
+  $\Sigma^+=\{\epsilon\} \cup \Sigma$ is the augmented input alphabet with the
+  empty symbol, and $E^+ \supset E$ is the set of transitions, which includes:
   \begin{itemize}
     \item $E$: existing transitions (\textbf{Type-0}) in $S$.
     \item $E^+_1$: empty transitions (\textbf{Type-1}) for each transition in $E$.
@@ -62,24 +62,25 @@ We now formally define the augmented state machine.
   \end{itemize}
 \end{definition}
 
-\begin{comment}
 Algorithm~\ref{alg:augment} describes the process of transforming $E$ into
-$E^+$.
-In particular, Line~\ref{alg:augment:type0} adds existing transitions in $E$ to
-$E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add Type-1
-and Type-2 transitions to $E^+$ respectively.
+$E^+$.  In particular, Line~\ref{alg:augment:type0} adds existing transitions in
+$E$ to $E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add
+Type-1 and Type-2 transitions to $E^+$ respectively. Note that in Type-2
+transitions, both the state and the variables stay the same after the
+transition.
 
-\begin{algorithm}[t!]
+\begin{algorithm}[h!]
   \begin{algorithmic}[1]
     \Function{augment}{$E$}
     \Let{$E^+$}{$\emptyset$}
-    \ForAll{$\langle s_i, s_j, p, g, C'\rangle \in E$}
-      \Let{$E^+$}{$E^+ \cup \{\langle s_i, s_j, p, g, C'\rangle\}$\Comment{Type-0}}
+    \ForAll{$\langle s_i, v_i, s_j, v_j, p, g, C'\rangle \in E$}
+      \Let{$E^+$}{$E^+ \cup \{\langle s_i, v_i, s_j, v_j, p, g, C'\rangle\}$\Comment{Type-0}}
       \label{alg:augment:type0}
-      \Let{$E^+$}{$E^+ \cup \{\langle s_i, s_j, \boldsymbol{\epsilon}, g, C'\rangle\}$\Comment{Type-1}}
+      \Let{$E^+$}{$E^+ \cup \{\langle s_i, v_i, s_j, v_j, \boldsymbol{\epsilon}, g, C'\rangle\}$\Comment{Type-1}}
       \label{alg:augment:type1}
       \If{$p.dest = DUT$}
-        \Let{$E^+$}{$E^+ \cup \{\langle s_i, \boldsymbol{s_i}, p, g, \boldsymbol{\emptyset}\rangle\}$\Comment{Type-2}}
+      \Let{$E^+$}{$E^+ \cup \{\langle s_i, v_i, \boldsymbol{s_i},
+      \boldsymbol{v_i}, p, g, \boldsymbol{\emptyset}\rangle\}$\Comment{Type-2}}
         \label{alg:augment:type2}
       \EndIf
     \EndFor
@@ -89,7 +90,7 @@ and Type-2 transitions to $E^+$ respectively.
   \caption{Obtain Augmented Transitions $E^+$ from $E$}
   \label{alg:augment}
 \end{algorithm}
-\end{comment}
+
 
 With augmented state machine $S^+$, we can use Type-1 transitions to
 non-deterministically infer packets missed by the sniffer, and use Type-2
@@ -102,14 +103,15 @@ transitions to $Tr$, and remove packets indicated by Type-2 transitions from
 $Tr$, we obtain a mutation trace $Tr'$, which represents one possibility of the
 ground truth---the DUT packet trace.
 
-In fact, we show that Problem~\ref{prob:validation} is equivalent to the
+We show that Problem~\ref{prob:validation} is equivalent to the
 satisfiability problem of $Tr$ on $S^+$.
 
 \begin{theorem}
   There exists a mutation trace $Tr' \in \mathcal{M}(Tr)$ that satisfies $S$ if
   and only if $Tr$ satisfies $S^+$.
  \label{the:equivalent}
-\end{theorem}
+\end{theorem}%
+(Proof in Appendix~\ref{app:theorem1})
 
 By Theorem~\ref{the:equivalent}, the inherent uncertainty of the sniffer traces
 are explicitly represented by the augmented transitions, and can be
