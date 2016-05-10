@@ -34,44 +34,35 @@ recall of validation results.
 \end{comment}
 
 
+\vspace*{-3mm}
 \subsubsection{Experimental Setup}
 
-We set up two \wifi{} devices which act as the transmitter (DUT) and receiver
-respectively.  Another \wifi{} device is configured in monitor mode and acts as
-the sniffer.  The DUT and the receiver are configured to use the IEEE 802.11g
-standard with both RTS/CTS and fragmentation disabled.  A Constant Bit Rate
-(CBR) UDP traffic (54~Mbps) is generated from the DUT to the receiver.
+We set up two \wifi{} devices acting as the transmitter (DUT) and receiver
+respectively. Another \wifi{} device is configured in monitor mode and acts as
+the sniffer. During the experiments,we collect both the DUT packet trace
+(the ground truth) and the sniffer trace.
 
+\vspace*{-3mm}
+\subsubsection{Verifying Unmodified Implementation}
+
+In the original monitor state machine shown in Fig.~\ref{fig:dot11_tx_ta}, we
+set acknowledgment timeout $T_o=334\mu$s, maximum retransmission delay
+$T_m=15$ms according to the protocol. We also adapt the state machine to include
+multiple retransmissions\footnote{This is not part of the protocol and NS-3
+implementation set this to be 7.} instead of one.
 
 Let $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$ be the packet loss probability between
 the DUT and sniffer, endpoint and sniffer, DUT and endpoint respectively.
 $Pr_{ed}$ represents the characteristics of the system being tested, while
 $Pr_{ds}$ and $Pr_{es}$ represent the sniffer's quality in capturing packets.
 
-In order to control these three probabilities, we developed a new propagation
-loss model for \ns{} called \texttt{MatrixRandomPropagationLossModel}. In
-particular, the signal propagation loss between a pair of nodes is determined by
-a binary random variable of two values: 0~dB (no loss) and 1000~dB (complete
-loss).  Therefore, any packet loss probability can be achieved by adjusting the
-random variable distribution. Finally, pcap capture is enabled in both the DUT
-and the sniffer devices, thus we can get both the ground truth (DUT trace) and
-sniffer's observation.
-
-
-\subsubsection{Verifying Unmodified Implementation}
-
-In NS-3's implementation of 802.11g protocol, the acknowledgment time out $T_o$
-is 334~$\mu s$ and maximum retransmission count is 7.  We use the same
-parameters in our monitor state machine.  Additionally, we set the maximum
-retransmission delay $T_m$ to be 15~ms to tolerate the back off delay in 802.11
-DCF and also any possible processing delays.
 
 
 We vary each of the three probability, $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$, from
 0 to 0.5 (both inclusive) with 0.05 step.  For each loss ratio combination, we
 ran the experiment 5 times, and each run lasted
-30 seconds.  In total, 6655 ($11^3\times 5$) pair of DUT and sniffer packet
-   traces were collected.
+30 seconds. In total, 6655 ($11^3\times 5$) pair of DUT and sniffer packet
+traces were collected.
 
 To establish the ground truth of violations, we first verify the DUT packet
 traces using the \textit{original} state machine $S$.  This can be achieved by
@@ -79,21 +70,22 @@ disabling augmented transitions in our framework.  As expected, no violation is
 detected in any DUT packet traces.
 
 We then verify the sniffer traces using the augmented state machine $S^+$.  For
-the $NumMissing(d, l, k)$ heuristic, we use $l=100$ and $k=80$.
-For the $GoBack(k)$ heuristic, we set $k=7$, which is the maximum number of
-transmissions of a single packet.
-
-We first report that for all sniffer traces collected with different packet loss
-probabilities, no violation was reported. \shuvendu{How did you come up with these magic parameters? Could you have increased them further without affecting scalability?} This demonstrates our framework's
-ability to tolerate sniffer imperfection instead of raising false alarms. \shuvendu{What about scalability?}
+the $GoBack(k)$ heuristic, we set $k=7$, which is the maximum number of
+transmissions of a single packet. For the $NumMissing(d, l, k)$ heuristic, we
+set the sliding window size $l=100$, and $k=80$ such that no violation is
+reported. The relationship of $k$ and validation precision is studied in next
+section.
 
 Next, we present detailed analysis of the augmented transitions on the sniffer
-traces. The goal is to study for a given link packet loss probability
-($Pr_{ed}$), how the sniffer's packet loss properties ($Pr_{ds}$ and $Pr_{es}$)
-affect the difference between mutation and the DUT trace.  \shuvendu{I almost missed that mutation trace is the candidate trace that our tool comes up with to justfiy acceptance. The readers will miss it surely.} For all following
-analysis, we divide the traces into three groups according to $Pr_{ed}$: low ($0
-\le Pr_{ed} \le 0.15$), medium ($0.20 \le Pr_{ed} \le 0.35$) and high ($0.40 \le
-Pr_{ed} \le 0.50$).
+traces. The goal is to study for a given system packet loss probability
+$Pr_{ed}$, how the sniffer packet loss properties ($Pr_{ds}$ and $Pr_{es}$)
+affect the difference between the DUT trace and the mutation trace, which represents
+a guess of the DUT trace by the augmented state machine based on the sniffer
+trace.
+
+For all following analysis, we divide the traces into three groups according to
+$Pr_{ed}$: low ($0 \le Pr_{ed} \le 0.15$), medium ($0.20 \le Pr_{ed} \le 0.35$)
+and high ($0.40 \le Pr_{ed} \le 0.50$).
 
 \begin{comment}
 Fig.~\ref{fig:consec_aug} shows the distribution of Maximum Consecutive
@@ -160,23 +152,23 @@ And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
 \end{figure*}
 
 
-Fig.~\ref{fig:mutation_dut} shows the Jaccard Distance between mutation and
-its corresponding DUT trace.
-\shuvendu{Its always good idea to pick a row/point in the table/figure and explain it}
-We make the following observations.
-First, for a given system loss probability, the more packet the sniffer picks up,
-the more similar the mutation trace is to the DUT trace.
-Interestingly, $Pr_{ds}$ is the dominant factor between the two.
-This is because retransmission packets of the same sequence number are
-identical, hence it may require to infer less retransmission packets than that
-were actually transmitted to unstuck the state machine. \shuvendu{I don't understand this}
-We note, however, this
-trend is protocol specific and may be not be generally applicate to other
-protocols.
-Second, as the system loss probability increases \shuvendu{What is the system loss probability?}, the Jaccard distance increases
-more rapidly as $Pr_{ds}$ increases.
-This is because the ratio of retransmission
-packet increases along with $Pr_{ds}$.
+Fig.~\ref{fig:mutation_dut} shows the Jaccard Distance between mutation and its
+corresponding DUT trace. We make the following observations. First, for a given
+system loss probability $Pr_{ed}$ (each sub-figure), the lower the sniffer
+packet loss probability ($Pr_{ds}$ and $Pr_{es}$), the smaller Jaccard distance
+between the DUT and mutation trace. Intuitively, this means a sniffer that
+misses less packets can enable our framework to better reconstruct the DUT
+trace.
+
+Second, we observe a \textit{protocol-specific} trend that $Pr_{ds}$ is more
+dominant than $Pr_{es}$.  This is because retransmission packets of the same
+sequence number are identical, hence when the sniffer misses multiple
+retransmission packets, our framework only needs to infer one retransmission
+packet to continue state machine execution.
+
+Finally, as the system loss probability $Pr_{ed}$ increases, the Jaccard
+distance increases more rapidly as $Pr_{ds}$ increases.  This is because the
+ratio of retransmission packet increases along with $Pr_{ed}$.
 
 
 \begin{comment}
@@ -201,20 +193,20 @@ packet has neither sequence numbers nor retry flag, the searching algorithm had
 a hard time resolving such uncertainty.
 \end{comment}
 
+\vspace*{-3mm}
 \subsubsection{Introducing Bugs}
 
 We have demonstrated that our framework can tolerate sniffer imperfection and
-avoid raising false alarms. \shuvendu{What about scalability?}
-The next question is, can it detect true violations?
-To answer this question, we manually introduce several bugs in \ns{}
-implementation that concerns various aspects of 802.11 data transmission
-protocol.
-More specifically, the bugs are:
+avoid raising false alarms.  The next question is, can it detect true
+violations?  To answer this question, we manually introduce several bugs in
+\ns{} implementation that concerns various aspects of 802.11 data transmission
+protocol.  More specifically, the bugs are:
 
 \begin{itemize}
   \item \textbf{Sequence Number}\quad The DUT does not assign sequence number
     correctly. For example, it may increase sequence by 2 instead of 1, or it
-    does not increase sequence number after certain packet, etc. \shuvendu{Are there multiple such bugs?}
+    does not increase sequence number after certain packet, etc. We choose one
+    type of such bugs in each run.
   \item \textbf{Semantic}\quad The DUT may retransmit even
     after receiving $Ack$, or does not retransmit when not receiving $Ack$.
 \end{itemize}
@@ -243,23 +235,20 @@ are.
   \vspace*{-5mm}
   \centering
   \begin{subfigure}{0.48\textwidth}
-  \includegraphics[width=\textwidth]{./figures/scripts/PrecisionFigure.pdf}
-\end{subfigure}
+    \includegraphics[width=\textwidth]{./figures/scripts/PrecisionFigure.pdf}
+  \end{subfigure}
   \begin{subfigure}{0.48\textwidth}
-  \includegraphics[width=\textwidth]{./figures/scripts/RecallFigure.pdf}
-\end{subfigure}
+    \includegraphics[width=\textwidth]{./figures/scripts/RecallFigure.pdf}
+  \end{subfigure}
   \caption{\textbf{Precision and Recall of Validation Results.}}
   \label{fig:precision}
   \vspace*{-5mm}
 \end{figure}
 
 Fig.~\ref{fig:precision} shows the validating precision and recall for various
-$k$ values.
-\shuvendu{Again, pick a point in two figures and say what the point/cdf represents.}
-As expected, the more tolerant the search to sniffer
-losses (larger $k$), the more precise the violation detection.
-In particular,
-when $k=30$, the precisions are 100\% for all $Pr_{ed}$ values.
-Second, the recall is less sensitive to the choice of $k$.
-Except for the extreme case when $k=30$, all other thresholds can report almost
-all the violations.
+$k$ values. For precision, as expected, the more tolerant the search to sniffer
+losses (larger $k$), the more tolerant the framework is to sniffer losses, and
+the more precise the violation detection. In particular, when $k=30$, the
+precisions are 100\% for all $Pr_{ed}$ values. Second, the recall is less
+sensitive to the choice of $k$.  Except for the extreme case when $k=30$, all
+other thresholds can report almost all the violations.
