@@ -15,11 +15,11 @@ Runtime validation of the protocol implementations on such devices is
 challenging because collecting traces from the device under test (DUT) is often
 infeasible.  The resource limitations of embedded or battery-powered devices may
 cause them to not provide trace collecting capabilities. Devices may include
-proprietary hardware or firmware that hides the protocol details. This may occur
-when multiple devices from different vendors are being tested for
-interoperability, or when development has been performed by a third-party that
-considers the implementation proprietary.  And even when direct instrumentation
-is possible, the overhead it causes may alter the behavior of the DUT due to the
+proprietary hardware or firmware that hides the implementation details. This may
+occur when development has been performed by a third-party that considers the
+implementation proprietary, or when multiple devices from different vendors are
+being tested for interoperability. And even when direct instrumentation is
+possible, the overhead it causes may alter the behavior of the DUT due to the
 observer effect~\cite{mytkowicz2008observer}, threatening the validation
 results.
 
@@ -49,7 +49,7 @@ causes.
 
 We present a new technique enabling validation of protocol implementation using
 wireless sniffers. Given a monitor state machine representing the protocol being
-validated, we describe a systematic transformation that adds nondeterministic
+validated, we propose a systematic transformation that adds nondeterministic
 transitions to incorporate uncertainty introduced by the sniffer.  This
 augmented validation state machine processes the sniffer trace into a set of
 mutated traces, each satisfying the original state machine with certain

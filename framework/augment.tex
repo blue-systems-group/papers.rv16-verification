@@ -22,7 +22,8 @@ clocks.  This is to account for the possibility when such packet was observed by
 the DUT but missed by the sniffer.  Additionally, for each transition triggered
 by a \textit{receiving} packet (i.e., $p.dest = DUT$), such as $s_1\rightarrow
 s_0$ and $s_2\rightarrow s_0$, we add a \textit{self transition} with the same
-trigger packet and clock guards, but empty set of resetting clocks. This is to
+trigger packet and clock guards, but empty set of resetting clocks and no
+assignments to variables. This is to
 allow the state machine make progress when the sniffer missed such packets.
 
 We make two notes. First, self transitions are added only for
@@ -91,8 +92,8 @@ underlying Type-0 transition.
 
 With augmented state machine $S^+$, we can use Type-1 transitions to
 non-deterministically infer packets missed by the sniffer, and use Type-2
-transitions to consume extra
-packets captured by the sniffer but missed by the DUT.
+transitions to consume extra packets captured by the sniffer but missed by the
+DUT.
 
 Suppose $P$ is an accepting transition sequence of sniffer trace $Tr$ on the
 augmented state machine $S^+$. If we add missed packets indicated by Type-1
@@ -100,7 +101,7 @@ transitions to $Tr$, and remove packets indicated by Type-2 transitions from
 $Tr$, we obtain a mutation trace $Tr'$, which represents one possibility of the
 ground truth---the DUT packet trace.
 
-We show that Problem~\ref{prob:validation} is equivalent to the
+We show that the VERIFICATION problem is equivalent to the
 satisfiability problem of $Tr$ on $S^+$.
 
 \begin{theorem}

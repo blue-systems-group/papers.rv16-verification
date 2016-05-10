@@ -1,7 +1,7 @@
 \section{Prerequisites and Problem Statement}
 \label{sec:background}
 
-\subsection{Packet, Trace and Monitor}
+\subsection{Packet, Trace and Monitor State Machine}
 \label{subsec:basic}
 
 The alphabet of the monitor state machine is the finite set of all valid packets
@@ -17,8 +17,8 @@ the state machine then corresponds to a time-ordered sequence of packets.
     [(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]
   \end{align*}%
   where $t_i \in \mathbb{Z}^+$ is the \textit{discrete} timestamp and $p_i$ is the packet
-  observed at time $t_i$. The timestamps are strictly monotonically increasing,
-  i.e., $t_i < t_{i+1}$ for $1 \le i < n$.
+  observed at time $t_i$. The timestamps are strictly monotonically increasing:
+  $t_i < t_{i+1}$ for $1 \le i < n$.
 \end{definition}%
 
 In addition to timestamp monotonicity, we also require that adjacent packets do
@@ -55,8 +55,7 @@ more details about timed automata.
         g := true\ |\ c \le T\ |\ c \ge T\ |\ x\ |\ \neg g\ |\ g_1 \land g_2
       \end{align*}%
       where $c \in C$ is a clock variable, $T$ is a constant, and $x$ is a variable in $\mathbb{X}$. 
-      Note that an
-      transition can choose not to use guard conditions by setting $g$ to be $true$.
+      A transition can choose not to use guard conditions by setting $g$ to be $true$.
 
     \item $E \subseteq \mathbb{S} \times \mathbb{V} \times \mathbb{S} \times
       \mathbb{V} \times \Sigma \times  G \times \mathscr{P}(C)$ gives the set of
@@ -116,7 +115,7 @@ evidence of a violation.
 As shown in the motivation example in Fig.~\ref{fig:sniffer_in_middle}, a
 sniffer trace may either miss packets that are present in DUT trace, or contain
 extra packets that are missing in DUT trace. Note that in the latter case, those
-extra packets must be all sent \textit{to} the DUT. In other words, it is
+extra packets must be all sent \textit{to} the DUT. This is because it is
 impossible for the sniffer to overhear packets sent from the DUT that were not
 actually sent by the DUT.
 
