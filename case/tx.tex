@@ -84,13 +84,13 @@ For the $GoBack(k)$ heuristic, we set $k=7$, which is the maximum number of
 transmissions of a single packet.
 
 We first report that for all sniffer traces collected with different packet loss
-probabilities, no violation was reported. This demonstrates our framework's
-ability to tolerate sniffer imperfection instead of raising false alarms.
+probabilities, no violation was reported. \shuvendu{How did you come up with these magic parameters? Could you have increased them further without affecting scalability?} This demonstrates our framework's
+ability to tolerate sniffer imperfection instead of raising false alarms. \shuvendu{What about scalability?}
 
 Next, we present detailed analysis of the augmented transitions on the sniffer
 traces. The goal is to study for a given link packet loss probability
 ($Pr_{ed}$), how the sniffer's packet loss properties ($Pr_{ds}$ and $Pr_{es}$)
-affect the difference between mutation and the DUT trace.  For all following
+affect the difference between mutation and the DUT trace.  \shuvendu{I almost missed that mutation trace is the candidate trace that our tool comes up with to justfiy acceptance. The readers will miss it surely.} For all following
 analysis, we divide the traces into three groups according to $Pr_{ed}$: low ($0
 \le Pr_{ed} \le 0.15$), medium ($0.20 \le Pr_{ed} \le 0.35$) and high ($0.40 \le
 Pr_{ed} \le 0.50$).
@@ -162,17 +162,18 @@ And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
 
 Fig.~\ref{fig:mutation_dut} shows the Jaccard Distance between mutation and
 its corresponding DUT trace.
+\shuvendu{Its always good idea to pick a row/point in the table/figure and explain it}
 We make the following observations.
 First, for a given system loss probability, the more packet the sniffer picks up,
 the more similar the mutation trace is to the DUT trace.
 Interestingly, $Pr_{ds}$ is the dominant factor between the two.
 This is because retransmission packets of the same sequence number are
 identical, hence it may require to infer less retransmission packets than that
-were actually transmitted to unstuck the state machine.
+were actually transmitted to unstuck the state machine. \shuvendu{I don't understand this}
 We note, however, this
 trend is protocol specific and may be not be generally applicate to other
 protocols.
-Second, as the system loss probability increases, the Jaccard distance increases
+Second, as the system loss probability increases \shuvendu{What is the system loss probability?}, the Jaccard distance increases
 more rapidly as $Pr_{ds}$ increases.
 This is because the ratio of retransmission
 packet increases along with $Pr_{ds}$.
@@ -203,7 +204,7 @@ a hard time resolving such uncertainty.
 \subsubsection{Introducing Bugs}
 
 We have demonstrated that our framework can tolerate sniffer imperfection and
-avoid raising false alarms.
+avoid raising false alarms. \shuvendu{What about scalability?}
 The next question is, can it detect true violations?
 To answer this question, we manually introduce several bugs in \ns{}
 implementation that concerns various aspects of 802.11 data transmission
@@ -213,7 +214,7 @@ More specifically, the bugs are:
 \begin{itemize}
   \item \textbf{Sequence Number}\quad The DUT does not assign sequence number
     correctly. For example, it may increase sequence by 2 instead of 1, or it
-    does not increase sequence number after certain packet, etc.
+    does not increase sequence number after certain packet, etc. \shuvendu{Are there multiple such bugs?}
   \item \textbf{Semantic}\quad The DUT may retransmit even
     after receiving $Ack$, or does not retransmit when not receiving $Ack$.
 \end{itemize}
@@ -254,6 +255,7 @@ are.
 
 Fig.~\ref{fig:precision} shows the validating precision and recall for various
 $k$ values.
+\shuvendu{Again, pick a point in two figures and say what the point/cdf represents.}
 As expected, the more tolerant the search to sniffer
 losses (larger $k$), the more precise the violation detection.
 In particular,
