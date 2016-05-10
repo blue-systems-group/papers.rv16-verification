@@ -8,22 +8,23 @@ runtime
 verification~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis}.
 Stoller \textit{et al}~\cite{stoller2011runtime} used HMM-based state estimation
 techniques to calculate the confidence that the temporal property is satisfied
-in the presence of gaps in observation. While it may be possible to apply the
-methods in~\cite{stoller2011runtime} to our problem, we note several advantages
-of our augmented transition based approach.  First, we automatically augment the
-original state machine, which rigorously encodes the protocol specification and
-is intuitive to design and easy to verify correctness at the same time. Second,
-we use timed automata to monitor the timing constraints which are common in
-wireless protocols, while it is known non-trivial to encode such timing
-information in HMM. Finally, domain knowledge can be exploited in our approach
-to efficiently prune out unlikely branches during the exhaustive search.
+in the presence of gaps in observation. While it seems possible to adapt the
+method in~\cite{stoller2011runtime} to our problem, we note several advantages
+of our augmented monitor and prioritized search procedure.  
+First, the automatically augmented state machine precisely encodes the protocol specification and the uncertainty;
+this is intuitive to design and naturual for reporting the evidence for a trace being successful. 
+We do not require a user to specify the number of states of underlying HMM, or accurately provide underlying probabilities. 
+Second, we use timed automata to monitor the timing constraints which are common in wireless protocols; it may be non-trivial to encode such timing information in HMM. 
+Finally, we can exploit domain knowledge to devise effective pruning heuristics to rule out unlikely sequences during the exhaustive search. 
 
 \textbf{Network Protocol Validation.} Lee \textit{et al}~\cite{lee1997passive}
 studied the problem of passive network testing of network management. The system
 input/output behavior is only partially observable. However, the uncertainty
 only lies in missing events in the observation, while in the context of wireless
 protocol verification, the uncertainty could also be caused by extra events not
-observed by the tested system. Software model checking
+observed by the tested system. 
+However, they do not provide any formal guarantees even for cases when we report a definite bug. 
+Software model checking
 techniques~\cite{musuvathi2002cmc,godefroid1997model} have also been used to
 verify network protocols. Our problem is unique because of the observation
 uncertainty caused by sniffers.
