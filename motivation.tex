@@ -12,14 +12,13 @@ retry at most once to succinctly present the state machine.  In practice,
 multiple retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
 
 \begin{figure}
-  \vspace*{-6mm}
+  \vspace*{-3mm}
   \centering
   \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
   \caption{\textbf{Monitor State Machine for 802.11 Transmitter.}}
   \label{fig:dot11_tx_ta}
   \vspace*{-5mm}
 \end{figure}
-
 
 Obviously, given the DUT's internal log of packet transmission and reception
 events, it is trivial to feed such log into the state machine in
