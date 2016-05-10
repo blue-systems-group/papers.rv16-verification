@@ -1,4 +1,4 @@
-\section{Background and Problem Statement}
+\section{Prerequisites and Problem Statement}
 \label{sec:background}
 
 \subsection{Packet, Trace and Monitor}
@@ -28,7 +28,7 @@ not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i
 We use \textit{timed automata}~\cite{alur1994theory} to model the expected
 behaviors of the DUT.  A timed automata is a finite state machine with timing
 constraints on the transitions: each transition can optionally start one or more
-timers, which can later be used to assert certain events should be seen before
+timers, which can latter be used to assert certain events should be seen before
 or after the time out event. We refer the readers to~\cite{alur1994theory} for
 more details about timed automata.
 
@@ -115,7 +115,7 @@ evidence of a violation.
 
 As shown in the motivation example in Fig.~\ref{fig:sniffer_in_middle}, a
 sniffer trace may either miss packets that are present in DUT trace, or contain
-extra packets that are missing in DUT trace. Note that in the later case, those
+extra packets that are missing in DUT trace. Note that in the latter case, those
 extra packets must be all sent \textit{to} the DUT. In other words, it is
 impossible for the sniffer to overhear packets sent from the DUT that were not
 actually sent by the DUT.

@@ -1,14 +1,11 @@
 \subsection{Pruning Heuristics}
 \label{subsec:heuristic}
 
-Fundamentally, augmented transitions are introduced to compensate the
-imperfection of sniffers: whenever the original state machine $S$ gets stuck on
-sniffer trace $Tr$, Algorithm~\ref{alg:search} tries to continue with augmented
-transitions. In other words, in the face of uncertainty between a possible
+In the face of uncertainty between a possible
 protocol violation and sniffer imperfection, augmented transitions provide the
-ability to blame the latter. In fact, the exhaustive nature of
+ability to blame the latter. The exhaustive nature of
 Algorithm~\ref{alg:search} means that it always tries to blame sniffer
-imperfection whenever possible, making it too conservative to report true
+imperfection whenever possible, making it reluctant to report true
 violations.
 
 Therefore, extra constraints on the mutation trace need to be enforced to
@@ -34,6 +31,7 @@ we propose two \textit{protocol oblivious} heuristics based on the sniffer loss
 probabilities and general protocol operations. Both heuristic contains
 parameters that can be fine tuned in practice.
 
+\vspace*{-3mm}
 \subsubsection{$NumMissing(d, l, k)$}
 
 This heuristic states that the number of missing packets from device $d$ in any
@@ -63,6 +61,7 @@ violation is declared when no mutation trace can be found with $NumMissing(d, l,
 k_n)$.
 \end{comment}
 
+\vspace*{-3mm}
 \subsubsection{$GoBack(k)$}
 
 This heuristic states that the search should only

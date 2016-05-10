@@ -5,16 +5,13 @@ To deal with the inherent uncertainty of sniffer traces, we propose to
 systematically augment the original monitor state machine with non-deterministic
 transitions to account for the difference between the sniffer and DUT traces.
 
-\begin{figure}[h!]
-  \vspace*{-5mm}
+\begin{figure}
   \centering
   \includegraphics[width=0.7\textwidth]{./figures/dot11_tx_checker.pdf}
   \caption{\textbf{Augmented Monitor State Machine.} Augmented transitions are
   highlighted in bold face. $\overline{Pkt}$ means either $\epsilon$ or $Pkt$.}
   \label{fig:augment}
-  \vspace*{-1mm}
 \end{figure}
-
 
 Before formally defining the augmented state machine, we first use an example to
 illustrate the basic idea. Fig.~\ref{fig:augment} shows the augmented state
@@ -61,7 +58,6 @@ We now formally define the augmented state machine.
 \vspace*{-8mm}
 \end{definition}
 
-\setlength{\textfloatsep}{1mm}
 \begin{algorithm}[h!]
   \caption{Obtain Augmented Transitions $E^+$ from $E$}
   \label{alg:augment}
