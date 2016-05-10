@@ -83,6 +83,7 @@ The main routines of the algorithm is shown in Algorithm~\ref{alg:search}.
 In the top level \texttt{SEARCH} routine, we first obtain the augmented state
 machine $S^+$, then we call the recursive \texttt{EXTEND} function with an empty
 prefix, the sniffer trace, and the $S^+$'s initial state.
+\shuvendu{The type of an entry in $E$ or $E^+$ is not consistent as it is only a 3-tuple. Perhaps the rest of hte entries are \_}
 
 In the \texttt{EXTEND} function, we try to consume the first packet in the
 remaining trace using either Type-0, Type-1 or Type-2 transition.
