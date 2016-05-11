@@ -13,9 +13,7 @@ the state machine then corresponds to a time-ordered sequence of packets.
 
 \begin{definition}
   A \textit{packet trace} is a finite sequence of $(timestamp, packet)$ tuple:
-  \begin{align*}
-    [(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]
-  \end{align*}%
+    $[(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]$
   where $t_i \in \mathbb{Z}^+$ is the \textit{discrete} timestamp and $p_i$ is the packet
   observed at time $t_i$. The timestamps are strictly monotonically increasing:
   $t_i < t_{i+1}$ for $1 \le i < n$.
@@ -28,14 +26,16 @@ not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i
 We use \textit{timed automata}~\cite{alur1994theory} to model the expected
 behaviors of the DUT.  A timed automata is a finite state machine with timing
 constraints on the transitions: each transition can optionally start one or more
-timers, which can latter be used to assert certain events should be seen before
+timers, which can later be used to assert certain events should be seen before
 or after the time out event. We refer the readers to~\cite{alur1994theory} for
 more details about timed automata.
 
 
 \begin{definition}
-  A protocol monitor state machine $S$ is an 7-tuple\\
-  $\{\Sigma, \mathbb{S}, \mathbb{X}, s_0, C, E, G\}$, where:
+  \sloppy{%
+    A protocol monitor state machine $S$ is a 7-tuple
+    $\{\Sigma, \mathbb{S}, \mathbb{X}, s_0, C, E, G\}$, where:
+  }
   \begin{itemize}
     \item $\Sigma = \mathbb{P}$ is the finite input alphabet.
 
@@ -80,7 +80,8 @@ Fig.~\ref{fig:dot11_tx_ta} can be formally defined as follows:
   \item $\Sigma = \{DATA_i, DATA'_i, Ack\ |\ 0 \le i < N\}$.
   \item Clock variables $C = \{c\}$. The only clock variable $c$ is
     used for acknowledgment time out.
-  \item $\mathbb{X} = \{i\}$, as a variable with ${\mathit log}(N) + 1$ bits to count from $0$ to $N$.  
+  \item $\mathbb{X} = \{i\}$, as a variable with ${\mathit log}(N) + 1$ bits to
+    count from $0$ to $N$.  
   \item Guard constraints $G = \{ c \le T_o, c > T_o, T_o < c \le T_m\}$.
     $T_o$ is the acknowledgment time out value, and $T_m >
     T_o$ is the maximum delay allowed before the retransmission packet gets
@@ -124,12 +125,14 @@ We formally capture this relationship with the definition of mutation trace.
 \begin{definition}
   \label{def:mutation}
   A packet trace $Tr'$ is a mutation of sniffer trace $Tr$ w.r.t a DUT if for
-  all $(t, p) \in Tr\setminus Tr'$, $p.dest = DUT$.
+  all $(t, p) \in Tr \setminus Tr'$, $p.dest = DUT$.
 \end{definition}
 
-A mutation trace $Tr'$ represents a \textit{guess} of the corresponding DUT
-packet trace given given sniffer trace $Tr$.  In fact, the DUT packet trace must
-be one of the mutation traces of the sniffer trace $Tr$.
+By definition, either $Tr' \supseteq Tr$ (hence $Tr \setminus Tr' = \emptyset$),
+or those extra packets in $Tr$ but not in $Tr'$ are all sent to the DUT. A
+mutation trace $Tr'$ represents a \textit{guess} of the corresponding DUT packet
+trace given given sniffer trace $Tr$.  In fact, the DUT packet trace must be one
+of the mutation traces of the sniffer trace $Tr$.
 
 \begin{lemma}
   Let $Tr_{DUT}$ and $Tr$ be the DUT and sniffer packet trace captured during
@@ -153,3 +156,10 @@ implementation given a sniffer trace can be formally defined as follows:
   \textbf{instance} A protocol monitor state machine $S$ and a sniffer trace $Tr$.\\
   \textbf{question} Does there exist a mutation trace $Tr'$ of $Tr$ that satisfies $S$?
 \end{problem}
+
+If the answer is no, a definite violation of the DUT implementation can be
+claimed. Nevertheless, if the answer is yes, $S$ could still reject $Tr_{DUT}$.
+In other words, the conclusion of the validation can either be
+\textit{definitely wrong} or \textit{probably correct}, but not
+\textit{definitely correct}.  This is the fundamental limitation caused by the
+uncertainty of sniffer traces.

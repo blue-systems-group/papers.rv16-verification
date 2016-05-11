@@ -2,88 +2,92 @@
 \label{subsec:search}
 
 In this section, we present an \textit{exhaustive} search algorithm of the
-accepting transition sequence of $S^+$ on sniffer trace $Tr$.  It guarantees to
-yield a solution if there exists, thus is exhaustive.  
-In the next sections, we present heuristics to limit the search to accepting sequences of $S^+$ that 
-require relatively few transitions from $S^+ \setminus S$.
-Due to the NP-completeness of the problem, this also makes the algorithm meaningful in practice.
+accepting transition sequence of $S^+$ on sniffer trace $Tr$. It guarantees to
+yield a accepting sequence if it exists, thus is exhaustive.  In the next
+sections, we present heuristics to limit the search to accepting sequences of
+$S^+$ that require relatively few transitions from $E^+_1 \cup E^+_2$.  Due to
+the NP-completeness of the problem, this also makes the algorithm meaningful in
+practice.
 
-\begin{algorithm}[t!]
-  \caption{Exhaustive search algorithm of $S^+$ on $Tr$.}
-  \label{alg:search}
-  \begin{algorithmic}[1]
-    \Function{search}{S, Tr}
-      \Let{$S^+$}{\Call{augment}{S}}
-      \State\Return{\Call{extend}{[], Tr, $S^+.s_0$}}
-    \EndFunction
-    \Function{extend}{prefix, p::suffix, $s$}
-      \LineComment{This check should be ignored in exhaustive alg.}
-      \If{not \Call{likely}{prefix}}\Comment{This check should be ignored in exhaustive alg.}
-        \label{alg:search:stop}
-        \State{\Return{\nil}}
-      \EndIf
+\begin{figure}[t!]
+  \begin{minipage}{\textwidth}
+    \begin{algorithm}[H]
+      \caption{Exhaustive search algorithm of $S^+$ on $Tr$.}
+      \label{alg:search}
+      
+      \begin{algorithmic}[1]
+        \Function{search}{S, Tr}
+          \Let{$S^+$}{\Call{augment}{S}}
+          \State\Return{\Call{extend}{[], Tr, $S^+.s_0$}}
+        \EndFunction
+        \Function{extend}{prefix, p::suffix, $s$}
+          \If{not \Call{likely}{prefix}}
+            \label{alg:search:stop}
+            {\Return{\nil}}\footnote{This check should be ignored in the exhaustive algorithm.}
+          \EndIf
+          \For{i $\in$ [0, 1, 2]}
+          \label{alg:search:order}
+          \Let{mutation}{EXTEND-i(prefix, p::suffix, $s$)}
+            \If{mutation $\ne$ \nil}
+              {\Return{mutation}}
+            \EndIf
+          \EndFor
+          \State\Return{\nil}
+        \EndFunction
+        \Function{extend-0}{prefix, p::suffix, $s$}
+          \For{$\langle s, s', p\rangle\footnote{An edge is represented using
+          $\langle s, s', p\rangle$ tuple when there is no ambiguity.} \in E$}
+            \If{suffix = \nil}
+              {\Return{prefix@p}}
+              \label{alg:search:terminate_0}
+            \EndIf
+            \Let{mutation}{\Call{extend}{prefix@p, suffix, $s'$}}
+            \label{alg:search:append}
+            \If{mutation $\ne$ \nil}
+              {\Return{mutation}}
+            \EndIf
+          \EndFor
+          \State{\Return{\nil}}
+        \EndFunction
+        \Function{extend-1}{prefix, p::suffix, $s$}
+          \ForAll{$\langle s, s', q\rangle \in E^+_1$}
+            \If{q.time $>$ p.time}
+              \label{alg:search:type_1_limit}
+              \State{\textbf{continue}}
+            \EndIf
+            \Let{mutation}{\Call{extend}{prefix@q, p::suffix, $s'$}}
+            \label{alg:search:guess}
+            \If{mutation $\ne \nil$}
+              {\Return{mutation}}
+            \EndIf
+          \EndFor
+          \State{\Return{\nil}}
+        \EndFunction
+        \Function{extend-2}{prefix, p::suffix, $s$}
+          \ForAll{$\langle s, s, p \rangle \in E^+_2$}
+            \If{suffix = \nil}
+              {\Return{prefix}}
+              \label{alg:search:terminate_2}
+            \EndIf
+            \Let{mutation}{\Call{extend}{prefix, suffix, $s$}}
+            \label{alg:search:drop}
+            \If{mutation $\ne$ \nil}
+              {\Return{mutation}}
+            \EndIf
+          \EndFor
+          \State{\Return{\nil}}
+        \EndFunction
+      \end{algorithmic}
+    \end{algorithm}
+    \renewcommand\footnoterule{}
+  \end{minipage}
+  %\vspace*{-5mm}
+\end{figure}
 
-      \For{i $\in$ [0, 1, 2]}
-      \label{alg:search:order}
-      \Let{mutation}{EXTEND-i(prefix, p::suffix, $s$)}
-        \If{mutation $\ne$ \nil}
-          \State{\Return{mutation}}
-        \EndIf
-      \EndFor
-      \State\Return{\nil}
-    \EndFunction
-    \Function{extend-0}{prefix, p::suffix, $s$}
-      \For{$\langle s, s', p\rangle \in E$}
-        \If{suffix = \nil}
-          \State{\Return{prefix@p}}
-          \label{alg:search:terminate_0}
-        \EndIf
-        \Let{mutation}{\Call{extend}{prefix@p, suffix, $s'$}}
-        \label{alg:search:append}
-        \If{mutation $\ne$ \nil}
-          \State{\Return{mutation}}
-        \EndIf
-      \EndFor
-      \State{\Return{\nil}}
-    \EndFunction
-    \Function{extend-1}{prefix, p::suffix, $s$}
-      \ForAll{$\langle s, s', q\rangle \in E^+_1$}
-        \If{q.time $>$ p.time}
-          \label{alg:search:type_1_limit}
-          \State{\textbf{continue}}
-        \EndIf
-        \Let{mutation}{\Call{extend}{prefix@q, p::suffix, $s'$}}
-        \label{alg:search:guess}
-        \If{mutation $\ne \nil$}
-          \State{\Return{mutation}}
-        \EndIf
-      \EndFor
-      \State{\Return{\nil}}
-    \EndFunction
-    \Function{extend-2}{prefix, p::suffix, $s$}
-      \ForAll{$\langle s, s, p \rangle \in E^+_2$}
-        \If{suffix = \nil}
-          \State{\Return{prefix}}
-          \label{alg:search:terminate_2}
-        \EndIf
-        \Let{mutation}{\Call{extend}{prefix, suffix, $s$}}
-        \label{alg:search:drop}
-        \If{mutation $\ne$ \nil}
-          \State{\Return{mutation}}
-        \EndIf
-      \EndFor
-      \State{\Return{\nil}}
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-
-
-The main routines of the algorithm is shown in Algorithm~\ref{alg:search}.
-In the top level \texttt{SEARCH} routine, we first obtain the augmented state
+The main routines of the algorithm is shown in Algorithm~\ref{alg:search}.  In
+the top level \texttt{SEARCH} routine, we first obtain the augmented state
 machine $S^+$, then we call the recursive \texttt{EXTEND} function with an empty
-prefix, the sniffer trace, and the $S^+$'s initial state.
-\shuvendu{The type of an entry in $E$ or $E^+$ is not consistent as it is only a 3-tuple. Perhaps the rest of hte entries are \_}
+prefix, the sniffer trace, and the $S^+$'s initial state. 
 
 In the \texttt{EXTEND} function, we try to consume the first packet in the
 remaining trace using either Type-0, Type-1 or Type-2 transition.

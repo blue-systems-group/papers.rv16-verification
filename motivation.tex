@@ -1,26 +1,40 @@
-\section{Motivating Example}
+\section{Background and Motivating Example}
 \label{sec:motivation}
 
-Consider the IEEE 802.11 (as known as \wifi{}) transmitter (DUT) state machine
-shown in Fig.~\ref{fig:dot11_tx_ta}. After the DUT sends $DATA_i$---a data
-packet with sequence number $i$ ($s_0\rightarrow s_1)$, it starts a timer and
-waits for the acknowledgment packet---$Ack$. Either it receives $Ack$ within time
-$T_o$ ($s_1\rightarrow s_0$), or it sends $DATA'_i$---retransmission of $DATA_i$
-($s_1\rightarrow s_2$). Finally, if it still does not receive the $Ack$ packet,
-it moves on to next packet\footnote{We assume in this example that the DUT will
-retry at most once to succinctly present the state machine.  In practice,
-multiple retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
+The problem of validating wireless protocol implementation using sniffers arises
+during testing a popular game controller. To meet the low latency and low power
+consumption goals, custom wireless communication protocol was designed. The
+protocol specification was then handed over to wireless chipset vendors for
+implementation, which is common industry practice. However, neither
+implementation details nor trace collection capabilities are provided in the
+shipped firmware due to Intellectual Property constraints and device resource
+limitation. Hence using sniffers to validate the protocol implementation is the
+natural and only option.
 
-\begin{figure}
-  \vspace*{-3mm}
+We developed a tool to validate certain protocol properties in the sniffer
+trace, yet often found outrageous amounts of false alarms due to the
+incompleteness of the sniffer traces, making the tool virtually useless.
+
+To better understand the incompleteness of sniffer trace, consider the IEEE
+802.11 (as known as \wifi{}) transmitter (DUT) state machine shown in
+Fig.~\ref{fig:dot11_tx_ta}. After the DUT sends $DATA_i$---a data packet with
+sequence number $i$ ($s_0\rightarrow s_1)$, it starts a timer and waits for the
+acknowledgment packet---$Ack$. Either it receives $Ack$ within time $T_o$
+($s_1\rightarrow s_0$), or it sends $DATA'_i$---retransmission of $DATA_i$
+($s_1\rightarrow s_2$). Similarly, either it receives the $Ack$ within $T_o$
+($s_2\rightarrow s_0$) or aborts transmission and moves on to next
+packet\footnote{We assume in this example that the DUT will retry at most once
+to succinctly present the state machine. In practice, multiple
+retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
+
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
   \caption{\textbf{Monitor State Machine for 802.11 Transmitter.}}
   \label{fig:dot11_tx_ta}
-  \vspace*{-5mm}
 \end{figure}
 
-Obviously, given the DUT's internal log of packet transmission and reception
+Given the DUT's internal log of packet transmission and reception
 events, it is trivial to feed such log into the state machine in
 Fig.~\ref{fig:dot11_tx_ta} and validate the correctness of DUT's protocol
 implementation. In this paper, however, we assume the DUT implementation is a
@@ -32,8 +46,8 @@ to sniffer's observation: packet loss and physical diversity. The sniffer could
 either missing packets from the DUT (packet loss), or overhear packets that are
 sent to but missed by the DUT (physical diversity).
 
-\begin{figure}
-  \vspace*{-5mm}
+\begin{figure}[H]
+  \vspace*{-3mm}
   \centering
   \includegraphics[width=0.6\textwidth]{./figures/false_pos.pdf}
   \caption{\textbf{Uncertainty of Sniffer Observations.} $Tr_{OTA}$ is
@@ -63,9 +77,7 @@ sends $DATA'_0$.  Again, without any additional information it is impossible to
 disambiguate between the sniffer missing certain packets and a bug in DUT's
 retransmission logic.
 
-\begin{comment}
 Informally, the question we set out to answer in this paper is: given the
 protocol monitor state machine and the sniffer's
 observation with inherent uncertainty, how to validate that the DUT behaves as
 specified?
-\end{comment}

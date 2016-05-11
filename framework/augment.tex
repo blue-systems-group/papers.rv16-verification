@@ -5,12 +5,14 @@ To deal with the inherent uncertainty of sniffer traces, we propose to
 systematically augment the original monitor state machine with non-deterministic
 transitions to account for the difference between the sniffer and DUT traces.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
+  \vspace*{-5mm}
   \includegraphics[width=0.7\textwidth]{./figures/dot11_tx_checker.pdf}
   \caption{\textbf{Augmented Monitor State Machine.} Augmented transitions are
   highlighted in bold face. $\overline{Pkt}$ means either $\epsilon$ or $Pkt$.}
   \label{fig:augment}
+  \vspace*{-8mm}
 \end{figure}
 
 Before formally defining the augmented state machine, we first use an example to
@@ -42,24 +44,25 @@ where $\rightarrow$ is the transition from the original state machine,
 $\rightarrow_e$ and $\rightarrow_s$ are the augmented empty and self transitions
 respectively.
 
-We now formally define the augmented state machine.
-
+We now formally define the augmented state machine.%
+\vspace*{-1mm}
 \begin{definition}
   An augmented state machine $S^+$ for a monitor state machine $S$ is a 7-tuple
   $\{\boldsymbol{\Sigma^+}, \mathbb{S}, \mathbb{X}, s_0, C, \boldsymbol{E^+},
   G\}$, where $\mathbb{S}, \mathbb{X}, s_0, C, G$ are the same with $S$.
   $\Sigma^+=\{\epsilon\} \cup \Sigma$ is the augmented input alphabet with the
   empty symbol, and $E^+ \supset E$ is the set of transitions, which includes:
+  \vspace*{-1mm}
   \begin{itemize}
     \item $E$: existing transitions (\textbf{Type-0}) in $S$.
-    \item $E^+_1$: empty transitions (\textbf{Type-1}) for each transition in $E$.
-    \item $E^+_2$: self transitions \textbf{(Type-2)} for each transitions
+    \item $E^+_1$: empty transitions (\textbf{Type-1}) for transitions in $E$.
+    \item $E^+_2$: self transitions \textbf{(Type-2)} for transitions
       triggered by receiving packets.
   \end{itemize}
-\vspace*{-8mm}
 \end{definition}
 
-\begin{algorithm}[h!]
+\begin{figure}[t!]
+\begin{algorithm}[H]
   \caption{Obtain Augmented Transitions $E^+$ from $E$}
   \label{alg:augment}
   \begin{algorithmic}[1]
@@ -80,26 +83,26 @@ We now formally define the augmented state machine.
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
-
+\vspace*{-12mm}
+\end{figure}
 
 Algorithm~\ref{alg:augment} describes the process of transforming $E$ into
-$E^+$.  In particular, Line~\ref{alg:augment:type0} adds existing transitions in
+$E^+$. In particular, Line~\ref{alg:augment:type0} adds existing transitions in
 $E$ to $E^+$, while line~\ref{alg:augment:type1} and~\ref{alg:augment:type2} add
-Type-1 and Type-2 transitions to $E^+$ respectively. Note that in Type-2
-transitions, both the state and the variables stay the same after the
-transition. We have highlighted the elements of the tuple that differ from the 
-underlying Type-0 transition.
+Type-1 and Type-2 transitions to $E^+$ respectively.  We have highlighted the
+elements of the tuple that differ from the underlying Type-0 transition. Note
+that in Type-2 transitions, both the state and the variables stay the same after
+the transition.
 
 With augmented state machine $S^+$, we can use Type-1 transitions to
 non-deterministically infer packets missed by the sniffer, and use Type-2
 transitions to consume extra packets captured by the sniffer but missed by the
 DUT.
 
-Suppose $P$ is an accepting transition sequence of sniffer trace $Tr$ on the
-augmented state machine $S^+$. If we add missed packets indicated by Type-1
-transitions to $Tr$, and remove packets indicated by Type-2 transitions from
-$Tr$, we obtain a mutation trace $Tr'$, which represents one possibility of the
-ground truth---the DUT packet trace.
+A successful run of $S^+$ on sniffer trace $Tr$ yields a mutation trace $Tr'$
+which represents one possibility of the DUT trace. Specifically, $Tr'$ can be
+obtained by adding missing packets indicated by Type-1 transitions to $Tr$, and
+removing extra packets indicated by Type-2 transitions from $Tr$
 
 We show that the VERIFICATION problem is equivalent to the
 satisfiability problem of $Tr$ on $S^+$.
@@ -108,13 +111,13 @@ satisfiability problem of $Tr$ on $S^+$.
   There exists a mutation trace $Tr' \in \mathcal{M}(Tr)$ that satisfies $S$ if
   and only if $Tr$ satisfies $S^+$.
  \label{the:equivalent}
-\end{theorem}%
-(Proof in Appendix~\ref{app:theorem1})
+\end{theorem}\vspace*{-2mm}(Proof in Appendix~\ref{app:theorem1})
 
 By Theorem~\ref{the:equivalent}, the inherent uncertainty of the sniffer traces
 are explicitly represented by the augmented transitions, and can be
 systematically explored using the well established state machine theory.
 
+\begin{comment}
 One immediate observation can be drawn from Theorem~\ref{the:equivalent} by
 contradiction.
 
@@ -128,3 +131,4 @@ However, when $S^+$ accepts $Tr$, $S$ could still reject $Tr_{DUT}$.
 In other words, the conclusion of the validation can either be \textit{definitely
 wrong} or \textit{possibly correct}, but not \textit{definitely correct}.
 This is the fundamental limitation caused by the uncertainty of sniffer traces.
+\end{comment}

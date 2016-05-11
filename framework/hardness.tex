@@ -6,40 +6,39 @@ fact, the problem is still NP-complete even with only one type of augmented
 transitions.
 
 Recall that Type-1 transitions are added because the sniffer may miss packets.
-Suppose there exists a special sniffer that is able to capture \textit{every}
-packet ever transmitted, then only Type-2 transitions are needed since the
-sniffer may still overhear packets sent to the DUT.
+Suppose an imaginary sniffer that is able to capture \textit{every} packet ever
+transmitted, then only Type-2 transitions are needed since the sniffer may still
+overhear packets sent to the DUT. Similarly, suppose another special sniffer
+that would not overhear any packets sent to the DUT, then only Type-1
+transitions are needed to infer missing packets.
 
-Similarly, suppose another special sniffer that would not overhear any packets
-sent to the DUT. In this case, only Type-1 transitions are needed to infer
-missing packets.
-
-We refer the augmented state machine that only have Type-0 and Type-1
-transitions as $S^+_1$, and the augmented state machine only have Type-0 and
+We refer the augmented state machine that only has Type-0 and Type-1
+transitions as $S^+_1$, and the augmented state machine that only has Type-0 and
 Type-2 transitions as $S^+_2$. And we show that each subproblem of determining
 trace satisfiability is NP-complete.
 
 \begin{problem}
   VALIDATION-1\\
-  Given that $Tr\setminus Tr_{DUT}=\emptyset$.\\
+  Given that $Tr\setminus Tr_{DUT}=\emptyset$ (sniffer does not overhear
+  packets).\\
   \textbf{instance} Checker state machine $S$ and sniffer trace $Tr$.\\
   \textbf{question} Does $S^+_1$ accept $Tr$?
 \end{problem}
 
 \begin{problem}
   VALIDATION-2\\
-  Given that $Tr_{DUT} \subset Tr$.\\
+  Given that $Tr_{DUT} \subseteq Tr$ (sniffer does not missing packets).\\
   \textbf{instance} Checker state machine $S$ and sniffer trace $Tr$.\\
   \textbf{question} Does $S^+_2$ accept $Tr$?
 \end{problem}
 
 \begin{lemma}
+  \label{lem:sub}
   Both VALIDATION-1 and VALIDATION-2 are NP-complete.
-\end{lemma}%
-(Proof in Appendix~\ref{app:lemma2})
+\end{lemma}\vspace*{-2mm}(Proof in Appendix~\ref{app:lemma2})
 
-We now turn to the general validation problem with normal sniffers that could
-either miss or overhear packets.
+The hardness statement of the general VALIDATION problem naturally follows
+Lemma~\ref{lem:sub}.
 
 \begin{theorem}
   VALIDATION is NP-complete.

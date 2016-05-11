@@ -35,16 +35,14 @@ This is true even when using multiple
 sniffers~\cite{cheng2006jigsaw,mahajan2006analyzing,bahl2006enhancing}, sniffer
 with multiple antennas~\cite{omnipeek}, or in isolated wireless environments.
 
-Since the sniffer trace does not perfectly match the actual trace,
-uncertainty arises during protocol implementation validation.
-For example, if the DUT fails to respond correctly to a packet in the sniffer
-trace, it may be because (a) the DUT's implementation is incorrect, (b) the DUT
-did not actually receive the packet or (c) the DUT's response was missed by the
-sniffer.
-Whenever the DUT's behavior does not match the specification, there are now two
-potential explanations:
-either the DUT's implementation is wrong, or the sniffer trace is incomplete.
-Accurate validation requires  distinguishing between these two
+Since the sniffer trace does not perfectly match the actual trace, uncertainty
+arises during protocol implementation validation.  For example, if the DUT fails
+to respond correctly to a packet in the sniffer trace, it may be because (a) the
+DUT's implementation is incorrect, (b) the DUT did not actually receive the
+packet or (c) the DUT's response was missed by the sniffer.  Whenever the DUT's
+behavior does not match the specification, there are now two potential
+explanations: either the DUT's implementation is wrong, or the sniffer trace is
+incomplete.  Accurate validation requires  distinguishing between these two
 causes.
 
 We present a new technique enabling validation of protocol implementation using
@@ -65,14 +63,14 @@ Our paper makes the following contributions:
     uncertainty problem caused by sniffer in validating wireless protocol
     implementations.
 		  \item We formalize the problem using a nondeterministic state machine that
-    systematically and completely encodes the inherent uncertainty of the
+    systematically and completely encodes the uncertainty of the
     sniffer trace.
 		    \item We characterize the NP-completeness of the validation problem, and
       present two protocol-oblivious heuristics to prune the search
       space and make validation possible in practice.
 			\item We implement the validation framework and evaluate it using
     \ns{} network simulator~\cite{riley2010ns}.
-		    Our framework accurately identifies both introduced as well as previously
+		    Our framework accurately identifies both introduced and previously
     unknown violations in \ns{}'s implementations of the 802.11 protocol.
 \end{enumerate}
 

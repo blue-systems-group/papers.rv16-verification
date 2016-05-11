@@ -48,8 +48,8 @@ the sniffer. During the experiments,we collect both the DUT packet trace
 In the original monitor state machine shown in Fig.~\ref{fig:dot11_tx_ta}, we
 set acknowledgment timeout $T_o=334\mu$s, maximum retransmission delay
 $T_m=15$ms according to the protocol. We also adapt the state machine to include
-multiple retransmissions\footnote{This is not part of the protocol and NS-3
-implementation set this to be 7.} instead of one.
+multiple retransmissions\footnote{The exact number of retransmissions is not
+part of the protocol, and NS-3 implementation set this to be 7.} instead of one.
 
 Let $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$ be the packet loss probability between
 the DUT and sniffer, endpoint and sniffer, DUT and endpoint respectively.
@@ -126,8 +126,7 @@ of sequence numbers as it wraps after 4096.
 And similarly \texttt{r\_Ack\_i\_t} is the corresponding acknowledgment packet.
 \end{comment}
 
-\begin{figure*}[h!]
-  \vspace*{-5mm}
+\begin{figure*}[t!]
   \centering
   \begin{subfigure}{0.33\textwidth}
     \centering
@@ -231,8 +230,7 @@ The precision metric quantifies how \textit{useful} the validation results are ,
 while the recall metric measures how \textit{complete} the validation results
 are.
 
-\begin{figure}
-  \vspace*{-5mm}
+\begin{figure}[t!]
   \centering
   \begin{subfigure}{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/scripts/PrecisionFigure.pdf}
