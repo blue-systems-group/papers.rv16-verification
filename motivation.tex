@@ -10,8 +10,9 @@ capabilities are provided in the shipped firmware due to Intellectual Property
 constraints and device resource limitation. Hence using sniffers to validate the
 protocol implementation is the natural and only option.
 
-We developed a tool to validate certain protocol properties in the sniffer
-trace, yet often found outrageous amounts of false alarms due to the
+The testing has been performed via manual spot-checking of the sniffer trace.
+We developed a tool to automatically validate certain protocol properties in the
+sniffer trace, yet often found outrageous amounts of false alarms due to the
 incompleteness of the sniffer traces, making the tool virtually useless.
 
 To better understand the incompleteness of sniffer trace, consider the IEEE
@@ -31,6 +32,7 @@ retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
   \includegraphics[width=0.6\textwidth]{./figures/dot11_tx_ta.pdf}
   \caption{\textbf{Monitor State Machine for 802.11 Transmitter.}}
   \label{fig:dot11_tx_ta}
+  \vspace*{-5mm}
 \end{figure}
 
 Given the DUT's internal log of packet transmission and reception
