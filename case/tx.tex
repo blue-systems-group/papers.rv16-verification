@@ -70,8 +70,8 @@ disabling augmented transitions in our framework.  As expected, no violation is
 detected in any DUT packet traces.
 
 We then verify the sniffer traces using the augmented state machine $S^+$.  For
-the $GoBack(k)$ heuristic, we set $k=7$, which is the maximum number of
-transmissions of a single packet. For the $NumMissing(d, l, k)$ heuristic, we
+the $\mathit{GoBack}(k)$ heuristic, we set $k=7$, which is the maximum number of
+transmissions of a single packet. For the $\mathit{NumMissing}(d, l, k)$ heuristic, we
 set the sliding window size $l=100$, and $k=80$ such that no violation is
 reported. The relationship of $k$ and validation precision is studied in next
 section.
@@ -243,10 +243,11 @@ are.
   \vspace*{-5mm}
 \end{figure}
 
-Fig.~\ref{fig:precision} shows the validating precision and recall for various
-$k$ values. For precision, as expected, the more tolerant the search to sniffer
-losses (larger $k$), the more tolerant the framework is to sniffer losses, and
-the more precise the violation detection. In particular, when $k=30$, the
-precisions are 100\% for all $Pr_{ed}$ values. Second, the recall is less
-sensitive to the choice of $k$.  Except for the extreme case when $k=30$, all
-other thresholds can report almost all the violations.
+Fig.~\ref{fig:precision} shows the CDF of precision and recall of the 51
+experiments for various $k$ values. For precision, as expected, the more
+tolerant the search to sniffer losses (larger $k$), the more tolerant the
+framework is to sniffer losses, and the more precise the violation detection. In
+particular, when $k=30$, the precisions are 100\% for all $Pr_{ed}$ values.
+Second, the recall is less sensitive to the choice of $k$.  Except for the
+extreme case when $k=30$, all other thresholds can report almost all the
+violations.

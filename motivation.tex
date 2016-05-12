@@ -1,15 +1,14 @@
 \section{Background and Motivating Example}
 \label{sec:motivation}
 
-The problem of validating wireless protocol implementation using sniffers arises
-during testing a popular game controller. To meet the low latency and low power
-consumption goals, custom wireless communication protocol was designed. The
-protocol specification was then handed over to wireless chipset vendors for
-implementation, which is common industry practice. However, neither
-implementation details nor trace collection capabilities are provided in the
-shipped firmware due to Intellectual Property constraints and device resource
-limitation. Hence using sniffers to validate the protocol implementation is the
-natural and only option.
+We encounter this problem while testing the protocol implementation of a popular
+game controller. To meet the low latency and low power consumption goals, custom
+wireless communication protocol was designed. The protocol specification was
+then handed over to wireless chipset vendors for implementation, which is common
+industry practice. However, neither implementation details nor trace collection
+capabilities are provided in the shipped firmware due to Intellectual Property
+constraints and device resource limitation. Hence using sniffers to validate the
+protocol implementation is the natural and only option.
 
 We developed a tool to validate certain protocol properties in the sniffer
 trace, yet often found outrageous amounts of false alarms due to the

@@ -35,8 +35,8 @@ practice.
           \State\Return{\nil}
         \EndFunction
         \Function{extend-0}{prefix, p::suffix, $s$}
-          \For{$\langle s, s', p\rangle\footnote{An edge is represented using
-          $\langle s, s', p\rangle$ tuple when there is no ambiguity.} \in E$}
+          \For{$\langle s, s', p\rangle\footnote{$\langle s, s', p \rangle$ is
+              short for $\langle s, *, s', *, p, *, *\rangle$} \in E$}
             \If{suffix = \nil}
               {\Return{prefix@p}}
               \label{alg:search:terminate_0}
