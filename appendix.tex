@@ -106,20 +106,18 @@ $ack_{n-1}$ is received by the DUT.
 In either case, the DUT shall evaluate $F$ and transmit $pkt_{true}$ if $F$ is
 \texttt{true}.  
 
-Consider a sniffer trace $Tr_1=\{(0, pkt_0), (2, pkt_1),\\ (4,
-pkt_2),\ldots, (2(n-1), pkt_{n-1}), (2n, pkt_{true})\}$.
-That is, the sniffer only captures all $pkt_i$ plus the final $pkt_{true}$, but none of
-$ack_i$.
-It is easy to see that $F$ is satisfiable if $S_1^+$ accepts
-$Tr_1$.
-In particular, a successful run of $S_1^+$ on $Tr_1$ would have to
-guess, for each $pkt_i$, whether the Type-1 empty transitions should be used
-to infer the missing $ack_i$ packet, such that $F$ is \textit{true} at the
-end.
-Note that for $Tr_1$, no Type-2 self transitions can be used since all
-packets in $Tr_1$ are sent from the DUT.
-Therefore, the SAT problem of $F$ can be reduced to the VALIDATION-1 problem
-of $S^+_1$ on sniffer trace $Tr_1$.
+\sloppy{%
+  Consider a sniffer trace $Tr_1=\{(0, pkt_0), (2, pkt_1), (4, pkt_2),\ldots,
+  (2(n-1), pkt_{n-1}), (2n, pkt_{true})\}$.  That is, the sniffer only captures
+  all $pkt_i$ plus the final $pkt_{true}$, but none of $ack_i$.  It is easy to see
+  that $F$ is satisfiable if $S_1^+$ accepts $Tr_1$.  In particular, a successful
+  run of $S_1^+$ on $Tr_1$ would have to guess, for each $pkt_i$, whether the
+  Type-1 empty transitions should be used to infer the missing $ack_i$ packet,
+  such that $F$ is \textit{true} at the end.  Note that for $Tr_1$, no Type-2 self
+  transitions can be used since all packets in $Tr_1$ are sent from the DUT.
+  Therefore, the SAT problem of $F$ can be reduced to the VALIDATION-1 problem of
+  $S^+_1$ on sniffer trace $Tr_1$.
+}
 
 \sloppy{%
   On the other hand, consider another sniffer trace $Tr_2 =\{(0, pkt_0), (1,
