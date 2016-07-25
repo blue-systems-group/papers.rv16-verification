@@ -47,15 +47,14 @@ causes.
 
 We present a new technique enabling validation of protocol implementation using
 wireless sniffers. Given a monitor state machine representing the protocol being
-validated, we propose a systematic transformation that adds nondeterministic
+validated, we propose a systematic transformation that adds non-deterministic
 transitions to incorporate uncertainty introduced by the sniffer.  This
 augmented validation state machine processes the sniffer trace into a set of
 mutated traces, each satisfying the original state machine with certain
-probability.  If the set is empty, the implementation definitely violates the
-protocol.  If the set contains only low-probability traces, then the
-implementation probably violates the protocol.  Searching over all the mutated
-traces is NP-complete, but the approach can be made practical by applying
-protocol-oblivious heuristics that limit the search to likely mutated traces.
+probability. If the set is empty, the implementation definitely violates the
+protocol. Searching over all the mutated traces is NP-complete, but the approach
+can be made practical by applying protocol-oblivious heuristics that limit the
+search to likely mutated traces.
 
 Our paper makes the following contributions:
 \begin{enumerate}
@@ -71,7 +70,7 @@ Our paper makes the following contributions:
 			\item We implement the validation framework and evaluate it using
     \ns{} network simulator~\cite{riley2010ns}.
 		    Our framework accurately identifies both introduced and previously
-    unknown violations in \ns{}'s implementations of the 802.11 protocol.
+    unknown violations in \ns{}'s implementations of the 802.11 and ARF protocols.
 \end{enumerate}
 
 Due to space limitation, we provide the full proof of lemmas and theorems

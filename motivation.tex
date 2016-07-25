@@ -1,14 +1,14 @@
 \section{Background and Motivating Example}
 \label{sec:motivation}
 
-We encounter this problem while testing the protocol implementation of a popular
-game controller. To meet the low latency and low power consumption goals, custom
+We encounter the uncertainty problem while testing the protocol implementation of a popular
+game controller. To meet the low latency and low power consumption goals, a custom
 wireless communication protocol was designed. The protocol specification was
-then handed over to wireless chipset vendors for implementation, which is common
-industry practice. However, neither implementation details nor trace collection
-capabilities are provided in the shipped firmware due to Intellectual Property
-constraints and device resource limitation. Hence using sniffers to validate the
-protocol implementation is the natural and only option.
+then handed over to wireless chipset vendors for implementation, which is a
+common industry practice. However, neither implementation details nor trace
+collection capabilities are provided in the shipped firmware due to Intellectual
+Property constraints and device resource limitation. Hence using sniffers to
+validate the protocol implementation is the natural and only option.
 
 The testing has been performed via manual spot-checking of the sniffer trace.
 We developed a tool to automatically validate certain protocol properties in the
@@ -16,7 +16,7 @@ sniffer trace, yet often found outrageous amounts of false alarms due to the
 incompleteness of the sniffer traces, making the tool virtually useless.
 
 To better understand the incompleteness of sniffer trace, consider the IEEE
-802.11 (as known as \wifi{}) transmitter (DUT) state machine shown in
+802.11 (also known as \wifi{}) transmitter (DUT) state machine shown in
 Fig.~\ref{fig:dot11_tx_ta}. After the DUT sends $DATA_i$---a data packet with
 sequence number $i$ ($s_0\rightarrow s_1)$, it starts a timer and waits for the
 acknowledgment packet---$Ack$. Either it receives $Ack$ within time $T_o$
@@ -36,15 +36,15 @@ retransmissions will be made before aborting.} ($s_2\rightarrow s_1$).
 \end{figure}
 
 Given the DUT's internal log of packet transmission and reception
-events, it is trivial to feed such log into the state machine in
+events, it is trivial to feed such a log into the state machine in
 Fig.~\ref{fig:dot11_tx_ta} and validate the correctness of DUT's protocol
 implementation. In this paper, however, we assume the DUT implementation is a
-black box and its internal events are not available. And we seek to validate the
+black box and its internal events are not available, and we seek to validate the
 DUT implementation using sniffers.
 
 Two fundamental properties in wireless communication bring uncertainty
 to sniffer's observation: packet loss and physical diversity. The sniffer could
-either missing packets from the DUT (packet loss), or overhear packets that are
+either miss packets from the DUT (packet loss), or overhear packets that are
 sent to but missed by the DUT (physical diversity).
 
 \begin{figure}[H]
@@ -65,7 +65,7 @@ $DATA_0$.  Suppose the receiver receives $DATA_0$ and sends the $Ack$ which the
 DUT does not receive. Eventually the DUT's timer fires and it sends $DATA'_0$.
 This time the $DATA'_0$ reaches receiver and the DUT also receives the $Ack$.
 
-In first possible sniffer observation $Tr_1$ where the sniffer
+In the first possible sniffer observation $Tr_1$ where the sniffer
 \textit{overhears} the first $Ack$ packet, a validation \textit{uncertainty}
 arises when the sniffer sees the $DATA'_0$: was the previous $Ack$ missed by the
 DUT or is there a bug in DUT which causes it to retransmit even after receiving

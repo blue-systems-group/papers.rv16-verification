@@ -5,7 +5,7 @@
 under test (both DUT and endpoint), the sniffer only captures a subset of the
 all the packets (events).  This is similar to the event sampling problem in
 runtime
-verification~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis}.
+verification~\cite{bonakdarpour2011sampling,hauswirth2004low,arnold2008qvm,fei2006artemis,basin2012monitoring}.
 Stoller \textit{et al}~\cite{stoller2011runtime} used HMM-based state estimation
 techniques to calculate the confidence that the temporal property is satisfied
 in the presence of gaps in observation.
@@ -28,7 +28,7 @@ studied the problem of passive network testing of network management. The system
 input/output behavior is only partially observable. However, the uncertainty
 only lies in missing events in the observation, while in the context of wireless
 protocol verification, the uncertainty could also be caused by extra events not
-observed by the tested system.  However, they do not provide any formal
+observed by the tested system. Additionally, they do not provide any formal
 guarantees even for cases when we report a definite bug.  Software model
 checking techniques~\cite{musuvathi2002cmc,godefroid1997model} have also been
 used to verify network protocols. Our problem is unique because of the

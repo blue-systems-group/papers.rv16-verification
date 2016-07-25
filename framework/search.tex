@@ -5,7 +5,7 @@ In this section, we present an \textit{exhaustive} search algorithm of the
 accepting transition sequence of $S^+$ on sniffer trace $Tr$. It guarantees to
 yield a accepting sequence if it exists, thus is exhaustive.  In the next
 sections, we present heuristics to limit the search to accepting sequences of
-$S^+$ that require relatively few transitions from $E^+_1 \cup E^+_2$.  Due to
+$S^+$ that require relatively fewer transitions from $E^+_1 \cup E^+_2$.  Due to
 the NP-completeness of the problem, this also makes the algorithm meaningful in
 practice.
 
@@ -99,7 +99,7 @@ Intuitively, this means the search algorithm tries utilize the sniffer's
 observation as much as possible before being forced to make assumptions.
 
 
-Each of the extend function either returns the mutation trace $Tr'$, or
+Each of the extend functions either returns the mutation trace $Tr'$, or
 \textit{\nil} if the search fails.
 In both \texttt{EXTEND-0} and
 \texttt{EXTEND-2} function, if there is a valid transition, we try to consume

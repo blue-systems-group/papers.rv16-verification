@@ -8,14 +8,15 @@ Algorithm~\ref{alg:search} means that it always tries to blame sniffer
 imperfection whenever possible, making it reluctant to report true
 violations.
 
-Therefore, extra constraints on the mutation trace need to be enforced to
-restrict the search only to mutation traces with high likelihood.
-The modified
-\texttt{EXTEND} function checks certain likelihood constraints on the prefix of
-the mutation trace before continue (line~\ref{alg:search:stop}), and stops the
-current search branch immediately if the prefix seems \textit{unlikely}.
-Because of the recursive nature of the algorithm, other branches which may have
-a higher likelihood can then be explored.
+Inspired by the \textit{directed model checking}~\cite{edelkamp2008survey}
+technique which is to mitigate the state explosion problem, we propose to enforce extra
+constraints on the mutation trace to restrict the search to only mutation traces
+with high likelihood. The modified \texttt{EXTEND} function checks certain
+likelihood constraints on the prefix of the mutation trace before continue
+(line~\ref{alg:search:stop}), and stops the current search branch immediately if
+the prefix seems \textit{unlikely}.  Because of the recursive nature of the
+algorithm, other branches which may have a higher likelihood can then be
+explored.
 
 The strictness of the likelihood constraint represents a trade-off between
 precision and recall of validation: the more strict the constraints are, the
@@ -43,7 +44,7 @@ trace.
 
 The intuition behind this heuristic is that the sniffer's empirical packet loss
 probability can usually be measured before validation. Therefore, the likelihood
-that the sniffer misses more packets that prior measured loss ratio is quite
+that the sniffer misses more packets than prior measured loss ratio is quite
 low. The value of $l$ and $k$ can then be configured such that $k/l$ is marginally
 larger than the measured ratio.
 

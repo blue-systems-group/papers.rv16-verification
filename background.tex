@@ -6,25 +6,28 @@
 
 The alphabet of the monitor state machine is the finite set of all valid packets
 defined by the protocol, denoted as $\mathbb{P}$.  A packet is a binary string
-of finite number of bits, encoding interesting protocol attributes such as
+of a finite number of bits, encoding interesting protocol attributes such as
 \texttt{src}, \texttt{dest}, \texttt{type}, \texttt{flags}, and physical layer
 information, such as \texttt{channel}, \texttt{modulation}, etc. The input of
 the state machine then corresponds to a time-ordered sequence of packets.
 
 \begin{definition}
   A \textit{packet trace} is a finite sequence of $(timestamp, packet)$ tuple:
-    $[(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]$
-  where $t_i \in \mathbb{Z}^+$ is the \textit{discrete} timestamp and $p_i$ is the packet
-  observed at time $t_i$. The timestamps are strictly monotonically increasing:
-  $t_i < t_{i+1}$ for $1 \le i < n$.
+  $[(t_1, p_1), (t_2, p_2),\ldots,(t_n, p_n)]$ where $t_i \in \mathbb{Z}^+$ is
+  the \textit{discrete} timestamp and $p_i$ is the packet observed at time
+  $t_i$. The timestamps are strictly monotonically increasing: $t_i < t_{i+1}$
+  for $1 \le i < n$.
 \end{definition}%
 
 In addition to timestamp monotonicity, we also require that adjacent packets do
-not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i
-< n$, where \texttt{airtime()} calculates the time taken to transmit a packet.
+not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i <
+n$, where \texttt{airtime()} calculates the time taken to transmit a packet.
+The timestamp represents the observer's local clock ticks, thus no global time
+synchronization are required as long as the observers' clocks progress at the
+same rate.
 
 We use \textit{timed automata}~\cite{alur1994theory} to model the expected
-behaviors of the DUT.  A timed automata is a finite state machine with timing
+behaviors of the DUT. A timed automata is a finite state machine with timing
 constraints on the transitions: each transition can optionally start one or more
 timers, which can later be used to assert certain events should be seen before
 or after the time out event. We refer the readers to~\cite{alur1994theory} for
@@ -125,14 +128,18 @@ We formally capture this relationship with the definition of mutation trace.
 \begin{definition}
   \label{def:mutation}
   A packet trace $Tr'$ is a mutation of sniffer trace $Tr$ w.r.t a DUT if for
-  all $(t, p) \in Tr \setminus Tr'$, $p.dest = DUT$.
+  all $(t, p) \in Tr \setminus Tr'$, $p.dest = DUT$, where $p.dest$ is the
+  destination of packet $p$.
 \end{definition}
 
 By definition, either $Tr' \supseteq Tr$ (hence $Tr \setminus Tr' = \emptyset$),
-or those extra packets in $Tr$ but not in $Tr'$ are all sent to the DUT. A
-mutation trace $Tr'$ represents a \textit{guess} of the corresponding DUT packet
-trace given given sniffer trace $Tr$.  In fact, the DUT packet trace must be one
-of the mutation traces of the sniffer trace $Tr$.
+or those extra packets in $Tr$ but not in $Tr'$ are all sent to the DUT. Note
+that $Tr'$ may contain extra packets that are either sent to or received by
+the DUT.
+
+A mutation trace $Tr'$ represents a \textit{guess} of the corresponding DUT
+packet trace given sniffer trace $Tr$.  In fact, the DUT packet trace must
+be one of the mutation traces of the sniffer trace $Tr$.
 
 \begin{lemma}
   Let $Tr_{DUT}$ and $Tr$ be the DUT and sniffer packet trace captured during
@@ -140,7 +147,7 @@ of the mutation traces of the sniffer trace $Tr$.
   mutation traces of $Tr$ with respect to DUT, then $Tr_{DUT} \in \mathcal{M}(Tr)$.
   \label{lem:mutation}
 \end{lemma}%
-(Proof in Appendix~\ref{app:lemma1})
+%(Proof in Appendix~\ref{app:lemma1})
 
 
 \subsection{Problem Statement}

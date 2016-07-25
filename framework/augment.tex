@@ -26,12 +26,12 @@ by a \textit{receiving} packet (i.e., $p.dest = DUT$), such as $s_1\rightarrow
 s_0$ and $s_2\rightarrow s_0$, we add a \textit{self transition} with the same
 trigger packet and clock guards, but empty set of resetting clocks and no
 assignments to variables. This is to
-allow the state machine make progress when the sniffer missed such packets.
+allow the state machine to make progress when the sniffer missed such packets.
 
 We make two notes. First, self transitions are added only for
 packets sent \textit{to} the DUT, since the sniffer will not overhear packets
 \textit{from} the DUT if they were not sent by the DUT. Second, no augmented
-transition are added for the packets that are sent to DUT yet are missed by both
+transitions are added for the packets that are sent to DUT yet are missed by both
 the DUT and the sniffer, since such packets do not cause difference between the
 DUT and sniffer traces.
 
@@ -104,14 +104,15 @@ which represents one possibility of the DUT trace. Specifically, $Tr'$ can be
 obtained by adding missing packets indicated by Type-1 transitions to $Tr$, and
 removing extra packets indicated by Type-2 transitions from $Tr$
 
-We show that the VERIFICATION problem is equivalent to the
+We show that the VALIDATION problem is equivalent to the
 satisfiability problem of $Tr$ on $S^+$.
 
 \begin{theorem}
   There exists a mutation trace $Tr' \in \mathcal{M}(Tr)$ that satisfies $S$ if
   and only if $Tr$ satisfies $S^+$.
  \label{the:equivalent}
-\end{theorem}\vspace*{-2mm}(Proof in Appendix~\ref{app:theorem1})
+\end{theorem}
+%\vspace*{-2mm}(Proof in Appendix~\ref{app:theorem1})
 
 By Theorem~\ref{the:equivalent}, the inherent uncertainty of the sniffer traces
 are explicitly represented by the augmented transitions, and can be

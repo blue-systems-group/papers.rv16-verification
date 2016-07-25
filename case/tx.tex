@@ -2,7 +2,7 @@
 \label{subsec:tx}
 
 In this section, we first show that our
-verification framework can improve verification precision by inferring
+framework can improve validation precision by inferring
 the missing or extra packets using the augmented transition
 framework. We then demonstrate the ability of our framework to detect true violations by
 manually introducing bugs in the \ns{} implementation and show the precision and
@@ -104,7 +104,8 @@ nor the \textit{number} of retransmission packets.
 The different between two packet traces can be quantified by the Jaccard distance
 metric.%
 \begin{align}
-  Jaccard(Tr_1, Tr_2) = \frac{Tr_1 \ominus Tr_2}{Tr_1 \cup Tr_2}
+  Jaccard(Tr_1, Tr_2) = \frac{\left\vert Tr_1 \ominus Tr_2\right\vert}{\left\vert
+  Tr_1 \cup Tr_2\right\vert}
 \end{align}%
 where $\ominus$ is the symmetric difference operator.
 The distance is 0 if the
@@ -195,7 +196,7 @@ a hard time resolving such uncertainty.
 \vspace*{-3mm}
 \subsubsection{Introducing Bugs}
 
-We have demonstrated that our framework can tolerate sniffer imperfection and
+We have demonstrated that our framework can tolerate sniffer imperfections and
 avoid raising false alarms.  The next question is, can it detect true
 violations?  To answer this question, we manually introduce several bugs in
 \ns{} implementation that concerns various aspects of 802.11 data transmission
@@ -223,8 +224,10 @@ run contains bugs.
 For each $Pr_{ed}$ value, we calculate the precision and recall of violation
 detection using the sniffer traces.%
 \begin{align}
-  \text{Precision} = \frac{\{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}}{\{\text{Reported Bugs}\}}\\
-  \text{Recall} = \frac{\{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}}{\{\text{True Bugs}\}}
+  \text{Precision} = \frac{\left\vert \{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}\right\vert}{\left\vert
+  \{\text{Reported Bugs}\}\right\vert}\\
+  \text{Recall} = \frac{\left\vert \{\text{Reported Bugs}\} \cap \{\text{True Bugs}\}\right\vert}{\left\vert
+  \{\text{True Bugs}\}\right\vert}
 \end{align}%
 The precision metric quantifies how \textit{useful} the validation results are ,
 while the recall metric measures how \textit{complete} the validation results
