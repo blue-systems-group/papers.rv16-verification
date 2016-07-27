@@ -430,3 +430,36 @@
     year={2008},
     organization={Springer}
 }
+
+@techreport{msr_tech_report,
+    author = {Shuvendu Lahiri, Ranveer Chandra, Jinghao Shi, Geoffrey Challen},
+    title = {Wireless Protocol Validation Under Uncertainty},
+    year = {2016},
+    month = {July},
+    abstract = {Runtime validation of wireless protocol implementations cannot
+        always employ direct instrumentation of the device under test (DUT). The
+            DUT may not implement the required instrumentation, or the
+            instrumentation may alter the DUT's behavior when enabled. Wireless
+            sniffers can monitor the DUT's behavior without instrumentation, but
+            they introduce new validation challenges. Losses caused by wireless
+            propagation mean that sniers cannot perfectly reconstruct the actual
+            DUT  packet trace. As a result, accurate validation requires
+            distinguishing between specification deviations that represent
+            implementation errors from
+            those caused by snier uncertainty.
+            We present a new approach that enables snier-based validation of
+            wireless protocol implementation. Beginning with the original
+            protocol monitor state machine, we automatically and completely
+            encode snier uncertainty by selectively adding non-deterministic
+            transitions. We characterize the NP-completeness of the resulting
+            decision problem and provide an exhaustive algorithm for searching
+            over all mutated traces, as well as more practical
+            protocol-oblivious heuristics for searching over the most
+            likely mutated traces. We have implemented our framework and
+            show that it can accurately distinguish most implementation
+            errors.},
+    publisher = {},
+    url =
+    {https://www.microsoft.com/en-us/research/publication/wireless-protocol-validation-under-uncertainty/},
+    address = {},
+}
