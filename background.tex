@@ -22,9 +22,8 @@ the state machine then corresponds to a time-ordered sequence of packets.
 In addition to timestamp monotonicity, we also require that adjacent packets do
 not overlap in time, $t_{i+1}-t_i > \text{\texttt{airtime}}(p_i)$ for $1 \le i <
 n$, where \texttt{airtime()} calculates the time taken to transmit a packet.
-The timestamp represents the observer's local clock ticks, thus no global time
-synchronization are required as long as the observers' clocks progress at the
-same rate.
+The timestamp represents the observer's local clock ticks, and need not to be
+synchronized among devices.
 
 We use \textit{timed automata}~\cite{alur1994theory} to model the expected
 behaviors of the DUT. A timed automata is a finite state machine with timing

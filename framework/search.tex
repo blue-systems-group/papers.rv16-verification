@@ -81,14 +81,13 @@ practice.
     \end{algorithm}
     \renewcommand\footnoterule{}
   \end{minipage}
-  %\vspace*{-5mm}
+  \vspace*{-5mm}
 \end{figure}
 
-The main routines of the algorithm is shown in Algorithm~\ref{alg:search}.  In
+The main routines of the algorithm are shown in Algorithm~\ref{alg:search}.  In
 the top level \texttt{SEARCH} routine, we first obtain the augmented state
 machine $S^+$, then we call the recursive \texttt{EXTEND} function with an empty
 prefix, the sniffer trace, and the $S^+$'s initial state. 
-
 In the \texttt{EXTEND} function, we try to consume the first packet in the
 remaining trace using either Type-0, Type-1 or Type-2 transition.
 Note that we always try to use Type-0 transitions before other two augmented
@@ -114,6 +113,6 @@ if there is a valid Type-0 or Type-2 transition for the last packet
 
 
 It is not hard to see that Algorithm~\ref{alg:search} terminates on any sniffer
-traces: each node in the transition tree only has finite number of possible next
-steps, and the depth of Type-1 transitions are limited by the time available
+traces. Each node in the transition tree only has finite number of possible next
+steps, and the depth of Type-1 transitions is limited by the time available
 before the next packet (line~\ref{alg:search:type_1_limit}).

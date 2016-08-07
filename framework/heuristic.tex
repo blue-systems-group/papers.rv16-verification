@@ -12,16 +12,16 @@ Inspired by the \textit{directed model checking}~\cite{edelkamp2008survey}
 technique which is to mitigate the state explosion problem, we propose to enforce extra
 constraints on the mutation trace to restrict the search to only mutation traces
 with high likelihood. The modified \texttt{EXTEND} function checks certain
-likelihood constraints on the prefix of the mutation trace before continue
+likelihood constraints on the prefix of the mutation trace before continuing
 (line~\ref{alg:search:stop}), and stops the current search branch immediately if
 the prefix seems \textit{unlikely}.  Because of the recursive nature of the
 algorithm, other branches which may have a higher likelihood can then be
 explored.
 
 The strictness of the likelihood constraint represents a trade-off between
-precision and recall of validation: the more strict the constraints are, the
+precision and recall of validation. The more strict the constraints are, the
 more false positive violations will potentially be reported, hence the lower the
-precision yet higher recall.  On the contrary, the more tractable the
+precision yet higher recall. On the contrary, the more tractable the
 constraints are, the more tolerant the search is to sniffer imperfection, hence
 the more likely that it will report true violations, thus higher precision but
 lower recall.

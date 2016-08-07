@@ -52,16 +52,16 @@ multiple retransmissions\footnote{The exact number of retransmissions is not
 part of the protocol, and NS-3 implementation set this to be 7.} instead of one.
 
 Let $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$ be the packet loss probability between
-the DUT and sniffer, endpoint and sniffer, DUT and endpoint respectively.
+the DUT and sniffer, endpoint and sniffer, endpoint and DUT respectively.
 $Pr_{ed}$ represents the characteristics of the system being tested, while
 $Pr_{ds}$ and $Pr_{es}$ represent the sniffer's quality in capturing packets.
 
 
 
-We vary each of the three probability, $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$, from
+We vary each of the three probabilities, $Pr_{ds}$, $Pr_{es}$ and $Pr_{ed}$, from
 0 to 0.5 (both inclusive) with 0.05 step.  For each loss ratio combination, we
 ran the experiment 5 times, and each run lasted
-30 seconds. In total, 6655 ($11^3\times 5$) pair of DUT and sniffer packet
+30 seconds. In total, 6655 ($11^3\times 5$) pairs of DUT and sniffer packet
 traces were collected.
 
 To establish the ground truth of violations, we first verify the DUT packet
@@ -203,11 +203,11 @@ violations?  To answer this question, we manually introduce several bugs in
 protocol.  More specifically, the bugs are:
 
 \begin{itemize}
-  \item \textbf{Sequence Number}\quad The DUT does not assign sequence number
+  \item \textbf{Sequence Number}: the DUT does not assign sequence number
     correctly. For example, it may increase sequence by 2 instead of 1, or it
     does not increase sequence number after certain packet, etc. We choose one
     type of such bugs in each run.
-  \item \textbf{Semantic}\quad The DUT may retransmit even
+  \item \textbf{Semantic}: the DUT may retransmit even
     after receiving $Ack$, or does not retransmit when not receiving $Ack$.
 \end{itemize}
 

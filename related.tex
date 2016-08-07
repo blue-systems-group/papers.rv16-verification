@@ -1,4 +1,4 @@
-\section{Related Works}
+\section{Related Work}
 \label{sec:related}
 
 \textbf{Hidden Markov Model (HMM) Approach.} When considering the whole system
@@ -12,14 +12,14 @@ in the presence of gaps in observation.
 
 While it seems possible to adapt the
 method in~\cite{stoller2011runtime} to our problem, we note several advantages
-of our augmented monitor and prioritized search procedure.  First, the
+of our augmented monitor and prioritized search procedure. First, the
 automatically augmented state machine precisely encodes the protocol
-specification and the uncertainty; this is intuitive to design and naturual for
-reporting the evidence for a trace being successful.  We do not require a user
-to specify the number of states of underlying HMM, or accurately provide
-underlying probabilities.  Second, we use timed automata to monitor the timing
-constraints which are common in wireless protocols; it may be non-trivial to
-encode such timing information in HMM.  Finally, we can exploit domain knowledge
+specification and the uncertainty. This is intuitive to design and natural for
+reporting the evidence for a trace being successful. We do not require a user
+to specify the number of states of the underlying HMM, or accurately provide
+underlying probabilities. Second, we use timed automata to monitor the timing
+constraints which are common in wireless protocols. It may be non-trivial to
+encode such timing information in HMM. Finally, we can exploit domain knowledge
 to devise effective pruning heuristics to rule out unlikely sequences during the
 exhaustive search. 
 

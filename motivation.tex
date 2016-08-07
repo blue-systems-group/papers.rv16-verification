@@ -1,7 +1,7 @@
 \section{Background and Motivating Example}
 \label{sec:motivation}
 
-We encounter the uncertainty problem while testing the protocol implementation
+We encountered the uncertainty problem while testing the protocol implementation
 of a popular wireless game controller. A custom wireless communication protocol
 was designed to meet the low latency and low power consumption goals. As is
 common industry practice, the protocol specification was then handed over to
@@ -24,8 +24,7 @@ acknowledgment packet---$Ack$. Either it receives $Ack$ within time $T_o$
 ($s_1\rightarrow s_2$). Similarly, either it receives the $Ack$ within $T_o$
 ($s_2\rightarrow s_0$) or aborts transmission and moves on to next
 packet\footnote{To represent the state machine succinctly, our example assumes
-that the DUT will retry at most once. In practice, multiple retransmissions
-will be made before aborting.} ($s_2\rightarrow s_1$).
+that the DUT will retry at most once.} ($s_2\rightarrow s_1$).
 
 \begin{figure}[H]
   \centering

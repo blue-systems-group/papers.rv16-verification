@@ -20,15 +20,14 @@ illustrate the basic idea. Fig.~\ref{fig:augment} shows the augmented state
 machine for 802.11 transmitter state machine shown in
 Fig.~\ref{fig:dot11_tx_ta}.  For each existing transition (e.g., $s_0\rightarrow
 s_1$), we add an \textit{empty transition} with same clock guards and resetting
-clocks.  This is to account for the possibility when such packet was observed by
+clocks.  This accounts for the possibility when such packet was observed by
 the DUT but missed by the sniffer.  Additionally, for each transition triggered
 by a \textit{receiving} packet (i.e., $p.dest = DUT$), such as $s_1\rightarrow
 s_0$ and $s_2\rightarrow s_0$, we add a \textit{self transition} with the same
-trigger packet and clock guards, but empty set of resetting clocks and no
-assignments to variables. This is to
-allow the state machine to make progress when the sniffer missed such packets.
+trigger packet and clock guards, but an empty set of resetting clocks and no
+assignments to variables. This allows the state machine to make progress when the sniffer missed such packets.
 
-We make two notes. First, self transitions are added only for
+There are two things to note. First, self transitions are added only for
 packets sent \textit{to} the DUT, since the sniffer will not overhear packets
 \textit{from} the DUT if they were not sent by the DUT. Second, no augmented
 transitions are added for the packets that are sent to DUT yet are missed by both
