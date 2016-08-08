@@ -93,7 +93,7 @@ Fig.~\ref{fig:dot11_tx_ta} can be formally defined as follows:
 
 
 The monitor state machine defines a \textit{timed language} $L$ which consists
-all valid packet traces that can be observed by the DUT.  We now give the
+of all valid packet traces that can be observed by the DUT.  We now give the
 definition of protocol \textit{compliance} and \textit{violation}.
 
 \begin{definition}
@@ -164,7 +164,7 @@ implementation given a sniffer trace can be formally defined as follows:
 \end{problem}
 
 If the answer is no, a definite violation of the DUT implementation can be
-claimed. Nevertheless, if the answer is yes, $S$ could still reject $Tr_{DUT}$.
+claimed. Nevertheless, if the answer is yes, $S$ may still reject $Tr_{DUT}$.
 In other words, the conclusion of the validation can either be
 \textit{definitely wrong} or \textit{probably correct}, but not
 \textit{definitely correct}.  This is the fundamental limitation caused by the

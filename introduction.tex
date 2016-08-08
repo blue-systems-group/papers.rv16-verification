@@ -34,9 +34,9 @@ This is true even when using multiple
 sniffers~\cite{cheng2006jigsaw,mahajan2006analyzing,bahl2006enhancing}, a sniffer
 with multiple antennas~\cite{omnipeek}, or in isolated wireless environments.
 
-Since the sniffer trace does not perfectly match the actual trace, uncertainty
+Since the sniffer trace may not perfectly match the actual trace, uncertainty
 arises during protocol implementation validation.  For example, if the DUT fails
-to respond correctly to a packet in the sniffer trace, it may be because either the
+to respond correctly to a packet in the sniffer trace, it may either because the
 DUT's implementation is incorrect, or the DUT did not actually receive the
 packet, or the DUT's response was missed by the sniffer.  Whenever the DUT's
 behavior does not match the specification, there are now two potential
@@ -48,7 +48,7 @@ We present a new technique than enables validation of protocol implementations u
 wireless sniffers. Given a monitor state machine representing the protocol being
 validated, we describe a systematic transformation that adds non-deterministic
 transitions to incorporate uncertainty introduced by the sniffer. This
-augmented validation state machine processes the sniffer trace into a set of
+augmented validation state machine implicitly defines a set of
 mutated traces, each satisfying the original state machine with a specific
 likelihood. If the set is empty, the implementation definitely violates the
 protocol. Searching over all the mutated traces is NP-complete, but the approach
