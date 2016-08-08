@@ -2,8 +2,8 @@
 \label{subsec:search}
 
 In this section, we present an \textit{exhaustive} search algorithm of the
-accepting transition sequence of $S^+$ on sniffer trace $Tr$. It guarantees to
-yield a accepting sequence if it exists, thus is exhaustive.  In the next
+accepting transition sequence of $S^+$ on sniffer trace $Tr$. It is guaranteed to
+yield an accepting sequence if there exists one, thus is exhaustive.  In the next
 sections, we present heuristics to limit the search to accepting sequences of
 $S^+$ that require relatively fewer transitions from $E^+_1 \cup E^+_2$.  Due to
 the NP-completeness of the problem, this also makes the algorithm meaningful in
@@ -86,7 +86,7 @@ practice.
 
 The main routines of the algorithm are shown in Algorithm~\ref{alg:search}.  In
 the top level \texttt{SEARCH} routine, we first obtain the augmented state
-machine $S^+$, then we call the recursive \texttt{EXTEND} function with an empty
+machine $S^+$, and then call the recursive \texttt{EXTEND} function with an empty
 prefix, the sniffer trace, and the $S^+$'s initial state. 
 In the \texttt{EXTEND} function, we try to consume the first packet in the
 remaining trace using either Type-0, Type-1 or Type-2 transition.
@@ -94,7 +94,7 @@ Note that we always try to use Type-0 transitions before other two augmented
 transitions (line~\ref{alg:search:order}).
 This ensures the first found mutation trace will have the most number of Type-0
 transitions among all possible mutation traces.
-Intuitively, this means the search algorithm tries utilize the sniffer's
+Intuitively, this means the search algorithm tries to utilize the sniffer's
 observation as much as possible before being forced to make assumptions.
 
 

@@ -66,15 +66,15 @@ k_n)$.
 \subsubsection{$\mathit{GoBack}(k)$}
 
 This heuristic states that the search should only
-backtrack at most $k$ steps when gets stuck.
-The motivation is that many protocols operate in a sequence of independent
+backtrack at most $k$ steps when the search gets stuck using only $E$.
+The motivation is that many protocols operate as a sequence of independent
 transactions, and the uncertainty of previous transactions often do not affect
 the next transaction.
 For instance, in 802.11 packet transmission protocol, each packet exchange,
 include the original, retransmission and acknowledgment packets, constitute a
 transaction.
 And the retransmission status of previous packets has no effect on the packets
-with next sequence number, hence need not be explored when resolving the
+with subsequent sequence numbers, hence need not be explored when resolving the
 uncertainty of the packets with new sequence numbers.  Note that we do not
 require the protocol to specify an exact transaction boundary, but only need $k$
 to be sufficiently large to cover a transaction. 

@@ -12,7 +12,7 @@ in the presence of gaps in observation.
 
 While it seems possible to adapt the
 method in~\cite{stoller2011runtime} to our problem, we note several advantages
-of our augmented monitor and prioritized search procedure. First, the
+of our approach. First, the
 automatically augmented state machine precisely encodes the protocol
 specification and the uncertainty. This is intuitive to design and natural for
 reporting the evidence for a trace being successful. We do not require a user
@@ -32,7 +32,9 @@ observed by the tested system. Additionally, they do not provide any formal
 guarantees even for cases when we report a definite bug.  Software model
 checking techniques~\cite{musuvathi2002cmc,godefroid1997model} have also been
 used to verify network protocols. Our problem is unique because of the
-observation uncertainty caused by sniffers.
+observation uncertainty caused by sniffers. Our framework shares similarity
+with {\it angelic verification}~\cite{das-cav15} where the program verifier
+reports a warning only when no acceptable specification exists on unknowns.
 
 \begin{comment}
 \textbf{Sniffer Trace Analysis.} Wireless sniffers has been widely used to
