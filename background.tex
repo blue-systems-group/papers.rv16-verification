@@ -146,7 +146,14 @@ be one of the mutation traces of the sniffer trace $Tr$.
   mutation traces of $Tr$ with respect to DUT, then $Tr_{DUT} \in \mathcal{M}(Tr)$.
   \label{lem:mutation}
 \end{lemma}%
-%(Proof in Appendix~\ref{app:lemma1})
+\begin{proof}
+  Let $\Delta = Tr \setminus Tr_{DUT}$ be the set of packets that are in $Tr$
+  but not in $Tr_{DUT}$. Recall that it is not possible for the sniffer to
+  observe packets sent from the DUT that the DUT did not send. Therefore,
+  all packets in $\Delta$ are sent \textit{to} the DUT. That is, for
+  all $(t, p) \in \Delta,\ p.dest = DUT$. By Definition~\ref{def:mutation},
+  $Tr_{DUT} \in \mathcal{M}(Tr)$.
+\end{proof}
 
 
 \subsection{Problem Statement}

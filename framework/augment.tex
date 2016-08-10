@@ -111,7 +111,50 @@ satisfiability problem of $Tr$ on $S^+$.
   and only if $Tr$ satisfies $S^+$.
  \label{the:equivalent}
 \end{theorem}
-%\vspace*{-2mm}(Proof in Appendix~\ref{app:theorem1})
+\begin{proof}
+  Assume $Tr$ satisfies $S^+$, and $P$ is a sequence of accepting transitions,
+  we construct a mutation trace $Tr'$ using $P$ and show that $Tr'$ satisfies
+  $S$.
+
+  \sloppy{%
+    Initially, let $Tr'=Tr$, then for each \textit{augmented} transition $\langle s_i,
+  v_i, s_j, v_j, \sigma, g, C'\rangle \in P$:
+  }
+  \begin{itemize}
+    \item If this is a Type-1 transition, add $(t, p)$ to $Tr'$, where $t$ is a
+      timestamp that satisfies $g$ and $p$ is the missing packet.
+    \item If this is a Type-2 transition, remove corresponding $(t, p)$ from
+      $Tr'$.
+  \end{itemize}
+  It is obvious that $Tr'$ is a mutation trace of $Tr$, since only receiving
+  packets are removed in the process.
+
+  Now we show that there exists a accepting transition sequence $P'$ of $S^+$ on
+  input $Tr'$ that does not contain augmented transitions.  In particular, $P'$
+  can be obtained by substituting all Type-1 transitions with corresponding
+  original transitions, and removing all Type-2 transition.  Since $P'$ does not
+  contain augmented transitions, it is also an accepting transition sequence of
+  $S$ on input $Tr'$, hence $Tr'$ satisfies $S$.
+
+  On the other hand, assume $Tr' \in \mathcal{M}(Tr)$ and $Tr'$ satisfies $S$.
+  Suppose $P'$ is the accepting transition sequences of $S$ on input $Tr'$.
+  We first note that $P'$ is also the accepting transitions of $S^+$ on input
+  $Tr'$, since $E \subset E^+$.
+
+  We construct a accepting transition sequence $P$ of $S^+$ on input $Tr$ as
+  follows.
+  \begin{itemize}
+    \item For each packet $p \in Tr' \setminus Tr$, substitute the transition
+      $\langle s_i, v_i, s_j, v_j, p, g, C'\rangle$ with the corresponding Type-1
+      transition $\langle s_i, v_i, s_j, v_j, \epsilon, g, C'\rangle$.
+    \item For each transition $\langle s_i, v_i, s_j, v_j, \sigma, g, C'\rangle$
+      followed by packet $p \in Tr\setminus Tr'$, add a Type-2 self
+      transition $\langle s_j, v_j, s_j, v_j, p, g, \emptyset\rangle$. This is
+      possible since $Tr'$ is a mutation trace of $Tr$, thus  for all $p \in Tr'
+      \setminus Tr$, $p.src \ne DUT$.
+  \end{itemize}
+  Therefore, $Tr$ satisfies $S^+$.
+\end{proof}
 
 By Theorem~\ref{the:equivalent}, the inherent uncertainty of the sniffer traces
 is explicitly represented by the augmented transitions, and can be
